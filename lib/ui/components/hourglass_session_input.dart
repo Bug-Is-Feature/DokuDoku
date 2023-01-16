@@ -21,10 +21,17 @@ class _HourglassSessionInputState extends State<HourglassSessionInput> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.5,
+            height: MediaQuery.of(context).size.height * 0.48,
             width: MediaQuery.of(context).size.height * 0.45,
             decoration: BoxDecoration(
               color: context.resources.color.colorNormal3,
+              boxShadow: [
+                BoxShadow(
+                  color: context.resources.color.grey,
+                  blurRadius: 5,
+                  offset: Offset(0, 4),
+                ),
+              ],
               borderRadius: BorderRadius.circular(50),
             ),
             child: Padding(
@@ -156,12 +163,12 @@ class _HourglassSessionInputState extends State<HourglassSessionInput> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 40),
+                  SizedBox(height: 30),
                   Text(
                     'Think again',
                     style: TextStyle(fontSize: 20),
                   ),
-                  SizedBox(height: 40),
+                  SizedBox(height: 30),
                   Center(
                     child: Button(
                         child: Text('Confirm'),
