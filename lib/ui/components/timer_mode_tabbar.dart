@@ -1,4 +1,6 @@
 import 'package:dokudoku/ui/components/button.dart';
+import 'package:dokudoku/ui/components/hourglass_session_input.dart';
+import 'package:dokudoku/ui/components/input.dart';
 import 'package:dokudoku/ui/components/stopwatch_timer.dart';
 import 'package:dokudoku/ui/view/stopwatch_view.dart';
 import 'package:flutter/material.dart';
@@ -32,9 +34,11 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
     return Scaffold(
         backgroundColor: context.resources.color.colorLightest,
         body: Padding(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.fromLTRB(30, 50, 30, 10),
           child: Container(
-            decoration: BoxDecoration(color: Colors.transparent),
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+            ),
             child: Column(
               children: [
                 Container(
@@ -42,6 +46,13 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
                   decoration: BoxDecoration(
                     color: context.resources.color.colorWhite,
                     borderRadius: BorderRadius.circular(50),
+                    boxShadow: [
+                      BoxShadow(
+                        color: context.resources.color.grey,
+                        blurRadius: 5,
+                        offset: Offset(0, 5),
+                      ),
+                    ],
                   ),
                   child: TabBar(
                     controller: _tabController,
@@ -59,7 +70,10 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
                       Tab(
                           child: Text(
                         'Hourglass',
-                        style: TextStyle(fontSize: 22, fontFamily: 'primary'),
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontFamily: 'primary',
+                        ),
                       )),
                     ],
                     onTap: (value) {
@@ -69,13 +83,15 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
                     },
                   ),
                 ),
+                SizedBox(height: 20),
                 Expanded(
                     child: TabBarView(
                   children: [
                     Center(child: StopwatchView()),
-                    Center(
-                      child: Text('Hourglass'),
-                    )
+                    HourglassSessionInput()
+                    // Center(
+                    //   child: Text('deee'),
+                    // )
                   ],
                   controller: _tabController,
                 ))
