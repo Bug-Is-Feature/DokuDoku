@@ -23,7 +23,7 @@ class StopwatchTimer extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             CircularProgressIndicator(
-              value: provider.startTime / (maxMin * 60),
+              value: provider.startTime / (maxMin * 60 * 2),
               strokeWidth: 9,
               backgroundColor: Colors.white,
               valueColor: AlwaysStoppedAnimation(context.resources.color.blue),
