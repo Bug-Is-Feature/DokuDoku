@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => NavigationProvider(),
       child: MaterialApp(
+          title: 'Dokudoku',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             colorScheme: ColorScheme(
