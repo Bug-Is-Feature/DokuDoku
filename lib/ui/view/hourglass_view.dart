@@ -2,7 +2,6 @@ import 'package:dokudoku/ui/components/bottom_navbar.dart';
 import 'package:dokudoku/ui/components/custom_appbar.dart';
 import 'package:dokudoku/ui/components/hourglass_session_input.dart';
 import 'package:dokudoku/ui/components/navigation_drawer.dart';
-import 'package:dokudoku/ui/components/toggle_timer_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
