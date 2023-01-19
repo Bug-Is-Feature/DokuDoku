@@ -42,7 +42,7 @@ class _CustomDialogState extends State<CustomDialog> {
             borderRadius: BorderRadius.circular(17),
             boxShadow: const <BoxShadow>[
               BoxShadow(
-                color: Colors.black,
+                color: Color.fromARGB(255, 68, 68, 68),
                 offset: Offset(0, 6),
                 blurRadius: 11,
               ),
