@@ -49,7 +49,16 @@ class _QuestCardState extends State<QuestCard> {
                               children: [
                                 Text('Reward : -15 EXP'),
                                 SizedBox(width: 10),
-                                Text('-----------------'),
+                                SizedBox(
+                                    width: 100,
+                                    height: 5,
+                                    child: LinearProgressIndicator(
+                                      value: 0.5,
+                                      backgroundColor:
+                                          context.resources.color.grey,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          context.resources.color.colorDarkest),
+                                    )),
                               ],
                             ),
                           ],
