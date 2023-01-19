@@ -1,6 +1,5 @@
 import 'package:dokudoku/ui/components/button.dart';
 import 'package:dokudoku/ui/components/hourglass_session_input.dart';
-import 'package:dokudoku/ui/components/input.dart';
 import 'package:dokudoku/ui/components/stopwatch_timer.dart';
 import 'package:dokudoku/ui/view/stopwatch_view.dart';
 import 'package:flutter/material.dart';
@@ -83,12 +82,12 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
                     },
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 10),
                 Expanded(
                     child: TabBarView(
                   children: [
                     Center(child: StopwatchView()),
-                    HourglassSessionInput()
+                    Center(child: HourglassSessionInput())
                     // Center(
                     //   child: Text('deee'),
                     // )
