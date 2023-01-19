@@ -12,6 +12,8 @@ class AppColors implements BaseColors {
   @override
   Color get colorNormal2 => Color(0xffE7C0A3);
   @override
+  Color get colorNormal3 => Color(0xffEFD3C2);
+  @override
   Color get colorLighter => Color(0xffF1D8C8);
   @override
   Color get colorLighter2 => Color(0xffFEE9CC);
