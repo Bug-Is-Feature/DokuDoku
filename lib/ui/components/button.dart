@@ -23,14 +23,6 @@ class Button extends StatefulWidget {
 class _ButtonState extends State<Button> {
   @override
   Widget build(BuildContext context) {
-    // final ButtonStyle style = ElevatedButton.styleFrom(
-    //   textStyle: const TextStyle(fontSize: 20, fontFamily: 'primary'),
-    //   // backgroundColor: context.resources.color.colorDark,
-    //   fixedSize: const Size(99, 44),
-    //   shape: RoundedRectangleBorder(
-    //     borderRadius: BorderRadius.circular(100),
-    //   ),
-    // );
     final provider = Provider.of<TimerService>(context);
 
     return Column(
@@ -38,13 +30,13 @@ class _ButtonState extends State<Button> {
       children: [
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            textStyle: const TextStyle(fontSize: 20, fontFamily: 'primary'),
-            backgroundColor: widget.backgroundColor,
-            fixedSize: const Size(99, 44),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(100),
-            ),
-          ),
+              textStyle: const TextStyle(fontSize: 20, fontFamily: 'primary'),
+              backgroundColor: widget.backgroundColor,
+              fixedSize: const Size(99, 44),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(100),
+              ),
+              elevation: 3),
           onPressed: widget.onPressed,
           child: widget.child,
         )
