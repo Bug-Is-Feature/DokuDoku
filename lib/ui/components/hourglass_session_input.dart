@@ -35,7 +35,7 @@ class _HourglassSessionInputState extends State<HourglassSessionInput> {
               borderRadius: BorderRadius.circular(50),
             ),
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 50, 30, 40),
+              padding: const EdgeInsets.fromLTRB(30, 50, 30, 40),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
