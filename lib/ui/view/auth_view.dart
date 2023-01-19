@@ -42,19 +42,32 @@ class _AuthViewState extends State<AuthView> {
               child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    // Container(
-                    //   margin: const EdgeInsets.only(top: 20, bottom: 20),
-                    //   child: Text(
-                    //     type == 'login' ? 'Login' : 'Register',
-                    //     style: Theme.of(context).textTheme.headline1,
-                    //   ),
-                    // ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      // margin: const EdgeInsets.only(top: 20, bottom: 20),
+                      child: Image.asset(
+                        'assets/images/Icononly.png',
+                        height: 170,
+                      ),
+                    ),
+                    Container(
+                      // margin: const EdgeInsets.only(top: 20, bottom: 20),
+                      child: Image.asset(
+                        'assets/images/DokuDoku_Fontonly.png',
+                        height: 70,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 20, 30, 0),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                       child: Text(
                         type == 'login'
                             ? 'To continue, log in to DokuDoku'
-                            : 'Sign up for free to stop being a hoarder',
+                            : 'Sign up for free to stop being a hoarder ^ - ^',
                         style: Theme.of(context).textTheme.headline2,
                       ),
                     ),
@@ -66,6 +79,7 @@ class _AuthViewState extends State<AuthView> {
                         _email = value!;
                       },
                       decoration: InputDecoration(
+                        contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                         focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                                 width: 1,
@@ -78,7 +92,8 @@ class _AuthViewState extends State<AuthView> {
                             borderRadius: BorderRadius.circular(20)),
                         filled: true,
                         fillColor: Colors.white,
-                        labelStyle: TextStyle(color: Color(0xff92603D)),
+                        labelStyle:
+                            TextStyle(color: Color(0xff92603D), fontSize: 20),
                         labelText: 'Email address',
                       ),
                     ),
@@ -90,6 +105,7 @@ class _AuthViewState extends State<AuthView> {
                         _password = value!;
                       },
                       decoration: InputDecoration(
+                        contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                         focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                                 width: 1,
@@ -116,6 +132,7 @@ class _AuthViewState extends State<AuthView> {
                           _password = value!;
                         },
                         decoration: InputDecoration(
+                          contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                           focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   width: 1,
@@ -142,6 +159,7 @@ class _AuthViewState extends State<AuthView> {
                           width: double.infinity,
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
+                                  fixedSize: const Size(double.infinity, 40),
                                   textStyle: const TextStyle(
                                       fontSize: 20, fontFamily: 'primary'),
                                   backgroundColor:
@@ -166,13 +184,13 @@ class _AuthViewState extends State<AuthView> {
                           children: <Widget>[
                             const Text('Have an account?',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.w500, fontSize: 16)),
+                                    fontWeight: FontWeight.w500, fontSize: 18)),
                             TextButton(
                               onPressed: () => setState(() => type = 'login'),
                               child: const Text(
                                 'Log in',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.w500, fontSize: 16),
+                                    fontWeight: FontWeight.bold, fontSize: 18),
                               ),
                             )
                           ],
@@ -217,7 +235,7 @@ class _AuthViewState extends State<AuthView> {
                               const Text(
                                 'Don\'t have an account?',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.w500, fontSize: 16),
+                                    fontWeight: FontWeight.w500, fontSize: 18),
                               ),
                               TextButton(
                                 onPressed: () =>
@@ -225,8 +243,8 @@ class _AuthViewState extends State<AuthView> {
                                 child: const Text(
                                   'Sign up',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
                                 ),
                               )
                             ],
