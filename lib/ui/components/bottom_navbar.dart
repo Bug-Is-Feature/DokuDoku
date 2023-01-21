@@ -1,9 +1,4 @@
 import 'package:dokudoku/res/AppContextExtension.dart';
-import 'package:dokudoku/ui/components/button.dart';
-import 'package:dokudoku/ui/components/navigation_drawer.dart';
-import 'package:dokudoku/ui/view/hourglass_view.dart';
-import 'package:dokudoku/ui/view/note_history_view.dart';
-import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -56,8 +51,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
         elevation: 10,
         showSelectedLabels: false,
         showUnselectedLabels: false,
-
-        // selectedItemColor: context.resources.color.colorLightest,
         unselectedItemColor: context.resources.color.colorWhite,
         items: [
           BottomNavigationBarItem(

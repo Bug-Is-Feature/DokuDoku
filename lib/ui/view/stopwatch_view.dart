@@ -1,12 +1,7 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dokudoku/services/timer_service.dart';
 import 'package:dokudoku/ui/components/button.dart';
 import 'package:dokudoku/ui/components/custom_dialog_box.dart';
 import 'package:dokudoku/ui/components/stopwatch_timer.dart';
-import 'package:dokudoku/ui/components/timer_display.dart';
-import 'package:dokudoku/ui/components/timer_mode_tabbar.dart';
-import 'package:dokudoku/viewmodel/time_controller.dart';
-
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:provider/provider.dart';

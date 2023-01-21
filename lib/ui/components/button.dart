@@ -1,7 +1,5 @@
-import 'package:dokudoku/viewmodel/time_controller.dart';
 import 'package:dokudoku/services/timer_service.dart';
 import 'package:flutter/material.dart';
-import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:provider/provider.dart';
 
 class Button extends StatefulWidget {

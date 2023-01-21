@@ -1,6 +1,4 @@
-import 'package:dokudoku/ui/components/button.dart';
 import 'package:dokudoku/ui/components/hourglass_session_input.dart';
-import 'package:dokudoku/ui/components/stopwatch_timer.dart';
 import 'package:dokudoku/ui/view/stopwatch_view.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
@@ -90,9 +88,6 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
                   children: [
                     Center(child: StopwatchView()),
                     Center(child: HourglassSessionInput())
-                    // Center(
-                    //   child: Text('deee'),
-                    // )
                   ],
                   controller: _tabController,
                 ),
