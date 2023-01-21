@@ -74,81 +74,15 @@ class _AuthViewState extends State<AuthView> {
                     SizedBox(
                       height: 20,
                     ),
-                    TextFormField(
-                      onSaved: (value) {
-                        _email = value!;
-                      },
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                width: 1,
-                                color: context.resources.color.colorDark),
-                            borderRadius: BorderRadius.circular(20)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                width: 1,
-                                color: context.resources.color.colorDark),
-                            borderRadius: BorderRadius.circular(20)),
-                        filled: true,
-                        fillColor: Colors.white,
-                        labelStyle:
-                            TextStyle(color: Color(0xff92603D), fontSize: 20),
-                        labelText: 'Email address',
-                      ),
-                    ),
+                    AuthTextField(email: '', password: '', type: type),
                     SizedBox(
                       height: 10,
                     ),
-                    TextFormField(
-                      onSaved: (value) {
-                        _password = value!;
-                      },
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                width: 1,
-                                color: context.resources.color.colorDark),
-                            borderRadius: BorderRadius.circular(20)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                width: 1,
-                                color: context.resources.color.colorDark),
-                            borderRadius: BorderRadius.circular(20)),
-                        filled: true,
-                        fillColor: Colors.white,
-                        labelStyle: TextStyle(color: Color(0xff92603D)),
-                        labelText: 'Password',
-                      ),
-                      obscureText: true,
-                    ),
+                    AuthTextField(email: '', password: '', type: type),
                     if (type == 'register') ...[
                       SizedBox(
                         height: 10,
                       ),
-                      TextFormField(
-                        onSaved: (value) {
-                          _password = value!;
-                        },
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  width: 1,
-                                  color: context.resources.color.colorDark),
-                              borderRadius: BorderRadius.circular(20)),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  width: 1,
-                                  color: context.resources.color.colorDark),
-                              borderRadius: BorderRadius.circular(20)),
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelStyle: TextStyle(color: Color(0xff92603D)),
-                          labelText: 'Comfirm Password',
-                        ),
-                      )
                     ],
                     SizedBox(
                       height: 20,
@@ -303,6 +237,43 @@ class _AuthButton extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class AuthTextField extends StatefulWidget {
+  String _email = '', _password = '', type = 'login';
+  AuthTextField({
+    required email,
+    required password,
+    required type,
+  });
+  @override
+  State<AuthTextField> createState() => _AuthTextFieldState();
+}
+
+class _AuthTextFieldState extends State<AuthTextField> {
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      onSaved: (value) {
+        widget._password = value!;
+      },
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+        focusedBorder: OutlineInputBorder(
+            borderSide:
+                BorderSide(width: 1, color: context.resources.color.colorDark),
+            borderRadius: BorderRadius.circular(20)),
+        enabledBorder: OutlineInputBorder(
+            borderSide:
+                BorderSide(width: 1, color: context.resources.color.colorDark),
+            borderRadius: BorderRadius.circular(20)),
+        filled: true,
+        fillColor: Colors.white,
+        labelStyle: TextStyle(color: Color(0xff92603D)),
+        labelText: 'Comfirm Password',
       ),
     );
   }
