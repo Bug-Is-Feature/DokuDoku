@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:dokudoku/res/AppContextExtension.dart';
 
 class CustomDialog extends StatefulWidget {
-  String title, description, buttonText;
-  CustomDialog(
-      {required this.title,
-      required this.description,
-      required this.buttonText});
+  String title, description, buttonText, buttonText2;
+  int numberOfButtons;
+  VoidCallback onPressed;
+  VoidCallback? onPressed2;
+  CustomDialog({
+    required this.title,
+    required this.description,
+    required this.buttonText,
+    required this.buttonText2,
+    required this.onPressed,
+    this.onPressed2,
+    required this.numberOfButtons,
+  });
 
   @override
   State<CustomDialog> createState() => _CustomDialogState();
@@ -66,14 +73,31 @@ class _CustomDialogState extends State<CustomDialog> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 24.0),
+              const SizedBox(height: 30.0),
               Align(
-                alignment: Alignment.bottomRight,
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // To close the dialog
-                  },
-                  child: Text(widget.buttonText),
+                alignment: Alignment.bottomLeft,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      style: ButtonStyle(
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(Color(0xffC78F68)),
+                      ),
+                      onPressed: widget.onPressed,
+                      child: Text(widget.buttonText),
+                    ),
+                    if (widget.numberOfButtons >= 2) ...[
+                      TextButton(
+                        style: ButtonStyle(
+                          foregroundColor: MaterialStateProperty.all<Color>(
+                              Color(0xff92603D)),
+                        ),
+                        onPressed: widget.onPressed2,
+                        child: Text(widget.buttonText2),
+                      ),
+                    ]
+                  ],
                 ),
               ),
             ],
