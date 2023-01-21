@@ -29,7 +29,7 @@ class _HourglassSessionInputState extends State<HourglassSessionInput> {
                 BoxShadow(
                   color: context.resources.color.grey,
                   blurRadius: 5,
-                  offset: Offset(0, 4),
+                  offset: const Offset(0, 4),
                 ),
               ],
               borderRadius: BorderRadius.circular(50),
@@ -40,84 +40,20 @@ class _HourglassSessionInputState extends State<HourglassSessionInput> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Row(
-                    children: const [
-                      Text(
-                        'Session Duration',
+                    children: [
+                      const Text(
+                        'Reading Duration',
                         style: TextStyle(fontSize: 25),
                       ),
                       Spacer(),
                       SizedBox(
                         width: 66,
                         height: 35,
-                        child: TextField(
-                          decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  width: 1,
-                                  color: Colors.white,
-                                ),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  width: 1,
-                                  color: Colors.white,
-                                ),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                              filled: true,
-                              fillColor: Colors.white,
-                              border: OutlineInputBorder(),
-                              labelText: 'Minutes',
-                              labelStyle: TextStyle(
-                                  color: Color(0xff92603D), fontSize: 15),
-                              isDense: true),
-                        ),
-                      ),
-                      // Text('666666')
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: const [
-                      Text('Session', style: TextStyle(fontSize: 25)),
-                      Spacer(),
-                      SizedBox(
-                        width: 66,
-                        height: 35,
-                        child: TextField(
-                          decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  width: 1,
-                                  color: Colors.white,
-                                ),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  width: 1,
-                                  color: Colors.white,
-                                ),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                              filled: true,
-                              fillColor: Colors.white,
-                              border: OutlineInputBorder(),
-                              labelStyle: TextStyle(
-                                  color: Color(0xff92603D), fontSize: 15),
-                              labelText: 'Minutes',
-                              isDense: true),
+                        child: HourglassInput(
+                          onSubmitted: () {},
+                          textInputType: TextInputType.number,
+                          controller: TextEditingController(),
+                          label: 'Minutes',
                         ),
                       ),
                     ],
@@ -126,54 +62,54 @@ class _HourglassSessionInputState extends State<HourglassSessionInput> {
                     height: 20,
                   ),
                   Row(
-                    children: const [
-                      Text('Break time', style: TextStyle(fontSize: 25)),
-                      Spacer(),
+                    children: [
+                      const Text('Reading Round',
+                          style: TextStyle(fontSize: 25)),
+                      const Spacer(),
                       SizedBox(
                         width: 66,
                         height: 35,
-                        child: TextField(
-                          decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  width: 1,
-                                  color: Colors.white,
-                                ),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  width: 1,
-                                  color: Colors.white,
-                                ),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                              filled: true,
-                              fillColor: Colors.white,
-                              border: OutlineInputBorder(),
-                              labelText: 'Minutes',
-                              labelStyle: TextStyle(
-                                  color: Color(0xff92603D), fontSize: 15),
-                              isDense: true),
+                        child: HourglassInput(
+                          onSubmitted: () {},
+                          textInputType: TextInputType.number,
+                          controller: TextEditingController(),
+                          label: 'Rounds',
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 30),
-                  Text(
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      const Text('Break time', style: TextStyle(fontSize: 25)),
+                      const Spacer(),
+                      SizedBox(
+                        width: 66,
+                        height: 35,
+                        child: HourglassInput(
+                          onSubmitted: () {},
+                          textInputType: TextInputType.number,
+                          controller: TextEditingController(),
+                          label: 'Minutes',
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 30),
+                  const Text(
                     'Think again',
                     style: TextStyle(fontSize: 20),
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   Center(
                     child: Button(
-                        child: Text('Confirm'),
-                        onPressed: () {},
-                        backgroundColor: context.resources.color.colorDark),
+                      child: Text('Confirm'),
+                      onPressed: () {},
+                      backgroundColor: context.resources.color.colorDark,
+                      size: const Size(99, 44),
+                    ),
                   )
                 ],
               ),
@@ -181,6 +117,54 @@ class _HourglassSessionInputState extends State<HourglassSessionInput> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class HourglassInput extends StatefulWidget {
+  VoidCallback onSubmitted;
+  TextEditingController controller;
+  TextInputType textInputType;
+  String label;
+  HourglassInput(
+      {required this.onSubmitted,
+      required this.controller,
+      required this.textInputType,
+      required this.label});
+
+  @override
+  State<HourglassInput> createState() => HourglassInputState();
+}
+
+class HourglassInputState extends State<HourglassInput> {
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      decoration: InputDecoration(
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(
+              width: 1,
+              color: Colors.white,
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+          ),
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(
+              width: 1,
+              color: Colors.white,
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+          ),
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(),
+          labelStyle: TextStyle(color: Color(0xff92603D), fontSize: 15),
+          labelText: widget.label,
+          isDense: true),
     );
   }
 }
