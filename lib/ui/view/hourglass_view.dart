@@ -19,37 +19,40 @@ class _HourglassViewState extends State<HourglassView> {
     return Scaffold(
       backgroundColor: context.resources.color.colorLightest,
       body: Center(
-          child: Container(
-              child: Column(
-        children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.1,
+        child: Container(
+          child: Column(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.1,
+              ),
+              Container(
+                child: Text(
+                  "24:59",
+                  style: TextStyle(fontSize: 50),
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                height: MediaQuery.of(context).size.height * 0.6,
+                decoration: BoxDecoration(
+                  color: context.resources.color.colorWhite,
+                  borderRadius: BorderRadius.circular(60),
+                  boxShadow: [
+                    BoxShadow(
+                      color: context.resources.color.grey,
+                      blurRadius: 5,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
-          Container(
-            child: Text(
-              "24:59",
-              style: TextStyle(fontSize: 50),
-            ),
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width * 0.9,
-            height: MediaQuery.of(context).size.height * 0.6,
-            decoration: BoxDecoration(
-                color: context.resources.color.colorWhite,
-                borderRadius: BorderRadius.circular(60),
-                boxShadow: [
-                  BoxShadow(
-                    color: context.resources.color.grey,
-                    blurRadius: 5,
-                    offset: Offset(0, 4),
-                  ),
-                ]),
-          )
-        ],
-      ))),
+        ),
+      ),
     );
   }
 }
