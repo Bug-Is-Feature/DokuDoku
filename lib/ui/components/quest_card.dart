@@ -20,15 +20,16 @@ class _QuestCardState extends State<QuestCard> {
         width: MediaQuery.of(context).size.width * 0.9,
         height: MediaQuery.of(context).size.width * 0.2,
         decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: context.resources.color.grey,
-                blurRadius: 2,
-                offset: Offset(0, 3),
-              ),
-            ]),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: context.resources.color.grey,
+              blurRadius: 2,
+              offset: Offset(0, 3),
+            ),
+          ],
+        ),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
           child: Row(
@@ -50,15 +51,16 @@ class _QuestCardState extends State<QuestCard> {
                                 Text('Reward : -15 EXP'),
                                 SizedBox(width: 10),
                                 SizedBox(
-                                    width: 100,
-                                    height: 5,
-                                    child: LinearProgressIndicator(
-                                      value: 0.5,
-                                      backgroundColor:
-                                          context.resources.color.grey,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                          context.resources.color.colorDarkest),
-                                    )),
+                                  width: 100,
+                                  height: 5,
+                                  child: LinearProgressIndicator(
+                                    value: 0.5,
+                                    backgroundColor:
+                                        context.resources.color.grey,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        context.resources.color.colorDarkest),
+                                  ),
+                                ),
                               ],
                             ),
                           ],
@@ -72,6 +74,7 @@ class _QuestCardState extends State<QuestCard> {
                 child: Text('Lock'),
                 onPressed: () {},
                 backgroundColor: context.resources.color.colorDark,
+                size: Size(85, 30),
               ),
             ],
           ),

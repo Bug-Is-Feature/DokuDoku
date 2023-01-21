@@ -31,12 +31,14 @@ class _DisplayTimerState extends State<DisplayTimer> {
             SizedBox(
               width: 2,
             ),
-            Text(":",
-                style: TextStyle(
-                  fontSize: 60,
-                  fontWeight: FontWeight.bold,
-                  color: context.resources.color.colorDarkest,
-                )),
+            Text(
+              ":",
+              style: TextStyle(
+                fontSize: 60,
+                fontWeight: FontWeight.bold,
+                color: context.resources.color.colorDarkest,
+              ),
+            ),
             SizedBox(
               width: 2,
             ),
