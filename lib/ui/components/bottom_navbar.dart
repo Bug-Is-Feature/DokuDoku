@@ -1,9 +1,11 @@
 import 'package:dokudoku/res/AppContextExtension.dart';
-import 'package:dokudoku/ui/components/botton.dart';
+import 'package:dokudoku/ui/components/button.dart';
 import 'package:dokudoku/ui/components/navigation_drawer.dart';
-import 'package:dokudoku/ui/components/toggle_timer_button.dart';
+import 'package:dokudoku/ui/view/hourglass_view.dart';
+import 'package:dokudoku/ui/view/note_history_view.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -13,11 +15,8 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  int _selectedIndex = 3;
+  int _selectedIndex = 2;
   static final List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Timer',
-    ),
     Text(
       'Index 1: Assignments',
     ),
@@ -37,56 +36,48 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    String timer = 'Timer';
     String quest = 'Quest';
     String bookShelves = 'BookShelves';
     String profile = 'Profile';
     ThemeData theme = Theme.of(context);
 
-    return Scaffold(
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
-      bottomNavigationBar: Theme(
-        data: theme.copyWith(
-            canvasColor: context.resources.color.colorDarkest,
-            colorScheme: theme.colorScheme.copyWith(
-              primary: context.resources.color.colorLightest,
-            )),
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          currentIndex: _selectedIndex,
-          iconSize: 30,
-          onTap: _onItemTapped,
-          elevation: 10,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-
-          // selectedItemColor: context.resources.color.colorLightest,
-          // unselectedItemColor: context.resources.color.colorDark,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(FluentSystemIcons.ic_fluent_timer_regular),
-              activeIcon: Icon(FluentSystemIcons.ic_fluent_timer_filled),
-              label: timer,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(FluentSystemIcons.ic_fluent_assignments_regular),
-              activeIcon: Icon(FluentSystemIcons.ic_fluent_assignments_filled),
-              label: quest,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.book_outlined),
-              activeIcon: Icon(Icons.book),
-              label: bookShelves,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline_outlined),
-              activeIcon: Icon(Icons.person),
-              label: profile,
-            ),
-          ],
+    return Theme(
+      data: theme.copyWith(
+        canvasColor: context.resources.color.colorDarkest,
+        colorScheme: theme.colorScheme.copyWith(
+          primary: context.resources.color.colorLightest,
         ),
+      ),
+      child: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _selectedIndex,
+        iconSize: 30,
+        onTap: _onItemTapped,
+        elevation: 10,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+
+        // selectedItemColor: context.resources.color.colorLightest,
+        unselectedItemColor: context.resources.color.colorWhite,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.addressCard),
+            activeIcon: Icon(FontAwesomeIcons.solidRectangleList),
+            label: quest,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              IconData(0xe15b, fontFamily: 'MaterialIcons'),
+            ),
+            activeIcon: Icon(FontAwesomeIcons.solidAddressBook),
+            label: bookShelves,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.userCircle),
+            activeIcon: Icon(FontAwesomeIcons.solidUserCircle),
+            label: profile,
+          ),
+        ],
       ),
     );
   }
