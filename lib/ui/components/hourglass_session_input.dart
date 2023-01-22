@@ -12,13 +12,13 @@ class HourglassSessionInput extends StatefulWidget {
 class _HourglassSessionInputState extends State<HourglassSessionInput> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+    return SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.48,
+            height: MediaQuery.of(context).size.height * 0.45,
             width: MediaQuery.of(context).size.height * 0.45,
             decoration: BoxDecoration(
               color: context.resources.color.colorNormal3,
@@ -32,7 +32,7 @@ class _HourglassSessionInputState extends State<HourglassSessionInput> {
               borderRadius: BorderRadius.circular(50),
             ),
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(30, 50, 30, 40),
+              padding: const EdgeInsets.fromLTRB(25, 30, 25, 30),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -94,12 +94,12 @@ class _HourglassSessionInputState extends State<HourglassSessionInput> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 20),
                   const Text(
                     'Think again',
                     style: TextStyle(fontSize: 20),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 20),
                   Center(
                     child: Button(
                       child: Text('Confirm'),

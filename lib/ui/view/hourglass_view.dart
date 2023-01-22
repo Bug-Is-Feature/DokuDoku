@@ -28,7 +28,7 @@ class _HourglassViewState extends State<HourglassView> {
                 ),
               ),
               SizedBox(
-                height: 30,
+                height: MediaQuery.of(context).size.height * 0.1,
               ),
               Container(
                 width: MediaQuery.of(context).size.width * 0.9,
