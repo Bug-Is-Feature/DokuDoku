@@ -9,9 +9,7 @@ class AuthView extends StatefulWidget {
 }
 
 class _AuthViewState extends State<AuthView> {
-  String _email = '', _password = '', type = 'login';
-  //User? user;
-  // bool _success = false;
+  String type = 'login', _email = '', _password = '';
 
   final _formKey = GlobalKey<FormState>();
   @override
@@ -73,11 +71,17 @@ class _AuthViewState extends State<AuthView> {
                     SizedBox(
                       height: 20,
                     ),
-                    AuthTextField(email: '', password: '', type: type),
+                    AuthTextField(
+                      label: 'Email',
+                      value: _email,
+                    ),
                     SizedBox(
                       height: 10,
                     ),
-                    AuthTextField(email: '', password: '', type: type),
+                    AuthTextField(
+                      label: 'Password',
+                      value: _password,
+                    ),
                     if (type == 'register') ...[
                       SizedBox(
                         height: 10,
@@ -89,24 +93,25 @@ class _AuthViewState extends State<AuthView> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  fixedSize: const Size(double.infinity, 40),
-                                  textStyle: const TextStyle(
-                                      fontSize: 20, fontFamily: 'primary'),
-                                  backgroundColor:
-                                      context.resources.color.colorDark,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(100),
-                                  ),
-                                  minimumSize: const Size(double.infinity, 36)),
-                              child: Text(
-                                type == 'login' ? 'Login' : 'Register',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              fixedSize: const Size(double.infinity, 40),
+                              textStyle: const TextStyle(
+                                  fontSize: 20, fontFamily: 'primary'),
+                              backgroundColor:
+                                  context.resources.color.colorDark,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(100),
                               ),
-                              onPressed: () {})),
+                              minimumSize: const Size(double.infinity, 36)),
+                          child: Text(
+                            type == 'login' ? 'Login' : 'Register',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          onPressed: () {},
+                        ),
+                      ),
                     ),
                     SizedBox(height: 20),
                     if (type == 'register') ...[
@@ -115,9 +120,11 @@ class _AuthViewState extends State<AuthView> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            const Text('Have an account?',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500, fontSize: 18)),
+                            const Text(
+                              'Have an account?',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500, fontSize: 18),
+                            ),
                             TextButton(
                               onPressed: () => setState(() => type = 'login'),
                               child: const Text(
@@ -135,9 +142,10 @@ class _AuthViewState extends State<AuthView> {
                           Row(
                             children: const [
                               Expanded(
-                                  child: Divider(
-                                color: Color(0xff92603D),
-                              )),
+                                child: Divider(
+                                  color: Color(0xff92603D),
+                                ),
+                              ),
                               SizedBox(width: 10),
                               Text(
                                 'or connect with',
@@ -146,9 +154,10 @@ class _AuthViewState extends State<AuthView> {
                               ),
                               SizedBox(width: 10),
                               Expanded(
-                                  child: Divider(
-                                color: Color(0xff92603D),
-                              )),
+                                child: Divider(
+                                  color: Color(0xff92603D),
+                                ),
+                              ),
                             ],
                           ),
                           const SizedBox(height: 15.0),
@@ -242,12 +251,9 @@ class _AuthButton extends StatelessWidget {
 }
 
 class AuthTextField extends StatefulWidget {
-  String _email = '', _password = '', type = 'login';
-  AuthTextField({
-    required email,
-    required password,
-    required type,
-  });
+  String label, value;
+
+  AuthTextField({required this.label, required this.value});
   @override
   State<AuthTextField> createState() => _AuthTextFieldState();
 }
@@ -256,23 +262,29 @@ class _AuthTextFieldState extends State<AuthTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      onSaved: (value) {
-        widget._password = value!;
-      },
+      // continue in part logic
+      // onSaved: (value) {
+      //   widget.value = value!;
+      //   debugPrint('Value for field saved as "${widget.value}"');
+      // },
       decoration: InputDecoration(
         contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 5),
         focusedBorder: OutlineInputBorder(
-            borderSide:
-                BorderSide(width: 1, color: context.resources.color.colorDark),
-            borderRadius: BorderRadius.circular(20)),
+          borderSide:
+              BorderSide(width: 1, color: context.resources.color.colorDark),
+          borderRadius: BorderRadius.circular(20),
+        ),
         enabledBorder: OutlineInputBorder(
-            borderSide:
-                BorderSide(width: 1, color: context.resources.color.colorDark),
-            borderRadius: BorderRadius.circular(20)),
+          borderSide:
+              BorderSide(width: 1, color: context.resources.color.colorDark),
+          borderRadius: BorderRadius.circular(20),
+        ),
         filled: true,
         fillColor: Colors.white,
-        labelStyle: TextStyle(color: Color(0xff92603D)),
-        labelText: 'Comfirm Password',
+        labelStyle: TextStyle(
+          color: Color(0xff92603D),
+        ),
+        labelText: widget.label,
       ),
     );
   }
