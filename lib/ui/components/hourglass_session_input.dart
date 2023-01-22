@@ -12,8 +12,8 @@ class HourglassSessionInput extends StatefulWidget {
 class _HourglassSessionInputState extends State<HourglassSessionInput> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+    return Padding(
+      padding: const EdgeInsets.only(top: 30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -75,9 +75,7 @@ class _HourglassSessionInputState extends State<HourglassSessionInput> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   Row(
                     children: [
                       const Text('Break time', style: TextStyle(fontSize: 25)),
