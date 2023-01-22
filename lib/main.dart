@@ -4,6 +4,7 @@ import 'package:dokudoku/ui/view/home_view.dart';
 import 'package:dokudoku/services/timer_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 
 void main(List<String> args) {
   runApp(ChangeNotifierProvider<TimerService>(
@@ -16,6 +17,10 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return ChangeNotifierProvider(
       create: (context) => NavigationProvider(),
       child: MaterialApp(
