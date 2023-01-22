@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
 class CustomDialog extends StatefulWidget {
-  String title, description, buttonText, buttonText2;
-  int numberOfButtons;
+  String title, description, buttonText;
+  String? buttonText2;
   VoidCallback onPressed;
   VoidCallback? onPressed2;
+
   CustomDialog({
     required this.title,
     required this.description,
     required this.buttonText,
-    required this.buttonText2,
+    this.buttonText2,
     required this.onPressed,
     this.onPressed2,
-    required this.numberOfButtons,
   });
 
   @override
@@ -87,14 +87,14 @@ class _CustomDialogState extends State<CustomDialog> {
                       onPressed: widget.onPressed,
                       child: Text(widget.buttonText),
                     ),
-                    if (widget.numberOfButtons >= 2) ...[
+                    if (widget.buttonText2 != null) ...[
                       TextButton(
                         style: ButtonStyle(
                           foregroundColor: MaterialStateProperty.all<Color>(
                               Color(0xff92603D)),
                         ),
                         onPressed: widget.onPressed2,
-                        child: Text(widget.buttonText2),
+                        child: Text(widget.buttonText2!),
                       ),
                     ]
                   ],
