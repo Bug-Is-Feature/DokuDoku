@@ -47,8 +47,7 @@ class StopwatchView extends StatelessWidget {
                                   : '${provider.stopTime.round().toString()} min (saved)')
                               : 'result not saved (less than 5 minutes)',
                           buttonText: "View Stat",
-                          buttonText2: "Close",
-                          numberOfButtons: 2,
+                          buttonText2: 'Close',
                           onPressed2: () {
                             Navigator.pop(context);
                           },
