@@ -42,8 +42,12 @@ class _QuestCardState extends State<QuestCard> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Reading 15 Minutes',
-                                style: TextStyle(fontSize: 20)),
+                            const Text(
+                              'Reading 15 Minutes',
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
                             Row(
                               children: [
                                 Text('Reward : -15 EXP'),
