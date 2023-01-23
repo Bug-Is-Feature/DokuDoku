@@ -12,52 +12,86 @@ class StopwatchView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<TimerService>(context);
+    String sec = Provider.of<TimerService>(context, listen: false)
+        .changeSecondsUnit(provider.stopTime);
+    String min = Provider.of<TimerService>(context, listen: false)
+        .changeMinutesUnit(provider.stopTime);
+    String hr = Provider.of<TimerService>(context, listen: false)
+        .changeHoursUnit(provider.stopTime);
     return Scaffold(
       backgroundColor: context.resources.color.colorLightest,
       body: SingleChildScrollView(
         child: Center(
-          child: Container(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 60,
-                ),
-                StopwatchTimer(),
-                SizedBox(
-                  height: 70,
-                ),
-                Button(
-                  child: provider.timerPlaying ? Text('Stop') : Text('Start'),
-                  backgroundColor: provider.timerPlaying
-                      ? context.resources.color.colorDarkest
-                      : context.resources.color.colorDark,
-                  onPressed: () {
-                    if (provider.timerPlaying) {
-                      Provider.of<TimerService>(context, listen: false).stop();
-                      showDialog(
-                        context: context,
-                        builder: (context) => CustomDialog(
-                          title: "Reading result",
-                          description: provider.stopTime > 5
-                              ? (provider.stopTime <= 10
-                                  ? '${provider.stopTime.round().toString()} sec (saved)'
-                                  : '${provider.stopTime.round().toString()} min (saved)')
-                              : 'result not saved (less than 5 minutes)',
-                          buttonText: "View Stat",
-                          buttonText2: 'Close',
-                          onPressed2: null,
-                          onPressed: () {},
-                        ),
-                      );
-                      Provider.of<TimerService>(context, listen: false).reset();
-                    } else {
-                      Provider.of<TimerService>(context, listen: false).start();
-                    }
-                  },
-                  size: Size(99, 44),
-                )
-              ],
-            ),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 60,
+              ),
+              const StopwatchTimer(),
+              const SizedBox(
+                height: 70,
+              ),
+              Button(
+                backgroundColor: provider.timerPlaying
+                    ? context.resources.color.colorDarkest
+                    : context.resources.color.colorDark,
+                onPressed: () {
+                  if (provider.timerPlaying) {
+                    Provider.of<TimerService>(context, listen: false).stop();
+                    showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (context) => CustomDialog(
+                        title: provider.stopTime >= 5
+                            ? "Reading result"
+                            : '(₌ ᵕ̣̣̣̣̣ ᆽ ᵕ̣̣̣̣̣₌)',
+                        description: provider.stopTime >= 5
+                            ? "$hr h: $min m: $sec s"
+                            : 'Next time you can do better',
+                        buttonText: "View Stat",
+                        buttonText2: 'Close',
+                        onPressed2: () {
+                          Navigator.pop(context);
+                        },
+                        onPressed: () {},
+                      ),
+                    );
+                    Provider.of<TimerService>(context, listen: false).reset();
+                  } else {
+                    Provider.of<TimerService>(context, listen: false)
+                        .start(context);
+                  }
+                },
+                size: const Size(99, 44),
+                child: provider.timerPlaying
+                    ? const Text('stop')
+                    : const Text('start'),
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.09),
+              Column(
+                children: [
+                  if (provider.timerPlaying) ...[
+                    const Text(''),
+                  ] else ...[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'The maximum for Stopwatch is 2 hours,',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          Text(
+                            'and you need at least 5 minutes of timer to save data.',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ]
+                ],
+              ),
+            ],
           ),
         ),
       ),

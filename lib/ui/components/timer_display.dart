@@ -21,14 +21,21 @@ class _DisplayTimerState extends State<DisplayTimer> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
+            SizedBox(
               height: 170,
               child: Center(
-                child: Provider.of<TimerService>(context, listen: false)
-                    .changeHoursUnit(context),
+                child: Text(
+                  Provider.of<TimerService>(context, listen: false)
+                      .changeHoursUnit(provider.startTime),
+                  style: TextStyle(
+                    fontSize: 60,
+                    color: context.resources.color.colorDarkest,
+                    fontFamily: 'primary',
+                  ),
+                ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 2,
             ),
             Text(
@@ -39,17 +46,24 @@ class _DisplayTimerState extends State<DisplayTimer> {
                 color: context.resources.color.colorDarkest,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 2,
             ),
-            Container(
+            SizedBox(
               height: 170,
               child: Center(
-                child: Provider.of<TimerService>(context, listen: false)
-                    .changeMinutesUnit(context),
+                child: Text(
+                  Provider.of<TimerService>(context, listen: false)
+                      .changeMinutesUnit(provider.startTime),
+                  style: TextStyle(
+                    fontSize: 60,
+                    color: context.resources.color.colorDarkest,
+                    fontFamily: 'primary',
+                  ),
+                ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 2,
             ),
             Text(
@@ -60,14 +74,21 @@ class _DisplayTimerState extends State<DisplayTimer> {
                 color: context.resources.color.colorDarkest,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 2,
             ),
-            Container(
+            SizedBox(
               height: 170,
               child: Center(
-                child: Provider.of<TimerService>(context, listen: false)
-                    .changeSecondsUnit(context),
+                child: Text(
+                  Provider.of<TimerService>(context, listen: false)
+                      .changeSecondsUnit(provider.startTime),
+                  style: TextStyle(
+                    fontSize: 60,
+                    color: context.resources.color.colorDarkest,
+                    fontFamily: 'primary',
+                  ),
+                ),
               ),
             ),
           ],

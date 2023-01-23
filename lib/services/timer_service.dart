@@ -1,6 +1,7 @@
 import 'dart:async';
+
+import 'package:dokudoku/ui/components/custom_dialog_box.dart';
 import 'package:flutter/material.dart';
-import 'package:dokudoku/res/AppContextExtension.dart';
 
 class TimerService extends ChangeNotifier {
   int startTime = 0;
@@ -11,19 +12,43 @@ class TimerService extends ChangeNotifier {
   String twoDigits(int n) => n.round().toString().padLeft(2, '0');
   Timer? timer;
 
-  void start() {
+  void start(BuildContext context) {
     timerPlaying = true;
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      startTime++;
-      upperBound();
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (startTime == 7) {
+        stop();
+        fullTimeDialog(context);
+        reset();
+      } else {
+        startTime++;
+      }
       notifyListeners();
     });
+  }
+
+  void fullTimeDialog(BuildContext context) {
+    String hr = changeHoursUnit(stopTime);
+    String min = changeMinutesUnit(stopTime);
+    String sec = changeSecondsUnit(stopTime);
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => CustomDialog(
+        title: 'Complete',
+        description: "$hr h: $min m: $sec s",
+        buttonText: "View Stat",
+        buttonText2: 'Close',
+        onPressed2: () {
+          Navigator.pop(context);
+        },
+        onPressed: () {},
+      ),
+    );
   }
 
   void stop() {
     timer!.cancel();
     timerPlaying = false;
-    print(startTime);
     stopTime = startTime;
     notifyListeners();
   }
@@ -32,64 +57,25 @@ class TimerService extends ChangeNotifier {
     startTime = 0;
   }
 
-  void upperBound() {
-    if (startTime == 7200) {
-      stop();
-      reset();
-    }
-  }
-
-  Widget? changeSecondsUnit(BuildContext context) {
+  String changeSecondsUnit(int time) {
     seconds = startTime % 60;
-
     if (seconds == 0) {
-      return Text(
-        "${seconds.round()}0",
-        style: TextStyle(
-            fontSize: 60,
-            color: context.resources.color.colorDarkest,
-            fontFamily: 'primary'),
-      );
+      return "${seconds.round()}0";
     } else {
-      return Text(
-        twoDigits(seconds),
-        style: TextStyle(
-            fontSize: 60,
-            color: context.resources.color.colorDarkest,
-            fontFamily: 'primary'),
-      );
+      return twoDigits(seconds);
     }
   }
 
-  Widget? changeMinutesUnit(BuildContext context) {
-    minutes = startTime % 3600;
-
+  String changeMinutesUnit(int time) {
+    minutes = time % 3600;
     if (minutes == 0) {
-      return Text(
-        "${minutes.round()}0",
-        style: TextStyle(
-            fontSize: 60,
-            color: context.resources.color.colorDarkest,
-            fontFamily: 'primary'),
-      );
+      return "${minutes.round()}0";
     } else {
-      return Text(
-        twoDigits((minutes ~/ 60)),
-        style: TextStyle(
-            fontSize: 60,
-            color: context.resources.color.colorDarkest,
-            fontFamily: 'primary'),
-      );
+      return twoDigits((minutes ~/ 60));
     }
   }
 
-  Widget? changeHoursUnit(BuildContext context) {
-    return Text(
-      twoDigits((startTime ~/ 3600)),
-      style: TextStyle(
-          fontSize: 60,
-          color: context.resources.color.colorDarkest,
-          fontFamily: 'primary'),
-    );
+  String changeHoursUnit(int time) {
+    return twoDigits((time ~/ 3600));
   }
 }
