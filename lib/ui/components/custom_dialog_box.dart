@@ -61,15 +61,15 @@ class _CustomDialogState extends State<CustomDialog> {
               Text(
                 widget.title,
                 style: const TextStyle(
-                  fontSize: 24.0,
+                  fontSize: 26.0,
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(height: 16.0),
+              const SizedBox(height: 20),
               Text(
                 widget.description,
                 style: const TextStyle(
-                  fontSize: 16.0,
+                  fontSize: 20.0,
                 ),
                 textAlign: TextAlign.center,
               ),

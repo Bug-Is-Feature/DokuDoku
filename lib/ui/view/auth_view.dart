@@ -23,7 +23,7 @@ class _AuthViewState extends State<AuthView> {
     return Theme(
       data: theme.copyWith(
         textTheme: theme.textTheme.copyWith(
-          headline1: TextStyle(
+          headline1: const TextStyle(
             fontWeight: FontWeight.bold,
             fontFamily: 'primary',
           ),
@@ -39,7 +39,7 @@ class _AuthViewState extends State<AuthView> {
               child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Container(
@@ -56,7 +56,7 @@ class _AuthViewState extends State<AuthView> {
                         height: 70,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Padding(
@@ -68,14 +68,14 @@ class _AuthViewState extends State<AuthView> {
                         style: Theme.of(context).textTheme.headline2,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     AuthTextField(
                       label: 'Email',
                       value: _email,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     AuthTextField(
@@ -83,11 +83,11 @@ class _AuthViewState extends State<AuthView> {
                       value: _password,
                     ),
                     if (type == 'register') ...[
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                     ],
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Padding(
@@ -113,7 +113,7 @@ class _AuthViewState extends State<AuthView> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     if (type == 'register') ...[
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -236,8 +236,8 @@ class _AuthButton extends StatelessWidget {
                   width: 20,
                   height: 20,
                 ),
-                SizedBox(width: 65),
-                Text(
+                const SizedBox(width: 65),
+                const Text(
                   'Log in with Google',
                   style: TextStyle(fontSize: 20),
                 ),
@@ -268,7 +268,7 @@ class _AuthTextFieldState extends State<AuthTextField> {
       //   debugPrint('Value for field saved as "${widget.value}"');
       // },
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+        contentPadding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
         focusedBorder: OutlineInputBorder(
           borderSide:
               BorderSide(width: 1, color: context.resources.color.colorDark),
@@ -281,7 +281,7 @@ class _AuthTextFieldState extends State<AuthTextField> {
         ),
         filled: true,
         fillColor: Colors.white,
-        labelStyle: TextStyle(
+        labelStyle: const TextStyle(
           color: Color(0xff92603D),
         ),
         labelText: widget.label,

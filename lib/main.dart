@@ -26,12 +26,12 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => NavigationProvider(),
       child: MaterialApp(
-          title: 'Dokudoku',
-          debugShowCheckedModeBanner: false,
-          theme: themeData(context),
-          home: AuthView()
-          //HomeView(),
-          ),
+        title: 'Dokudoku',
+        debugShowCheckedModeBanner: false,
+        theme: themeData(context),
+        home: //AuthView()
+            const HomeView(),
+      ),
     );
   }
 }

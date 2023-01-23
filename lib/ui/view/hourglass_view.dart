@@ -22,7 +22,7 @@ class _HourglassViewState extends State<HourglassView> {
                 height: MediaQuery.of(context).size.height * 0.1,
               ),
               Container(
-                child: Text(
+                child: const Text(
                   "24:59",
                   style: TextStyle(fontSize: 50),
                 ),
@@ -40,7 +40,7 @@ class _HourglassViewState extends State<HourglassView> {
                     BoxShadow(
                       color: context.resources.color.grey,
                       blurRadius: 5,
-                      offset: Offset(0, 4),
+                      offset: const Offset(0, 4),
                     ),
                   ],
                 ),
