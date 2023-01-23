@@ -31,9 +31,6 @@ class StopwatchView extends StatelessWidget {
                   backgroundColor: provider.timerPlaying
                       ? context.resources.color.colorDarkest
                       : context.resources.color.colorDark,
-
-                  // provider.timerPlaying ? Text('Stop') : Text('Start'),
-                  // backgroundColor: context.resources.color.warning,
                   onPressed: () {
                     if (provider.timerPlaying) {
                       Provider.of<TimerService>(context, listen: false).stop();
@@ -48,9 +45,7 @@ class StopwatchView extends StatelessWidget {
                               : 'result not saved (less than 5 minutes)',
                           buttonText: "View Stat",
                           buttonText2: 'Close',
-                          onPressed2: () {
-                            Navigator.pop(context);
-                          },
+                          onPressed2: null,
                           onPressed: () {},
                         ),
                       );
