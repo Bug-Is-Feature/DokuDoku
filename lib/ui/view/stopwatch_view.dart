@@ -22,9 +22,7 @@ class StopwatchView extends StatelessWidget {
                 height: 60,
               ),
               const StopwatchTimer(),
-              const SizedBox(
-                height: 70,
-              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.09),
               Button(
                 backgroundColor: provider.timerPlaying
                     ? context.resources.color.colorDarkest
@@ -63,27 +61,24 @@ class StopwatchView extends StatelessWidget {
                     : const Text('Start'),
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.09),
-              Column(
-                children: [
-                  if (provider.timerPlaying == false) ...[
+              if (provider.timerPlaying == false) ...[
+                Column(
+                  children: [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
                       child: Column(
                         children: const [
                           Text(
-                            'The maximum for Stopwatch is 2 hours,',
-                            style: TextStyle(fontSize: 14),
-                          ),
-                          Text(
-                            'You need to read for at least 5 minutes to record your history.',
+                            'The maximum for Stopwatch is 2 hours.\nYou need to read for at least 5 minutes to record your history.',
+                            textAlign: TextAlign.center,
                             style: TextStyle(fontSize: 14),
                           ),
                         ],
                       ),
                     ),
-                  ]
-                ],
-              ),
+                  ],
+                ),
+              ],
             ],
           ),
         ),
