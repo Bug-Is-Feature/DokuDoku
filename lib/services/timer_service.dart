@@ -31,15 +31,12 @@ class TimerService extends ChangeNotifier {
   }
 
   void maxTimeDialog(BuildContext context) {
-    String hr = formattedHours(totalDuration);
-    String min = formattedMinutes(totalDuration);
-    String sec = formattedSeconds(totalDuration);
     showDialog(
       barrierDismissible: false,
       context: context,
       builder: (context) => CustomDialog(
         title: 'Complete',
-        description: "$hr h: $min m: $sec s",
+        description: formattedTotalDuration(),
         buttonText: "View Stat",
         buttonText2: 'Close',
         onPressed2: () {
@@ -74,5 +71,9 @@ class TimerService extends ChangeNotifier {
   String formattedHours(int time) {
     hours = time ~/ 3600;
     return twoDigits(hours);
+  }
+
+  String formattedTotalDuration() {
+    return "${formattedHours(totalDuration)}h: ${formattedMinutes(totalDuration)}m: ${formattedSeconds(totalDuration)}s";
   }
 }
