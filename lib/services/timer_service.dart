@@ -7,6 +7,7 @@ class TimerService extends ChangeNotifier {
   int currentDuration = 0;
   int seconds = 0;
   int minutes = 0;
+  int hours = 0;
   int totalDuration = 0;
   bool timerPlaying = false;
   String twoDigits(int n) => n.round().toString().padLeft(2, '0');
@@ -62,23 +63,16 @@ class TimerService extends ChangeNotifier {
 
   String formattedSeconds(int time) {
     seconds = time % 60;
-    if (seconds == 0) {
-      return "${seconds.round()}0";
-    } else {
-      return twoDigits(seconds);
-    }
+    return twoDigits(seconds);
   }
 
   String formattedMinutes(int time) {
-    minutes = time % 3600;
-    if (minutes == 0) {
-      return "${minutes.round()}0";
-    } else {
-      return twoDigits((minutes ~/ 60));
-    }
+    minutes = (time % 3600) ~/ 60;
+    return twoDigits(minutes);
   }
 
   String formattedHours(int time) {
-    return twoDigits((time ~/ 3600));
+    hours = time ~/ 3600;
+    return twoDigits(hours);
   }
 }
