@@ -21,18 +21,19 @@ class _SearchBoxState extends State<SearchBox> {
                 child: TextField(
                   cursorColor: Colors.grey,
                   decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none),
-                      hintText: 'Search',
-                      hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
-                      prefixIcon: Container(
-                        padding: EdgeInsets.all(15),
-                        child: Icon(Icons.search),
-                        width: 18,
-                      )),
+                    fillColor: Colors.white,
+                    filled: true,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none),
+                    hintText: 'Search',
+                    hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
+                    prefixIcon: Container(
+                      padding: EdgeInsets.all(15),
+                      child: Icon(Icons.search),
+                      width: MediaQuery.of(context).size.width,
+                    ),
+                  ),
                 ),
               ),
             ],
