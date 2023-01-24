@@ -6,6 +6,6 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: TimerModeTabBar());
+    return const Scaffold(body: TimerModeTabBar());
   }
 }

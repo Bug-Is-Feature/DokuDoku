@@ -20,7 +20,7 @@ class _QuestBoardViewState extends State<QuestBoardView> {
           child: Container(
             height: MediaQuery.of(context).size.height * 0.7,
             child: Column(
-              children: [
+              children: const [
                 QuestCard(),
                 QuestCard(),
                 QuestCard(),

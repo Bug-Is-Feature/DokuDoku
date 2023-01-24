@@ -33,7 +33,7 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
       body: Padding(
         padding: const EdgeInsets.fromLTRB(30, 50, 30, 10),
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.transparent,
           ),
           child: Column(
@@ -47,7 +47,7 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
                     BoxShadow(
                       color: context.resources.color.grey,
                       blurRadius: 5,
-                      offset: Offset(0, 5),
+                      offset: const Offset(0, 5),
                     ),
                   ],
                 ),
@@ -82,10 +82,10 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
                   },
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Expanded(
                 child: TabBarView(
-                  children: [
+                  children: const [
                     Center(child: StopwatchView()),
                     Center(child: HourglassSessionInput())
                   ],
