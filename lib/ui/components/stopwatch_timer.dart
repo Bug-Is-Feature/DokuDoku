@@ -9,8 +9,7 @@ class StopwatchTimer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int min = 5;
-    int maxMin = 60;
+    int maxMin = 120;
     final provider = Provider.of<TimerService>(context);
     return SizedBox(
       width: 250,
@@ -20,7 +19,7 @@ class StopwatchTimer extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             CircularProgressIndicator(
-              value: provider.currentDuration / (maxMin * 60 * 2),
+              value: provider.currentDuration / (maxMin * 60),
               strokeWidth: 9,
               backgroundColor: Colors.white,
               valueColor: AlwaysStoppedAnimation(context.resources.color.blue),
