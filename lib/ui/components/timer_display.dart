@@ -26,7 +26,7 @@ class _DisplayTimerState extends State<DisplayTimer> {
               child: Center(
                 child: Text(
                   Provider.of<TimerService>(context, listen: false)
-                      .changeHoursUnit(provider.startTime),
+                      .formattedHours(provider.currentDuration),
                   style: TextStyle(
                     fontSize: 60,
                     color: context.resources.color.colorDarkest,
@@ -54,7 +54,7 @@ class _DisplayTimerState extends State<DisplayTimer> {
               child: Center(
                 child: Text(
                   Provider.of<TimerService>(context, listen: false)
-                      .changeMinutesUnit(provider.startTime),
+                      .formattedMinutes(provider.currentDuration),
                   style: TextStyle(
                     fontSize: 60,
                     color: context.resources.color.colorDarkest,
@@ -82,7 +82,7 @@ class _DisplayTimerState extends State<DisplayTimer> {
               child: Center(
                 child: Text(
                   Provider.of<TimerService>(context, listen: false)
-                      .changeSecondsUnit(provider.startTime),
+                      .formattedSeconds(provider.currentDuration),
                   style: TextStyle(
                     fontSize: 60,
                     color: context.resources.color.colorDarkest,
