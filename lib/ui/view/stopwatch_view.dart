@@ -40,8 +40,9 @@ class StopwatchView extends StatelessWidget {
                             ? "Reading result"
                             : '/ᐠ｡_｡ᐟ\\',
                         description: provider.totalDuration >= 300
-                            ? "${Provider.of<TimerService>(context, listen: false).formattedHours(provider.totalDuration)} h: ${Provider.of<TimerService>(context, listen: false).formattedMinutes(provider.totalDuration)} m: ${Provider.of<TimerService>(context, listen: false).formattedSeconds(provider.totalDuration)} s"
-                            : 'Next time you can do better',
+                            ? Provider.of<TimerService>(context, listen: false)
+                                .formattedTotalDuration()
+                            : 'You can do it better next time',
                         buttonText: "View Stat",
                         buttonText2: 'Close',
                         onPressed2: () {
@@ -58,8 +59,8 @@ class StopwatchView extends StatelessWidget {
                 },
                 size: const Size(99, 44),
                 child: provider.timerPlaying
-                    ? const Text('stop')
-                    : const Text('start'),
+                    ? const Text('Stop')
+                    : const Text('Start'),
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.09),
               Column(
@@ -74,7 +75,7 @@ class StopwatchView extends StatelessWidget {
                             style: TextStyle(fontSize: 14),
                           ),
                           Text(
-                            'and you need at least 5 minutes of timer to save data.',
+                            'You need to read for at least 5 minutes to record your history.',
                             style: TextStyle(fontSize: 14),
                           ),
                         ],
