@@ -4,32 +4,35 @@ import 'package:dokudoku/ui/components/custom_dialog_box.dart';
 import 'package:flutter/material.dart';
 
 class TimerService extends ChangeNotifier {
-  int startTime = 0;
+  int currentDuration = 0;
   int seconds = 0;
   int minutes = 0;
-  int stopTime = 0;
+  int totalDuration = 0;
   bool timerPlaying = false;
   String twoDigits(int n) => n.round().toString().padLeft(2, '0');
   Timer? timer;
 
   void start(BuildContext context) {
     timerPlaying = true;
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (startTime == 7) {
-        stop();
-        fullTimeDialog(context);
-        reset();
-      } else {
-        startTime++;
-      }
-      notifyListeners();
-    });
+    timer = Timer.periodic(
+      const Duration(seconds: 1),
+      (timer) {
+        if (currentDuration == 7200) {
+          stop();
+          maxTimeDialog(context);
+          reset();
+        } else {
+          currentDuration++;
+        }
+        notifyListeners();
+      },
+    );
   }
 
-  void fullTimeDialog(BuildContext context) {
-    String hr = changeHoursUnit(stopTime);
-    String min = changeMinutesUnit(stopTime);
-    String sec = changeSecondsUnit(stopTime);
+  void maxTimeDialog(BuildContext context) {
+    String hr = formattedHours(totalDuration);
+    String min = formattedMinutes(totalDuration);
+    String sec = formattedSeconds(totalDuration);
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -49,16 +52,16 @@ class TimerService extends ChangeNotifier {
   void stop() {
     timer!.cancel();
     timerPlaying = false;
-    stopTime = startTime;
+    totalDuration = currentDuration;
     notifyListeners();
   }
 
   void reset() {
-    startTime = 0;
+    currentDuration = 0;
   }
 
-  String changeSecondsUnit(int time) {
-    seconds = startTime % 60;
+  String formattedSeconds(int time) {
+    seconds = time % 60;
     if (seconds == 0) {
       return "${seconds.round()}0";
     } else {
@@ -66,7 +69,7 @@ class TimerService extends ChangeNotifier {
     }
   }
 
-  String changeMinutesUnit(int time) {
+  String formattedMinutes(int time) {
     minutes = time % 3600;
     if (minutes == 0) {
       return "${minutes.round()}0";
@@ -75,7 +78,7 @@ class TimerService extends ChangeNotifier {
     }
   }
 
-  String changeHoursUnit(int time) {
+  String formattedHours(int time) {
     return twoDigits((time ~/ 3600));
   }
 }

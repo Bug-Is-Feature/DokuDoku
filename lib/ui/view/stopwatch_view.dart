@@ -12,12 +12,6 @@ class StopwatchView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<TimerService>(context);
-    String sec = Provider.of<TimerService>(context, listen: false)
-        .changeSecondsUnit(provider.stopTime);
-    String min = Provider.of<TimerService>(context, listen: false)
-        .changeMinutesUnit(provider.stopTime);
-    String hr = Provider.of<TimerService>(context, listen: false)
-        .changeHoursUnit(provider.stopTime);
     return Scaffold(
       backgroundColor: context.resources.color.colorLightest,
       body: SingleChildScrollView(
@@ -42,11 +36,11 @@ class StopwatchView extends StatelessWidget {
                       barrierDismissible: false,
                       context: context,
                       builder: (context) => CustomDialog(
-                        title: provider.stopTime >= 5
+                        title: provider.totalDuration >= 300
                             ? "Reading result"
-                            : '(₌ ᵕ̣̣̣̣̣ ᆽ ᵕ̣̣̣̣̣₌)',
-                        description: provider.stopTime >= 5
-                            ? "$hr h: $min m: $sec s"
+                            : '/ᐠ｡_｡ᐟ\\',
+                        description: provider.totalDuration >= 300
+                            ? "${Provider.of<TimerService>(context, listen: false).formattedHours(provider.totalDuration)} h: ${Provider.of<TimerService>(context, listen: false).formattedMinutes(provider.totalDuration)} m: ${Provider.of<TimerService>(context, listen: false).formattedSeconds(provider.totalDuration)} s"
                             : 'Next time you can do better',
                         buttonText: "View Stat",
                         buttonText2: 'Close',
@@ -70,13 +64,11 @@ class StopwatchView extends StatelessWidget {
               SizedBox(height: MediaQuery.of(context).size.height * 0.09),
               Column(
                 children: [
-                  if (provider.timerPlaying) ...[
-                    const Text(''),
-                  ] else ...[
+                  if (provider.timerPlaying == false) ...[
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
-                        children: [
+                        children: const [
                           Text(
                             'The maximum for Stopwatch is 2 hours,',
                             style: TextStyle(fontSize: 14),
