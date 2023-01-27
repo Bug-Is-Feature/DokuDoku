@@ -17,10 +17,10 @@ class _DialogBox extends State<DialogBox> {
   final TextEditingController eCtrl = TextEditingController();
 
   List<String> showText = [];
-  List<String> real = [];
   var index = 0;
   List<TextModel>? model;
   var isLoaded = false;
+  List<String> showreal = [];
 
   @override
   void initState() {
@@ -42,9 +42,12 @@ class _DialogBox extends State<DialogBox> {
   Widget build(BuildContext context) {
     void myFunction() {
       showText.add(model![index].q);
-      real = showText.reversed.toList();
-      index++;
-      setState(() {});
+      for (index; index <= 2;) {
+        showreal.add(showText[index]);
+        showreal = showreal.reversed.toList();
+        index++;
+        setState(() {});
+      }
     }
 
     Future.delayed(Duration(seconds: Random().nextInt(10)), () {
@@ -72,7 +75,7 @@ class _DialogBox extends State<DialogBox> {
             Expanded(
                 child: ListView.builder(
                     reverse: true,
-                    itemCount: real.length,
+                    itemCount: showreal.length,
                     shrinkWrap: true,
                     padding: EdgeInsets.only(top: 10, bottom: 10),
                     physics: NeverScrollableScrollPhysics(),
@@ -88,7 +91,7 @@ class _DialogBox extends State<DialogBox> {
                                 color: Colors.green[200],
                               ),
                               padding: EdgeInsets.all(16),
-                              child: Text(real[Index])),
+                              child: Text(showreal[Index])),
                         ),
                       );
                     }))
