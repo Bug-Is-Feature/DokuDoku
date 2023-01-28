@@ -1,7 +1,9 @@
+import 'package:dokudoku/services/timer_service.dart';
 import 'package:dokudoku/ui/components/hourglass_session_input.dart';
 import 'package:dokudoku/ui/view/stopwatch_view.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
+import 'package:provider/provider.dart';
 
 class TimerModeTabBar extends StatefulWidget {
   const TimerModeTabBar({super.key});
@@ -13,11 +15,15 @@ class TimerModeTabBar extends StatefulWidget {
 class _TimerModeTabBarState extends State<TimerModeTabBar>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  final Map<TimerMode, int> pageIndex = {
+    TimerMode.stopwatch: 0,
+    TimerMode.hourglass: 1,
+  };
 
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
     super.initState();
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -28,6 +34,7 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<TimerService>(context);
     return Scaffold(
       backgroundColor: context.resources.color.colorLightest,
       body: Padding(
@@ -76,9 +83,21 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
                     ),
                   ],
                   onTap: (value) {
-                    setState(() {
-                      _tabController.index = value;
-                    });
+                    if (provider.currentMode == TimerMode.stopwatch) {
+                      _tabController.index = pageIndex[TimerMode.stopwatch]!;
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            "You can't switch mode while timer is running",
+                            style: TextStyle(
+                              color: Color(0xff92603D),
+                              fontFamily: 'primary',
+                            ),
+                          ),
+                        ),
+                      );
+                    }
                   },
                 ),
               ),
@@ -86,10 +105,15 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
               Expanded(
                 child: TabBarView(
                   children: const [
-                    Center(child: StopwatchView()),
-                    Center(child: HourglassSessionInput())
+                    Center(
+                      child: StopwatchView(),
+                    ),
+                    Center(
+                      child: HourglassSessionInput(),
+                    )
                   ],
                   controller: _tabController,
+                  physics: const NeverScrollableScrollPhysics(),
                 ),
               )
             ],

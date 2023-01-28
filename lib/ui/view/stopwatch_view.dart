@@ -39,11 +39,12 @@ class StopwatchView extends StatelessWidget {
                             : '/ᐠ｡_｡ᐟ\\',
                         description: provider.totalDuration >= 300
                             ? Provider.of<TimerService>(context, listen: false)
-                                .formattedTotalDuration()
+                                .formattedTotalDuration(provider.totalDuration)
                             : 'You can do it better next time',
                         buttonText: "View Stat",
                         buttonText2: 'Close',
                         onPressed2: () {
+                          provider.currentMode = TimerMode.unMode;
                           Navigator.pop(context);
                         },
                         onPressed: () {},
