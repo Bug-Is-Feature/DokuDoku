@@ -24,7 +24,7 @@ class StopwatchTimer extends StatelessWidget {
               backgroundColor: Colors.white,
               valueColor: AlwaysStoppedAnimation(context.resources.color.blue),
             ),
-            Center(child: DisplayTimer()),
+            const Center(child: DisplayTimer()),
           ],
         ),
       ),
