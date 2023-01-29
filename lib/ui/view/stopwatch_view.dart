@@ -1,7 +1,9 @@
+import 'package:dokudoku/services/auth_service.dart';
 import 'package:dokudoku/services/timer_service.dart';
 import 'package:dokudoku/ui/components/button.dart';
 import 'package:dokudoku/ui/components/custom_dialog_box.dart';
 import 'package:dokudoku/ui/components/stopwatch_timer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +14,10 @@ class StopwatchView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<TimerService>(context);
+    String idToken = "";
+    FirebaseAuth.instance.currentUser!
+        .getIdToken()
+        .then((value) => idToken = value);
     return Scaffold(
       backgroundColor: context.resources.color.colorLightest,
       body: SingleChildScrollView(
@@ -80,6 +86,13 @@ class StopwatchView extends StatelessWidget {
                   ],
                 ),
               ],
+              SizedBox(height: MediaQuery.of(context).size.height * 0.09),
+              TextButton(
+                onPressed: () {
+                  AuthService.signOut();
+                },
+                child: const Text('sign out'),
+              )
             ],
           ),
         ),
