@@ -159,31 +159,30 @@ class HourglassInputState extends State<HourglassInput> {
       onSubmitted: widget.onSubmitted,
       inputFormatters: [widget.inputFormatter],
       decoration: InputDecoration(
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 1,
-            color: Colors.white,
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              width: 1,
+              color: context.resources.color.colorWhite,
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
           ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              width: 1,
+              color: context.resources.color.colorWhite,
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
           ),
-        ),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 1,
-            color: Colors.white,
-          ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
-          ),
-        ),
-        filled: true,
-        fillColor: Colors.white,
-        border: const OutlineInputBorder(),
-        labelStyle: const TextStyle(color: Color(0xff92603D), fontSize: 15),
-        labelText: widget.label,
-        isDense: true,
-      ),
+          filled: true,
+          fillColor: context.resources.color.colorWhite,
+          border: OutlineInputBorder(),
+          labelStyle: TextStyle(color: Color(0xff92603D), fontSize: 15),
+          labelText: widget.label,
+          isDense: true),
     );
   }
 }
