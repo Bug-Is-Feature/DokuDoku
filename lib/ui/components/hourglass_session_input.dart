@@ -17,6 +17,35 @@ class _HourglassSessionInputState extends State<HourglassSessionInput> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<TimerService>(context);
+
+    Widget hourglassInput(
+        String text, TextEditingController controller, String label) {
+      return Row(
+        children: [
+          Text(
+            text,
+            style: const TextStyle(fontSize: 25),
+          ),
+          const Spacer(),
+          SizedBox(
+            width: 66,
+            height: 35,
+            child: HourglassInput(
+              onSubmitted: (_) =>
+                  Provider.of<TimerService>(context).submitData(context),
+              keyboardType: const TextInputType.numberWithOptions(
+                signed: false,
+                decimal: false,
+              ),
+              inputFormatter: FilteringTextInputFormatter.digitsOnly,
+              controller: controller,
+              label: label,
+            ),
+          ),
+        ],
+      );
+    }
+
     return CustomScrollView(
       slivers: [
         SliverFillRemaining(
@@ -45,82 +74,17 @@ class _HourglassSessionInputState extends State<HourglassSessionInput> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            const Text(
-                              'Reading Duration',
-                              style: TextStyle(fontSize: 25),
-                            ),
-                            const Spacer(),
-                            SizedBox(
-                              width: 66,
-                              height: 35,
-                              child: HourglassInput(
-                                onSubmitted: (_) =>
-                                    Provider.of<TimerService>(context)
-                                        .submitData(context),
-                                keyboardType:
-                                    const TextInputType.numberWithOptions(
-                                        signed: false, decimal: false),
-                                inputFormatter:
-                                    FilteringTextInputFormatter.digitsOnly,
-                                controller: provider.sessionController,
-                                label: 'Minutes',
-                              ),
-                            ),
-                          ],
-                        ),
+                        hourglassInput('Reading duration',
+                            provider.sessionDurationController, 'Minutes'),
                         const SizedBox(
                           height: 20,
                         ),
-                        Row(
-                          children: [
-                            const Text('Reading Round',
-                                style: TextStyle(fontSize: 25)),
-                            const Spacer(),
-                            SizedBox(
-                              width: 66,
-                              height: 35,
-                              child: HourglassInput(
-                                onSubmitted: (_) =>
-                                    Provider.of<TimerService>(context)
-                                        .submitData(context),
-                                keyboardType:
-                                    const TextInputType.numberWithOptions(
-                                        signed: false, decimal: false),
-                                inputFormatter:
-                                    FilteringTextInputFormatter.digitsOnly,
-                                controller: provider.sessionNumController,
-                                label: 'Rounds',
-                              ),
-                            ),
-                          ],
-                        ),
+                        hourglassInput('Reading Round',
+                            provider.sessionIterationController, 'Rounds'),
                         SizedBox(
                             height: MediaQuery.of(context).size.height * 0.03),
-                        Row(
-                          children: [
-                            const Text('Break time',
-                                style: TextStyle(fontSize: 25)),
-                            const Spacer(),
-                            SizedBox(
-                              width: 66,
-                              height: 35,
-                              child: HourglassInput(
-                                onSubmitted: (_) =>
-                                    Provider.of<TimerService>(context)
-                                        .submitData(context),
-                                keyboardType:
-                                    const TextInputType.numberWithOptions(
-                                        signed: false, decimal: false),
-                                inputFormatter:
-                                    FilteringTextInputFormatter.digitsOnly,
-                                controller: provider.breakController,
-                                label: 'Minutes',
-                              ),
-                            ),
-                          ],
-                        ),
+                        hourglassInput('Break time',
+                            provider.breakDurationController, 'Minutes'),
                         const SizedBox(height: 20),
                         const Text(
                           'Think again',
