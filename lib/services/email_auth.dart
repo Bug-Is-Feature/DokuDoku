@@ -8,6 +8,7 @@ import 'package:dokudoku/res/AppContextExtension.dart';
 class EmailPasswordAuth {
   const EmailPasswordAuth();
   static String errorText = '';
+  static String errorLoginText = '';
 
   Future<void> signIn(BuildContext context, String email, String pwd) async {
     try {
@@ -31,18 +32,19 @@ class EmailPasswordAuth {
           ),
         ),
       );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Color(0xffF96161),
-          content: Text(
-            "Failed to sign in with email",
-            style: TextStyle(
-              color: Color.fromARGB(255, 255, 255, 255),
-            ),
-          ),
-        ),
-      );
+    } on FirebaseAuthException catch (e) {
+      print('kuy: ${e.code}');
+      print('hee: ${e.message}');
+
+      errorLoginText = e.code;
+
+      if (e.code == 'wrong-password') {
+        print(errorText);
+      } else if (e.code == 'user-not-found') {
+        print('user not found');
+      } else if (e.code == 'invalid-email') {
+        print('The email is invalid');
+      }
     }
   }
 
@@ -68,8 +70,6 @@ class EmailPasswordAuth {
 
       await UserServices.createUser();
     } on FirebaseAuthException catch (e) {
-      print(e.message);
-      print(e.code);
       errorText = e.code;
 
       if (e.code == 'weak-password') {
