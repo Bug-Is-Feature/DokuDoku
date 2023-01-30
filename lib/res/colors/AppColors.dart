@@ -32,7 +32,9 @@ class AppColors implements BaseColors {
 
   //sign
   @override
-  Color get warning => Color(0xffF96161);
+  Color get error => Color(0xffF96161);
+  @override
+  Color get warning => Color.fromARGB(255, 249, 218, 125);
   @override
   Color get positive => Color(0xff76CC96);
 

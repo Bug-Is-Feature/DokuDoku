@@ -44,7 +44,7 @@ class StopwatchView extends StatelessWidget {
                         buttonText: "View Stat",
                         buttonText2: 'Close',
                         onPressed2: () {
-                          provider.currentMode = TimerMode.unMode;
+                          provider.currentMode = TimerMode.none;
                           Navigator.pop(context);
                         },
                         onPressed: () {},
