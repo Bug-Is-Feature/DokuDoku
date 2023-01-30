@@ -4,6 +4,7 @@ import 'package:dokudoku/ui/view/stopwatch_view.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:provider/provider.dart';
+import 'package:dokudoku/ui/components/snack_bar_utils.dart';
 
 class TimerModeTabBar extends StatefulWidget {
   const TimerModeTabBar({super.key});
@@ -65,20 +66,37 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
                       color: context.resources.color.colorDarkest),
                   labelColor: context.resources.color.colorNormal2,
                   unselectedLabelColor: context.resources.color.colorDarkest,
-                  tabs: const [
+                  tabs: [
                     Tab(
-                      child: Text(
-                        'Stopwatch',
-                        style: TextStyle(fontSize: 22, fontFamily: 'primary'),
+                      child: Row(
+                        children: const [
+                          Icon(Icons.timer),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            'Stopwatch',
+                            style:
+                                TextStyle(fontSize: 22, fontFamily: 'primary'),
+                          ),
+                        ],
                       ),
                     ),
                     Tab(
-                      child: Text(
-                        'Hourglass',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontFamily: 'primary',
-                        ),
+                      child: Row(
+                        children: const [
+                          Icon(Icons.hourglass_bottom),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            'Hourglass',
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontFamily: 'primary',
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -86,16 +104,10 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
                     if (provider.currentMode == TimerMode.stopwatch) {
                       _tabController.index = pageIndex[TimerMode.stopwatch]!;
 
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            "You can't switch mode while timer is running",
-                            style: TextStyle(
-                              color: Color(0xff92603D),
-                              fontFamily: 'primary',
-                            ),
-                          ),
-                        ),
+                      SnackBarUtils.showCustomSnackBar(
+                        context: context,
+                        backgroundColor: context.resources.color.colorNormal3,
+                        content: "You can't switch mode while timer is running",
                       );
                     }
                   },
@@ -104,18 +116,29 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
               const SizedBox(height: 10),
               Expanded(
                 child: TabBarView(
+                  controller: _tabController,
+                  physics: const NeverScrollableScrollPhysics(),
                   children: const [
                     Center(
                       child: StopwatchView(),
                     ),
                     Center(
                       child: HourglassSessionInput(),
-                    )
+                    ),
                   ],
-                  controller: _tabController,
-                  physics: const NeverScrollableScrollPhysics(),
                 ),
-              )
+              ),
+              WillPopScope(
+                child: Container(),
+                onWillPop: () async {
+                  if (_tabController.index == pageIndex[TimerMode.hourglass]) {
+                    _tabController.index = pageIndex[TimerMode.stopwatch]!;
+                    return false;
+                  } else {
+                    return true;
+                  }
+                },
+              ),
             ],
           ),
         ),

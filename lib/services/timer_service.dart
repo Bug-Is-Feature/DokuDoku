@@ -1,18 +1,18 @@
 import 'dart:async';
-
+import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:dokudoku/ui/components/custom_dialog_box.dart';
-import 'package:dokudoku/ui/view/home_view.dart';
+import 'package:dokudoku/ui/components/snack_bar_utils.dart';
 import 'package:dokudoku/ui/view/hourglass_view.dart';
 import 'package:flutter/material.dart';
 
-enum TimerState { focus, cancel, breakTime, end, pause }
+enum TimerState { focus, breakTime, end }
 
-enum TimerMode { unMode, stopwatch, hourglass }
+enum TimerMode { none, stopwatch, hourglass }
 
 class TimerService extends ChangeNotifier {
-  final sessionController = TextEditingController();
-  final sessionNumController = TextEditingController();
-  final breakController = TextEditingController();
+  final sessionDurationController = TextEditingController();
+  final sessionIterationController = TextEditingController();
+  final breakDurationController = TextEditingController();
 
   int inputSession = 0;
   int inputSessionNum = 0;
@@ -20,9 +20,8 @@ class TimerService extends ChangeNotifier {
 
   int sumTime = 0;
   int iteration = 1;
-  TimerMode currentMode = TimerMode.unMode;
+  TimerMode currentMode = TimerMode.none;
   TimerState currentState = TimerState.focus;
-  int currentDurationHrg = 0;
 
   int currentDuration = 0;
   int seconds = 0;
@@ -34,69 +33,48 @@ class TimerService extends ChangeNotifier {
   Timer? timer;
 
   void submitData(BuildContext context) {
-    inputSession = int.parse(sessionController.text) * 60;
-    inputSessionNum = int.parse(sessionNumController.text);
-    inputBreak = int.parse(breakController.text) * 60;
+    inputSession = int.parse(sessionDurationController.text) * 60;
+    inputSessionNum = int.parse(sessionIterationController.text);
+    inputBreak = int.parse(breakDurationController.text) * 60;
 
-    if (currentState == TimerState.cancel || currentState == TimerState.end) {
+    if (currentState == TimerState.end) {
       iteration = 1;
       sumTime = 0;
       currentState = TimerState.focus;
-      currentDurationHrg = 0;
-      currentDurationHrg = inputSession;
+      currentDuration = 0;
+      currentDuration = inputSession;
       startHourglass(context);
     } else {
-      currentDurationHrg = inputSession;
+      currentDuration = inputSession;
       startHourglass(context);
     }
     notifyListeners();
   }
 
   void validator(BuildContext context) {
-    final sessionCheck = sessionController.value.text;
-    final sessionNumCheck = sessionNumController.value.text;
-    final breakCheck = breakController.value.text;
+    if (sessionDurationController.text.isEmpty ||
+        sessionIterationController.text.isEmpty ||
+        breakDurationController.text.isEmpty) {
+      SnackBarUtils.showWarningSnackBar(
+        context: context,
+        content: 'Please enter number in every form.',
+      );
+    }
 
-    if (sessionCheck.isEmpty || sessionNumCheck.isEmpty || breakCheck.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Color(0xff2AA16),
-          content: Text(
-            'Please enter number',
-            style: TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
-                fontFamily: 'primary',
-                fontSize: 16),
-          ),
-        ),
+    final sessionDuration = int.parse(sessionDurationController.value.text);
+
+    if (sessionDuration < 5) {
+      SnackBarUtils.showCustomSnackBar(
+        context: context,
+        backgroundColor: context.resources.color.warning,
+        content: 'Please enter Reading Duration more than 5 minutes',
       );
-    } else if (int.parse(sessionCheck) < 5) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Color(0xff2AA16),
-          content: Text(
-            'Please enter Reading Duration more than 5 minutes',
-            style: TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
-                fontFamily: 'primary',
-                fontSize: 16),
-          ),
-        ),
+    } else if (sessionDuration > 60) {
+      SnackBarUtils.showWarningSnackBar(
+        context: context,
+        content: 'limit of Reading Duration is 1 hours',
       );
-    } else if (int.parse(sessionCheck) > 60) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Color(0xff2AA16),
-          content: Text(
-            'limit of Reading Duration is 1 hours',
-            style: TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
-                fontFamily: 'primary',
-                fontSize: 16),
-          ),
-        ),
-      );
-    } else if (int.parse(sessionCheck) >= 5 || int.parse(breakCheck) >= 5) {
+    } else {
       submitData(context);
       Navigator.push(
         context,
@@ -114,64 +92,59 @@ class TimerService extends ChangeNotifier {
     timer = Timer.periodic(
       const Duration(seconds: 1),
       (timer) {
-        if (currentDurationHrg == 0) {
+        if (currentDuration == 0) {
           handleNextIteration(context);
         } else {
-          currentDurationHrg--;
+          currentDuration--;
           notifyListeners();
         }
       },
     );
   }
 
-  void pauseHourglass() {
+  void pauseHourglass() async {
     if (currentState == TimerState.focus) {
-      sumTime += (inputSession - currentDurationHrg);
+      sumTime += (inputSession - currentDuration);
     }
     timer!.cancel();
     notifyListeners();
   }
 
-  void stopHourglass() {
+  void stopHourglass(BuildContext context) {
     timer!.cancel();
     currentState = TimerState.end;
-    notifyListeners();
-  }
-
-  void cancelSession(BuildContext context) {
-    timer!.cancel();
-    currentState = TimerState.cancel;
     notifyListeners();
   }
 
   void skipBreak(BuildContext context) {
     timer!.cancel();
     currentState = TimerState.focus;
-    currentDurationHrg = inputSession;
+    currentDuration = inputSession;
     notifyListeners();
   }
 
   void handleNextIteration(BuildContext context) {
     if (currentState == TimerState.focus) {
       if (iteration < inputSessionNum) {
-        sumTime += (inputSession - currentDurationHrg);
+        sumTime += (inputSession - currentDuration);
         currentState = TimerState.breakTime;
-        currentDurationHrg = inputBreak;
+        currentDuration = inputBreak;
         iteration++;
       } else if (iteration >= inputSessionNum) {
-        sumTime += (inputSession - currentDurationHrg);
-        stopHourglass();
+        sumTime += (inputSession - currentDuration);
+        stopHourglass(context);
         fullTimeDialog(context);
       }
     } else if (currentState == TimerState.breakTime) {
       currentState = TimerState.focus;
-      currentDurationHrg = inputSession;
+      currentDuration = inputSession;
     }
     notifyListeners();
   }
 
-  void cancelTimeDialog(BuildContext context) {
-    showDialog(
+  Future<bool> cancelTimeDialog(
+      {required BuildContext context, required bool isWillPop}) async {
+    return await showDialog(
       barrierDismissible: false,
       context: context,
       builder: (ctx) => CustomDialog(
@@ -180,22 +153,20 @@ class TimerService extends ChangeNotifier {
             "Your progress won't record.\nYou've already read\n${formattedTotalDuration(sumTime)}",
         buttonText: 'Yes',
         onPressed: () {
-          cancelSession(context);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (BuildContext context) {
-                return const HomeView();
-              },
-            ),
-          );
+          stopHourglass(context);
+          currentDuration = 0;
+          if (isWillPop) {
+            Navigator.of(context).pop(true);
+          } else {
+            Navigator.of(context).popUntil((route) => route.isFirst);
+          }
         },
         buttonText2: 'No',
         onPressed2: () {
           if (currentState == TimerState.focus) {
-            sumTime -= inputSession - currentDurationHrg;
+            sumTime -= inputSession - currentDuration;
           }
-          Navigator.of(ctx).pop();
+          Navigator.of(ctx).pop(false);
           startHourglass(context);
         },
       ),
@@ -220,7 +191,7 @@ class TimerService extends ChangeNotifier {
         },
         onPressed2: () {
           if (currentState == TimerState.focus) {
-            sumTime -= inputSession - currentDurationHrg;
+            sumTime -= inputSession - currentDuration;
           }
           Navigator.of(ctx2).pop();
           startHourglass(context);
@@ -238,14 +209,15 @@ class TimerService extends ChangeNotifier {
         description: "You've already read\n${formattedTotalDuration(sumTime)}.",
         buttonText: 'Ok',
         onPressed: () {
-          Navigator.push(
-            ctx3,
-            MaterialPageRoute(
-              builder: (BuildContext context) {
-                return const HomeView();
-              },
-            ),
-          );
+          //   Navigator.push(
+          //     ctx3,
+          //     MaterialPageRoute(
+          //       builder: (BuildContext context) {
+          //         return const HomeView();
+          //       },
+          //     ),
+          //   );
+          Navigator.of(context).popUntil((route) => route.isFirst);
         },
       ),
     );
@@ -279,7 +251,7 @@ class TimerService extends ChangeNotifier {
         buttonText: "View Stat",
         buttonText2: 'Close',
         onPressed2: () {
-          currentMode = TimerMode.unMode;
+          currentMode = TimerMode.none;
           Navigator.pop(context);
         },
         onPressed: () {},
