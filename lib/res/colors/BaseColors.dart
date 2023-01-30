@@ -16,6 +16,7 @@ abstract class BaseColors {
   Color get purple;
 
   //sign
+  Color get error;
   Color get warning;
   Color get positive;
 

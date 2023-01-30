@@ -10,7 +10,7 @@ ThemeData themeData(BuildContext context) {
         secondary: context.resources.color.colorDark,
         onSecondary: context.resources.color.colorWhite,
         background: context.resources.color.colorLightest,
-        error: context.resources.color.warning,
+        error: context.resources.color.error,
         onBackground: context.resources.color.colorDarkest,
         onError: context.resources.color.colorWhite,
         onSurface: context.resources.color.colorNormal2,

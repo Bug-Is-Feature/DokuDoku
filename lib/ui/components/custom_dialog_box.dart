@@ -81,8 +81,9 @@ class _CustomDialogState extends State<CustomDialog> {
                   children: [
                     TextButton(
                       style: ButtonStyle(
-                        foregroundColor:
-                            MaterialStateProperty.all<Color>(Color(0xffC78F68)),
+                        foregroundColor: MaterialStateProperty.all<Color>(
+                          Color(0xffC78F68),
+                        ),
                       ),
                       onPressed: widget.onPressed,
                       child: Text(widget.buttonText),
