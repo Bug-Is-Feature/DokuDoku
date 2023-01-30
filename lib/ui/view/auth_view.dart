@@ -1,6 +1,7 @@
 import 'package:dokudoku/services/auth_service.dart';
 import 'package:dokudoku/services/email_auth.dart';
 import 'package:dokudoku/ui/components/loader.dart';
+import 'package:dokudoku/ui/view/forgot_password_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
@@ -87,11 +88,16 @@ class _AuthViewState extends State<AuthView> {
                             if (value == null || value.isEmpty) {
                               return 'Please enter email';
                             } else if (EmailPasswordAuth.errorText ==
-                                'invalid-email') {
+                                    'invalid-email' ||
+                                EmailPasswordAuth.errorLoginText ==
+                                    'invalid-email') {
                               return 'Invalid email';
                             } else if (EmailPasswordAuth.errorText ==
                                 'email-already-in-use') {
                               return "The account already exists for this email.";
+                            } else if (EmailPasswordAuth.errorLoginText ==
+                                'user-not-found') {
+                              return "No user found for this email.";
                             }
                             return null;
                           },
@@ -110,6 +116,9 @@ class _AuthViewState extends State<AuthView> {
                             } else if (EmailPasswordAuth.errorText ==
                                 'weak-password') {
                               return 'Password is too weak';
+                            } else if (EmailPasswordAuth.errorLoginText ==
+                                'wrong-password') {
+                              return 'Password is wrong';
                             }
                             return null;
                           },
@@ -144,6 +153,7 @@ class _AuthViewState extends State<AuthView> {
                               ),
                               onPressed: () async {
                                 EmailPasswordAuth.errorText = '';
+                                EmailPasswordAuth.errorLoginText = '';
                                 setState(() {
                                   isLoading = true;
                                 });
@@ -198,6 +208,7 @@ class _AuthViewState extends State<AuthView> {
                                 children: const [
                                   Expanded(
                                     child: Divider(
+                                      thickness: 1,
                                       color: Color(0xff92603D),
                                     ),
                                   ),
@@ -211,6 +222,7 @@ class _AuthViewState extends State<AuthView> {
                                   SizedBox(width: 10),
                                   Expanded(
                                     child: Divider(
+                                      thickness: 1,
                                       color: Color(0xff92603D),
                                     ),
                                   ),
@@ -228,6 +240,20 @@ class _AuthViewState extends State<AuthView> {
                                 ],
                               ),
                               const SizedBox(height: 15.0),
+                              GestureDetector(
+                                child: const Text(
+                                  'Forgot Password?',
+                                  style: TextStyle(
+                                      decoration: TextDecoration.underline,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 20),
+                                ),
+                                onTap: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => ForgotPassWordView(),
+                                  ),
+                                ),
+                              ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
@@ -257,7 +283,7 @@ class _AuthViewState extends State<AuthView> {
                   ),
                 ),
               ),
-              if (isLoading == true) ...[Loader()],
+              if (isLoading == true) ...[const Loader()],
             ],
           ),
         ),
