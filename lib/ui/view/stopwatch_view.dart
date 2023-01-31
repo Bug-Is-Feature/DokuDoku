@@ -14,10 +14,6 @@ class StopwatchView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<TimerService>(context);
-    String idToken = "";
-    FirebaseAuth.instance.currentUser!
-        .getIdToken()
-        .then((value) => idToken = value);
     return Scaffold(
       backgroundColor: context.resources.color.colorLightest,
       body: SingleChildScrollView(

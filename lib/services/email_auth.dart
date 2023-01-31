@@ -1,9 +1,6 @@
 import 'package:dokudoku/services/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:dokudoku/res/AppContextExtension.dart';
-
-// import 'package:dokudoku/services/dokudoku_service/user_service.dart';
 
 class EmailPasswordAuth {
   const EmailPasswordAuth();
