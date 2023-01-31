@@ -6,8 +6,6 @@ import 'package:dokudoku/services/timer_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
-import 'package:dokudoku/submitscreen.dart';
-import 'package:dokudoku/timeservice.dart';
 
 void main(List<String> args) {
   runApp(
