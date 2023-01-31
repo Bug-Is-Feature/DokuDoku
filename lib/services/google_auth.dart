@@ -1,3 +1,4 @@
+import 'package:dokudoku/services/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:dokudoku/services/dokudoku_service/user_service.dart';
@@ -36,9 +37,9 @@ class GoogleAuth {
     print('login gmail: ${googleUser.email}');
     if (authResult.additionalUserInfo!.isNewUser) {
       print('isNewUser: true');
-      //   await UserServices.createUser();
+      await UserServices.createUser();
     } else {
-      //   await UserServices.updateLastLogin();
+      await UserServices.updateLastLogin();
     }
   }
 }
