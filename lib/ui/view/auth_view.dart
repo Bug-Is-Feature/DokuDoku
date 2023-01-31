@@ -115,7 +115,7 @@ class _AuthViewState extends State<AuthView> {
                               return 'Please enter password';
                             } else if (EmailPasswordAuth.errorText ==
                                 'weak-password') {
-                              return 'Password is too weak';
+                              return 'Password is too weak, at least 6 characters';
                             } else if (EmailPasswordAuth.errorLoginText ==
                                 'wrong-password') {
                               return 'Password is wrong';
