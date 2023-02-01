@@ -33,26 +33,23 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => NavigationProvider(),
       child: MaterialApp(
-          title: 'Dokudoku',
-          debugShowCheckedModeBanner: false,
-          theme: themeData(context),
-          home: StreamBuilder(
-            stream: FirebaseAuth.instance.userChanges(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              }
-              if (snapshot.hasData) {
-                return const HomeView();
-              } else {
-                return const AuthView();
-              }
-            },
-          )
-
-          //AuthView()
-          //HomeView(),
-          ),
+        title: 'Dokudoku',
+        debugShowCheckedModeBanner: false,
+        theme: themeData(context),
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.userChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            }
+            if (snapshot.hasData) {
+              return const HomeView();
+            } else {
+              return const AuthView();
+            }
+          },
+        ),
+      ),
     );
   }
 }

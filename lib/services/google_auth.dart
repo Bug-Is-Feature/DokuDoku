@@ -5,8 +5,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 class GoogleAuth {
   GoogleAuth();
 
-  // final googleSignIn = GoogleSignIn();
-
   GoogleSignInAccount? _user;
 
   GoogleSignInAccount get user => _user!;
