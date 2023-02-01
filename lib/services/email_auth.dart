@@ -1,4 +1,6 @@
+import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:dokudoku/services/user_service.dart';
+import 'package:dokudoku/ui/components/snack_bar_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -18,21 +20,11 @@ class EmailPasswordAuth {
 
       await UserServices.updateLastLogin();
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: const Color(0xff76CC96),
-          content: Text(
-            '${user!.email} signed in',
-            style: const TextStyle(
-              color: Color.fromARGB(255, 255, 255, 255),
-            ),
-          ),
-        ),
+      SnackBarUtils.showSuccessSnackBar(
+        context: context,
+        content: '${user!.email} signed in',
       );
     } on FirebaseAuthException catch (e) {
-      print('kuy: ${e.code}');
-      print('hee: ${e.message}');
-
       errorLoginText = e.code;
 
       if (e.code == 'wrong-password') {
@@ -53,16 +45,9 @@ class EmailPasswordAuth {
         password: pwd,
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: const Color(0xff76CC96),
-          content: Text(
-            'Register successful',
-            style: const TextStyle(
-              color: Color.fromARGB(255, 255, 255, 255),
-            ),
-          ),
-        ),
+      SnackBarUtils.showSuccessSnackBar(
+        context: context,
+        content: 'Register successful',
       );
 
       await UserServices.createUser();

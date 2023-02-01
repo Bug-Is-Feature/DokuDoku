@@ -1,4 +1,5 @@
 import 'package:dokudoku/ui/components/loader.dart';
+import 'package:dokudoku/ui/components/snack_bar_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -173,30 +174,18 @@ class _ForgotPassWordViewState extends State<ForgotPassWordView> {
     try {
       await FirebaseAuth.instance
           .sendPasswordResetEmail(email: emailController.text.trim());
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: context.resources.color.positive,
-          content: Text(
-            'Password Reset Email Sent',
-            style: const TextStyle(
-              color: Color.fromARGB(255, 255, 255, 255),
-            ),
-          ),
-        ),
+
+      SnackBarUtils.showSuccessSnackBar(
+        context: context,
+        content: 'Password Reset Email Sent',
       );
       Navigator.of(context).popUntil((route) => route.isFirst);
     } on FirebaseAuthException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Color.fromARGB(255, 242, 123, 105),
-          content: Text(
-            e.code,
-            style: const TextStyle(
-              color: Color.fromARGB(255, 255, 255, 255),
-            ),
-          ),
-        ),
+      SnackBarUtils.showWarningSnackBar(
+        context: context,
+        content: e.code,
       );
+
       Navigator.of(context).pop();
       print(e.code);
       print(e.message);

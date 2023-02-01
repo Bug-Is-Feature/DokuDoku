@@ -21,6 +21,24 @@ class SnackBarUtils {
     );
   }
 
+  static void showSuccessSnackBar({
+    required BuildContext context,
+    required String content,
+  }) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: context.resources.color.positive,
+        content: Text(
+          content,
+          style: TextStyle(
+              color: context.resources.color.colorWhite,
+              fontFamily: 'primary',
+              fontSize: 16),
+        ),
+      ),
+    );
+  }
+
   static void showWarningSnackBar({
     required BuildContext context,
     required String content,
