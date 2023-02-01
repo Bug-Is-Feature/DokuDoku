@@ -11,10 +11,6 @@ class Resources {
     return AppColors();
   }
 
-  // AppDimension get dimension {
-  //   return AppDimension();
-  // }
-
   static Resources of(BuildContext context) {
     return Resources(context);
   }

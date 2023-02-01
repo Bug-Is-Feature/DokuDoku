@@ -1,7 +1,9 @@
+import 'package:dokudoku/services/auth_service.dart';
 import 'package:dokudoku/services/timer_service.dart';
 import 'package:dokudoku/ui/components/button.dart';
 import 'package:dokudoku/ui/components/custom_dialog_box.dart';
 import 'package:dokudoku/ui/components/stopwatch_timer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:provider/provider.dart';
@@ -80,6 +82,13 @@ class StopwatchView extends StatelessWidget {
                   ],
                 ),
               ],
+              TextButton(
+                onPressed: () async {
+                  await AuthService.googleAuth.signOut();
+                  await AuthService.signOut();
+                },
+                child: const Text('sign out'),
+              )
             ],
           ),
         ),

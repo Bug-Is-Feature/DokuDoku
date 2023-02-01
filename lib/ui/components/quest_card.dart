@@ -18,7 +18,7 @@ class _QuestCardState extends State<QuestCard> {
         width: MediaQuery.of(context).size.width * 0.9,
         height: MediaQuery.of(context).size.width * 0.2,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.resources.color.colorWhite,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
