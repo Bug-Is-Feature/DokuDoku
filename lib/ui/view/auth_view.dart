@@ -14,8 +14,11 @@ class AuthView extends StatefulWidget {
 }
 
 class _AuthViewState extends State<AuthView> {
-  String type = 'login', _email = '', _password = '';
+  String type = 'login', _email = '', _password = '', _confirmPassword = '';
   bool isLoading = false;
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   @override
@@ -51,14 +54,12 @@ class _AuthViewState extends State<AuthView> {
                           height: 20,
                         ),
                         Container(
-                          // margin: const EdgeInsets.only(top: 20, bottom: 20),
                           child: Image.asset(
                             'assets/images/Icononly.png',
                             height: 170,
                           ),
                         ),
                         Container(
-                          // margin: const EdgeInsets.only(top: 20, bottom: 20),
                           child: Image.asset(
                             'assets/images/DokuDoku_Fontonly.png',
                             height: 70,
@@ -80,6 +81,7 @@ class _AuthViewState extends State<AuthView> {
                           height: 20,
                         ),
                         AuthTextField(
+                          controller: emailController,
                           label: 'Email',
                           onSaved: (value) {
                             _email = value!;
@@ -96,7 +98,7 @@ class _AuthViewState extends State<AuthView> {
                                 'email-already-in-use') {
                               return "The account already exists for this email.";
                             } else if (EmailPasswordAuth.errorLoginText ==
-                                'user not found') {
+                                'user-not-found') {
                               return "No user found for this email.";
                             }
                             return null;
@@ -107,6 +109,7 @@ class _AuthViewState extends State<AuthView> {
                           height: 10,
                         ),
                         AuthTextField(
+                          controller: passwordController,
                           label: 'Password',
                           onSaved: (value) {
                             _password = value!;
@@ -128,6 +131,22 @@ class _AuthViewState extends State<AuthView> {
                         if (type == 'register') ...[
                           const SizedBox(
                             height: 10,
+                          ),
+                          AuthTextField(
+                            controller: confirmPasswordController,
+                            label: 'Confirm Password',
+                            onSaved: (value) {
+                              _confirmPassword = value!;
+                            },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter password';
+                              } else if (_password != _confirmPassword) {
+                                return 'Password does not match';
+                              }
+                              return null;
+                            },
+                            isPassword: true,
                           ),
                         ],
                         const SizedBox(
@@ -187,8 +206,12 @@ class _AuthViewState extends State<AuthView> {
                                       fontSize: 18),
                                 ),
                                 TextButton(
-                                  onPressed: () =>
-                                      setState(() => type = 'login'),
+                                  onPressed: () {
+                                    setState(() => type = 'login');
+                                    emailController.clear();
+                                    passwordController.clear();
+                                    confirmPasswordController.clear();
+                                  },
                                   child: const Text(
                                     'Log in',
                                     style: TextStyle(
@@ -266,8 +289,11 @@ class _AuthViewState extends State<AuthView> {
                                         fontSize: 18),
                                   ),
                                   TextButton(
-                                    onPressed: () =>
-                                        setState(() => type = 'register'),
+                                    onPressed: () {
+                                      setState(() => type = 'register');
+                                      emailController.clear();
+                                      passwordController.clear();
+                                    },
                                     child: const Text(
                                       'Sign up',
                                       style: TextStyle(
@@ -355,12 +381,14 @@ class AuthTextField extends StatefulWidget {
   FormFieldSetter onSaved;
   FormFieldValidator validator;
   bool isPassword;
+  TextEditingController controller;
 
   AuthTextField({
     super.key,
     required this.label,
     required this.onSaved,
     required this.validator,
+    required this.controller,
     required this.isPassword,
   });
   @override
@@ -368,7 +396,7 @@ class AuthTextField extends StatefulWidget {
 }
 
 class _AuthTextFieldState extends State<AuthTextField> {
-  bool isVisible = false;
+  bool isObscure = true;
 
   @override
   Widget build(BuildContext context) {
@@ -376,7 +404,7 @@ class _AuthTextFieldState extends State<AuthTextField> {
       // continue in part logic
       onSaved: widget.onSaved,
       validator: widget.validator,
-      obscureText: isVisible,
+      obscureText: widget.isPassword ? isObscure : false,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
         focusedBorder: OutlineInputBorder(
@@ -408,15 +436,16 @@ class _AuthTextFieldState extends State<AuthTextField> {
         suffixIcon: widget.isPassword
             ? IconButton(
                 icon: Icon(
-                  isVisible ? Icons.visibility : Icons.visibility_off,
+                  isObscure ? Icons.visibility : Icons.visibility_off,
                   color: context.resources.color.colorDark,
                 ),
                 onPressed: () {
-                  setState(() => isVisible = !isVisible);
+                  setState(() => isObscure = !isObscure);
                 },
               )
             : null,
       ),
+      controller: widget.controller,
     );
   }
 }

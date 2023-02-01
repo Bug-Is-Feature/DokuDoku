@@ -209,14 +209,6 @@ class TimerService extends ChangeNotifier {
         description: "You've already read\n${formattedTotalDuration(sumTime)}.",
         buttonText: 'Ok',
         onPressed: () {
-          //   Navigator.push(
-          //     ctx3,
-          //     MaterialPageRoute(
-          //       builder: (BuildContext context) {
-          //         return const HomeView();
-          //       },
-          //     ),
-          //   );
           Navigator.of(context).popUntil((route) => route.isFirst);
         },
       ),
