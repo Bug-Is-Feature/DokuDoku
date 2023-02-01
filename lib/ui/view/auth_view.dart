@@ -68,14 +68,11 @@ class _AuthViewState extends State<AuthView> {
                         const SizedBox(
                           height: 20,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          child: Text(
-                            type == 'login'
-                                ? 'To continue, log in to DokuDoku'
-                                : 'Sign up for free to stop being a hoarder ^ - ^',
-                            style: Theme.of(context).textTheme.headline2,
-                          ),
+                        Text(
+                          type == 'login'
+                              ? 'To continue, log in to DokuDoku'
+                              : 'Sign up for free to stop being a hoarder ^ - ^',
+                          style: Theme.of(context).textTheme.headline2,
                         ),
                         const SizedBox(
                           height: 20,
