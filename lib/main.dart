@@ -15,7 +15,7 @@ import 'package:dokudoku/firebase_options.dart';
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
+  await dotenv.load(fileName: '.env');
   runApp(ChangeNotifierProvider<TimerService>(
     create: (_) => TimerService(),
     child: MyApp(),

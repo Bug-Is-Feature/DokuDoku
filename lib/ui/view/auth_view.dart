@@ -96,11 +96,12 @@ class _AuthViewState extends State<AuthView> {
                                 'email-already-in-use') {
                               return "The account already exists for this email.";
                             } else if (EmailPasswordAuth.errorLoginText ==
-                                'user-not-found') {
+                                'user not found') {
                               return "No user found for this email.";
                             }
                             return null;
                           },
+                          isPassword: false,
                         ),
                         const SizedBox(
                           height: 10,
@@ -122,6 +123,7 @@ class _AuthViewState extends State<AuthView> {
                             }
                             return null;
                           },
+                          isPassword: true,
                         ),
                         if (type == 'register') ...[
                           const SizedBox(
@@ -154,9 +156,7 @@ class _AuthViewState extends State<AuthView> {
                               onPressed: () async {
                                 EmailPasswordAuth.errorText = '';
                                 EmailPasswordAuth.errorLoginText = '';
-                                setState(() {
-                                  isLoading = true;
-                                });
+                                setState(() => isLoading = true);
                                 if (_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
                                   if (type == 'login') {
@@ -168,9 +168,7 @@ class _AuthViewState extends State<AuthView> {
                                   }
                                 }
                                 _formKey.currentState!.validate();
-                                setState(() {
-                                  isLoading = false;
-                                });
+                                setState(() => isLoading = false);
                               },
                             ),
                           ),
@@ -233,10 +231,14 @@ class _AuthViewState extends State<AuthView> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   _AuthButton(
-                                      image: const NetworkImage(
-                                          'https://freesvg.org/img/1534129544.png'),
-                                      onPressed: () =>
-                                          AuthService.googleAuth.signIn()),
+                                    image: const NetworkImage(
+                                        'https://freesvg.org/img/1534129544.png'),
+                                    onPressed: () async {
+                                      setState(() => isLoading = true);
+                                      await AuthService.googleAuth.signIn();
+                                      setState(() => isLoading = false);
+                                    },
+                                  ),
                                 ],
                               ),
                               const SizedBox(height: 15.0),
@@ -277,7 +279,18 @@ class _AuthViewState extends State<AuthView> {
                               ),
                             ],
                           )
-                        ]
+                        ],
+                        WillPopScope(
+                          child: Container(),
+                          onWillPop: () async {
+                            if (type == 'register') {
+                              setState(() => type = 'login');
+                              return false;
+                            } else {
+                              return true;
+                            }
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -341,20 +354,29 @@ class AuthTextField extends StatefulWidget {
   String label;
   FormFieldSetter onSaved;
   FormFieldValidator validator;
+  bool isPassword;
 
-  AuthTextField(
-      {required this.label, required this.onSaved, required this.validator});
+  AuthTextField({
+    super.key,
+    required this.label,
+    required this.onSaved,
+    required this.validator,
+    required this.isPassword,
+  });
   @override
   State<AuthTextField> createState() => _AuthTextFieldState();
 }
 
 class _AuthTextFieldState extends State<AuthTextField> {
+  bool isVisible = false;
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       // continue in part logic
       onSaved: widget.onSaved,
       validator: widget.validator,
+      obscureText: isVisible,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
         focusedBorder: OutlineInputBorder(
@@ -383,6 +405,17 @@ class _AuthTextFieldState extends State<AuthTextField> {
           color: Color(0xff92603D),
         ),
         labelText: widget.label,
+        suffixIcon: widget.isPassword
+            ? IconButton(
+                icon: Icon(
+                  isVisible ? Icons.visibility : Icons.visibility_off,
+                  color: context.resources.color.colorDark,
+                ),
+                onPressed: () {
+                  setState(() => isVisible = !isVisible);
+                },
+              )
+            : null,
       ),
     );
   }

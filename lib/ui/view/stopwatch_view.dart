@@ -84,8 +84,9 @@ class StopwatchView extends StatelessWidget {
               ],
               SizedBox(height: MediaQuery.of(context).size.height * 0.09),
               TextButton(
-                onPressed: () {
-                  AuthService.signOut();
+                onPressed: () async {
+                  await AuthService.googleAuth.signOut();
+                  await AuthService.signOut();
                 },
                 child: const Text('sign out'),
               )
