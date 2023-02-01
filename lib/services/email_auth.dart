@@ -37,7 +37,11 @@ class EmailPasswordAuth {
     }
   }
 
-  Future<void> register(BuildContext context, String email, String pwd) async {
+  Future<void> register(
+    BuildContext context,
+    String email,
+    String pwd,
+  ) async {
     try {
       UserCredential userCredential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(

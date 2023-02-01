@@ -141,7 +141,7 @@ class _AuthViewState extends State<AuthView> {
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter password';
-                              } else if (_password != _confirmPassword) {
+                              } else if (passwordController.text != value) {
                                 return 'Password does not match';
                               }
                               return null;
@@ -179,8 +179,11 @@ class _AuthViewState extends State<AuthView> {
                                 if (_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
                                   if (type == 'login') {
-                                    await AuthService.emailPasswordAuth
-                                        .signIn(context, _email, _password);
+                                    await AuthService.emailPasswordAuth.signIn(
+                                      context,
+                                      _email,
+                                      _password,
+                                    );
                                   } else if (type == 'register') {
                                     await AuthService.emailPasswordAuth
                                         .register(context, _email, _password);

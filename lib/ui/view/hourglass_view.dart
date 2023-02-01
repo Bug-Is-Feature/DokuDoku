@@ -49,7 +49,6 @@ class _HourglassViewState extends State<HourglassView> {
               ),
               if (provider.currentState == TimerState.focus ||
                   provider.currentState == TimerState.end) ...[
-                // ),
                 Text("${provider.iteration}/${provider.inputSessionNum} Rounds",
                     style: const TextStyle(fontSize: 25))
               ] else ...[
