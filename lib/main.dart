@@ -30,8 +30,8 @@ class MyApp extends StatelessWidget {
         title: 'Dokudoku',
         debugShowCheckedModeBanner: false,
         theme: themeData(context),
-        home: AuthView(),
-        // const HomeView(),
+        home: //AuthView(),
+            HomeView(),
       ),
     );
   }

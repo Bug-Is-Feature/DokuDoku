@@ -1,3 +1,4 @@
+import 'package:dokudoku/services/quote_dialog.dart';
 import 'package:dokudoku/services/timer_service.dart';
 import 'package:dokudoku/ui/components/button.dart';
 import 'package:flutter/material.dart';
@@ -131,6 +132,7 @@ class _HourglassViewState extends State<HourglassView> {
                 height: MediaQuery.of(context).size.height * 0.02,
               ),
               Container(
+                child: QuoteDialog(),
                 width: MediaQuery.of(context).size.width * 0.9,
                 height: MediaQuery.of(context).size.height * 0.55,
                 decoration: BoxDecoration(

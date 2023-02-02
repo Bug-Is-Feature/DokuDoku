@@ -33,9 +33,9 @@ class TimerService extends ChangeNotifier {
   Timer? timer;
 
   void submitData(BuildContext context) {
-    inputSession = int.parse(sessionDurationController.text) * 60;
+    inputSession = int.parse(sessionDurationController.text);
     inputSessionNum = int.parse(sessionIterationController.text);
-    inputBreak = int.parse(breakDurationController.text) * 60;
+    inputBreak = int.parse(breakDurationController.text);
 
     if (currentState == TimerState.end) {
       iteration = 1;
