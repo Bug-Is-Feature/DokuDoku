@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:dokudoku/firebase_options.dart';
 import 'package:dokudoku/ui/components/search_box.dart';
+import 'package:dokudoku/ui/view/bookshelves_mock_view.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
