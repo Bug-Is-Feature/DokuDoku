@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 
 class SearchBox extends StatefulWidget {
-  const SearchBox({Key? key}) : super(key: key);
+  final String label;
+  const SearchBox({super.key, required this.label});
 
   @override
   State<SearchBox> createState() => _SearchBoxState();
@@ -11,7 +12,7 @@ class SearchBox extends StatefulWidget {
 class _SearchBoxState extends State<SearchBox> {
   @override
   Widget build(BuildContext context) {
-    return (Container(
+    return Container(
       width: MediaQuery.of(context).size.width * 0.5,
       margin: EdgeInsets.only(top: 25, left: 25, right: 25),
       child: Column(
@@ -23,6 +24,10 @@ class _SearchBoxState extends State<SearchBox> {
                 child: TextField(
                   cursorColor: context.resources.color.colorDarkest,
                   decoration: InputDecoration(
+                    isDense: true,
+                    contentPadding: EdgeInsets.symmetric(
+                      vertical: MediaQuery.of(context).size.height * 0.01,
+                    ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
                       borderSide: BorderSide(
@@ -35,7 +40,7 @@ class _SearchBoxState extends State<SearchBox> {
                       borderSide: BorderSide(
                           color: context.resources.color.colorDarkest),
                     ),
-                    hintText: 'Search',
+                    hintText: widget.label,
                     hintStyle: TextStyle(
                         color: context.resources.color.greyDarker,
                         fontSize: 18),
@@ -43,7 +48,7 @@ class _SearchBoxState extends State<SearchBox> {
                       padding: EdgeInsets.all(4),
                       child: Icon(Icons.search,
                           color: context.resources.color.colorDarkest),
-                      width: MediaQuery.of(context).size.width * 0.1,
+                      width: MediaQuery.of(context).size.width * 0.15,
                     ),
                   ),
                 ),
@@ -52,6 +57,6 @@ class _SearchBoxState extends State<SearchBox> {
           )
         ],
       ),
-    ));
+    );
   }
 }
