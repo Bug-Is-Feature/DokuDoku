@@ -2,10 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dokudoku/provider/navigation_provider.dart';
 import 'package:dokudoku/routes/router.gr.dart';
 import 'package:dokudoku/theme_app.dart';
-import 'package:dokudoku/ui/view/auth_view.dart';
-import 'package:dokudoku/ui/view/bookshelves_view.dart';
-import 'package:dokudoku/ui/view/home_view.dart';
-import 'package:dokudoku/ui/view/stopwatch_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -31,25 +27,16 @@ class _ValidateAuthViewState extends State<ValidateAuthView> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
             }
-            if (snapshot.hasData) {
-              return MaterialApp.router(
-                theme: themeData(context),
-                debugShowCheckedModeBanner: false,
-                routerDelegate: AutoRouterDelegate.declarative(
-                  _appRouter,
-                  routes: (_) => [const HomeRoute()],
-                ),
-              );
-            } else {
-              return MaterialApp.router(
-                theme: themeData(context),
-                debugShowCheckedModeBanner: false,
-                routerDelegate: AutoRouterDelegate.declarative(
-                  _appRouter,
-                  routes: (_) => [const AuthRoute()],
-                ),
-              );
-            }
+            return MaterialApp.router(
+              theme: themeData(context),
+              debugShowCheckedModeBanner: false,
+              routerDelegate: AutoRouterDelegate.declarative(
+                _appRouter,
+                routes: (_) => [
+                  if (snapshot.hasData) const HomeRoute() else const AuthRoute()
+                ],
+              ),
+            );
           },
         ),
       ),
