@@ -1,3 +1,4 @@
+import 'package:dokudoku/ui/components/dropdown_bookshelves.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 
@@ -6,7 +7,6 @@ class BookCard extends StatefulWidget {
   String bookAuthor;
   Image bookImage;
   String bookStatus;
-  //VoidCallback dropdownCallback;
 
   BookCard({
     super.key,
@@ -14,7 +14,6 @@ class BookCard extends StatefulWidget {
     required this.bookImage,
     required this.bookName,
     required this.bookStatus,
-    // required this.dropdownCallback
   });
 
   @override
@@ -27,7 +26,7 @@ class _BookCardState extends State<BookCard> {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.18,
+        height: MediaQuery.of(context).size.height * 0.2,
         width: MediaQuery.of(context).size.width * 0.95,
         decoration: BoxDecoration(
           color: context.resources.color.colorWhite,
@@ -35,7 +34,7 @@ class _BookCardState extends State<BookCard> {
             BoxShadow(
               color: context.resources.color.grey,
               blurRadius: 2,
-              offset: Offset(0, 3),
+              offset: const Offset(0, 3),
             ),
           ],
         ),
@@ -54,27 +53,30 @@ class _BookCardState extends State<BookCard> {
                 ),
                 Text(
                   widget.bookName,
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: context.resources.color.colorDarkest),
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.005,
                 ),
-                Text(widget.bookAuthor),
+                Text(
+                  widget.bookAuthor,
+                  style: TextStyle(color: context.resources.color.greyDark),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
+                ),
+                const DropdownBooksheleves()
               ],
             ),
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.12,
+              width: MediaQuery.of(context).size.width * 0.10,
             ),
-            Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  color: context.resources.color.colorDark,
-                  borderRadius: BorderRadius.circular(30)),
-              child: Icon(
-                Icons.access_time_rounded,
-                color: context.resources.color.colorWhite,
-                size: 40,
-              ),
+            Icon(
+              Icons.timer_outlined,
+              color: context.resources.color.colorDarkest,
+              size: 30,
             ),
           ],
         ),

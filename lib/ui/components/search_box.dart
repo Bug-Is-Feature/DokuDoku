@@ -14,7 +14,8 @@ class _SearchBoxState extends State<SearchBox> {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.5,
-      margin: EdgeInsets.only(top: 25, left: 25, right: 25),
+      height: MediaQuery.of(context).size.height * 0.12,
+      margin: const EdgeInsets.only(top: 25, left: 25, right: 25),
       child: Column(
         children: [
           Row(
@@ -45,10 +46,10 @@ class _SearchBoxState extends State<SearchBox> {
                         color: context.resources.color.greyDarker,
                         fontSize: 18),
                     prefixIcon: Container(
-                      padding: EdgeInsets.all(4),
+                      padding: const EdgeInsets.all(4),
+                      width: MediaQuery.of(context).size.width * 0.15,
                       child: Icon(Icons.search,
                           color: context.resources.color.colorDarkest),
-                      width: MediaQuery.of(context).size.width * 0.15,
                     ),
                   ),
                 ),
