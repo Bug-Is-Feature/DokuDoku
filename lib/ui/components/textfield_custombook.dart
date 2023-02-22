@@ -15,24 +15,20 @@ class _TextFieldCustomBookState extends State<TextFieldCustomBook> {
   Widget build(BuildContext contex) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.9,
-      child: Center(
-        child: TextField(
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(
-                vertical: MediaQuery.of(context).size.height * 0.01,
-                horizontal: MediaQuery.of(context).size.width * 0.04),
-            hintText: widget.label,
-            hintStyle: TextStyle(color: context.resources.color.greyDarker),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-              borderSide:
-                  BorderSide(color: context.resources.color.colorDarkest),
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-              borderSide:
-                  BorderSide(color: context.resources.color.colorDarkest),
-            ),
+      child: TextField(
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(
+              vertical: MediaQuery.of(context).size.height * 0.01,
+              horizontal: MediaQuery.of(context).size.width * 0.04),
+          hintText: widget.label,
+          hintStyle: TextStyle(color: context.resources.color.greyDarker),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: BorderSide(color: context.resources.color.colorDarkest),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: BorderSide(color: context.resources.color.colorDarkest),
           ),
         ),
       ),
