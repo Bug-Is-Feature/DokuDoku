@@ -12,7 +12,7 @@ class _DropdownBookshelevesState extends State<DropdownBooksheleves> {
   String dropdownValue = 'Incomplete';
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height * 0.028,
       width: MediaQuery.of(context).size.width * 0.33,
       child: DropdownButtonFormField(
@@ -30,6 +30,7 @@ class _DropdownBookshelevesState extends State<DropdownBooksheleves> {
           color: context.resources.color.colorDarkest,
           size: 20,
         ),
+        borderRadius: BorderRadius.circular(30),
         isExpanded: true,
         isDense: true,
         style: TextStyle(

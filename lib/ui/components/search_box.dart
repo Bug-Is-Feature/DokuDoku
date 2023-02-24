@@ -12,51 +12,40 @@ class SearchBox extends StatefulWidget {
 class _SearchBoxState extends State<SearchBox> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.5,
-      height: MediaQuery.of(context).size.height * 0.12,
-      margin: const EdgeInsets.only(top: 25, left: 25, right: 25),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Flexible(
-                flex: 1,
-                child: TextField(
-                  cursorColor: context.resources.color.colorDarkest,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: MediaQuery.of(context).size.height * 0.01,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(
-                          color: context.resources.color.colorDarkest),
-                    ),
-                    fillColor: context.resources.color.colorWhite,
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(
-                          color: context.resources.color.colorDarkest),
-                    ),
-                    hintText: widget.label,
-                    hintStyle: TextStyle(
-                        color: context.resources.color.greyDarker,
-                        fontSize: 18),
-                    prefixIcon: Container(
-                      padding: const EdgeInsets.all(4),
-                      width: MediaQuery.of(context).size.width * 0.15,
-                      child: Icon(Icons.search,
-                          color: context.resources.color.colorDarkest),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          )
-        ],
+    return IntrinsicHeight(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.50,
+        height: MediaQuery.of(context).size.height * 0.042,
+        child: TextField(
+          cursorColor: context.resources.color.colorDarkest,
+          decoration: InputDecoration(
+            isDense: true,
+            contentPadding: EdgeInsets.symmetric(
+                vertical: MediaQuery.of(context).size.height * 0.01,
+                horizontal: MediaQuery.of(context).size.width * 0.04),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+              borderSide:
+                  BorderSide(color: context.resources.color.colorDarkest),
+            ),
+            fillColor: context.resources.color.colorWhite,
+            filled: true,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+              borderSide:
+                  BorderSide(color: context.resources.color.colorDarkest),
+            ),
+            hintText: widget.label,
+            hintStyle: TextStyle(
+                color: context.resources.color.greyDarker, fontSize: 18),
+            prefixIcon: Container(
+              height: MediaQuery.of(context).size.height * 0.01,
+              width: MediaQuery.of(context).size.width * 0.05,
+              child: Icon(Icons.search,
+                  color: context.resources.color.colorDarkest),
+            ),
+          ),
+        ),
       ),
     );
   }
