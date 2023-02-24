@@ -40,7 +40,7 @@ class _IncompleteShelfViewState extends State<IncompleteShelfView> {
               Icons.camera_alt,
               color: context.resources.color.colorWhite,
             ),
-            label: 'Add Quest',
+            label: 'Add Book by ISBN',
             onTap: () {},
           ),
         ],

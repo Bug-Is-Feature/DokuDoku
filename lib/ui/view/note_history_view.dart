@@ -1,17 +1,18 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
-class NoteHistory extends StatefulWidget {
-  const NoteHistory({super.key});
+class NoteHistoryView extends StatefulWidget {
+  const NoteHistoryView({super.key});
 
   @override
-  State<NoteHistory> createState() => _NoteHistoryState();
+  State<NoteHistoryView> createState() => _NoteHistoryViewState();
 }
 
-class _NoteHistoryState extends State<NoteHistory> {
+class _NoteHistoryViewState extends State<NoteHistoryView> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: const Text('Note History'),
+    return Scaffold(
+      body: const Text('Note History'),
     );
   }
 }

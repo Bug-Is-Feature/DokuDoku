@@ -26,12 +26,16 @@ class HomeView extends StatelessWidget {
               onPressed: () async {
                 await AuthService.googleAuth.signOut();
                 await AuthService.signOut();
-                // context.router.push(const AuthRoute());
+                context.router.replace(const AuthRoute());
               },
             ),
           ],
         ),
-        routes: const [BookShelvesRoute(), QuestBoardRoute(), ProfileRoute()],
+        routes: const [
+          BookShelvesRoute(),
+          QuestBoardRoute(),
+          ProfileRoute(),
+        ],
         bottomNavigationBuilder: (context, tabsRouter) => BottomNavigationBar(
           backgroundColor: context.resources.color.colorDarkest,
           items: BottomNavBar.listItemBottomBar,

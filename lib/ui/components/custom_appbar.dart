@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 
 class CustomAppBar extends AppBar {
   CustomAppBar({
-    required Key key,
-    Color backgroundColor = Colors.white,
+    Color backgroundColor = Colors.transparent,
   }) : super(
-          key: key,
           backgroundColor: backgroundColor,
           elevation: 0,
-          iconTheme: IconThemeData(color: Colors.brown),
+          iconTheme: const IconThemeData(color: Colors.brown),
         );
 }

@@ -1,4 +1,10 @@
+import 'dart:async';
+
+import 'package:auto_route/auto_route.dart';
+import 'package:dokudoku/routes/router.gr.dart';
 import 'package:dokudoku/ui/components/button.dart';
+import 'package:dokudoku/ui/components/timer_mode_tabbar.dart';
+import 'package:dokudoku/ui/view/book_details_view.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 
@@ -50,7 +56,7 @@ class _QuestCardState extends State<QuestCard> {
                             ),
                             Row(
                               children: [
-                                Text('Reward : -15 EXP'),
+                                Text('Reward : +15 EXP'),
                                 SizedBox(width: 10),
                                 SizedBox(
                                   width: 100,
@@ -74,7 +80,25 @@ class _QuestCardState extends State<QuestCard> {
               ),
               Button(
                 child: Text('Lock'),
-                onPressed: () {},
+                onPressed: () {
+                  print('999999999');
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => BookDetailsView(bookID: 1),
+                  //   ),
+                  // );
+
+                  // AutoRouter.of(context).root.push(TimerRoute());
+                  // AutoRouter.of(context).navigateNamed("/pppp");
+
+                  AutoRouter.of(context).navigate(TimerRoute());
+
+                  // context.router.pushRoute(TimerModeRoute());
+
+                  // context.pushRoute(const TimerRoute(children: [TimerRoute()]));
+                  // context.navigateTo(TimerRoute(children: [TimerRoute()]));
+                },
                 backgroundColor: context.resources.color.colorDark,
                 size: Size(85, 30),
               ),

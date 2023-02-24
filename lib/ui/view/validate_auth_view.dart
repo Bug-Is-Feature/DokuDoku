@@ -19,26 +19,30 @@ class _ValidateAuthViewState extends State<ValidateAuthView> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => NavigationProvider(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: StreamBuilder(
-          stream: FirebaseAuth.instance.userChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            }
-            return MaterialApp.router(
-              theme: themeData(context),
-              debugShowCheckedModeBanner: false,
-              routerDelegate: AutoRouterDelegate.declarative(
-                _appRouter,
-                routes: (_) => [
-                  if (snapshot.hasData) const HomeRoute() else const AuthRoute()
-                ],
-              ),
-            );
-          },
-        ),
+      child: StreamBuilder(
+        stream: FirebaseAuth.instance.userChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          }
+          return MaterialApp.router(
+            theme: themeData(context),
+            debugShowCheckedModeBanner: false,
+            routerDelegate: _appRouter.delegate(
+                // initialRoutes: [
+                // snapshot.hasData ? const HomeRoute() : const AuthRoute() ],
+                ),
+            routeInformationParser: _appRouter.defaultRouteParser(),
+
+            // routerDelegate: AutoRouterDelegate.declarative(
+            //   _appRouter,
+            //   routes: (_) => [
+            //     if (snapshot.hasData) const HomeRoute() else const AuthRoute()
+            //   ],
+            // ),
+            // routeInformationParser: _appRouter.defaultRouteParser(),
+          );
+        },
       ),
     );
   }
