@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dokudoku/provider/navigation_provider.dart';
 import 'package:dokudoku/theme_app.dart';
 import 'package:dokudoku/services/timer_service.dart';
-import 'package:dokudoku/ui/view/validate_auth_view.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -45,14 +44,6 @@ class MyApp extends StatelessWidget {
           return MaterialApp.router(
             theme: themeData(context),
             debugShowCheckedModeBanner: false,
-
-            // routerDelegate: _appRouter.delegate(
-            //   initialRoutes: [
-            //     snapshot.hasData ? const HomeRoute() : const AuthRoute(),
-            //   ],
-            // ),
-            // routeInformationParser: _appRouter.defaultRouteParser(),
-
             routerDelegate: AutoRouterDelegate.declarative(
               _appRouter,
               routes: (_) => [

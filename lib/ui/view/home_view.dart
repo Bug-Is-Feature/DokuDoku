@@ -21,7 +21,7 @@ class HomeView extends StatelessWidget {
           leading: const AutoBackButton(),
           actions: [
             IconButton(
-              icon: Icon(Icons.logout),
+              icon: const Icon(Icons.logout),
               color: context.resources.color.colorDarkest,
               onPressed: () async {
                 await AuthService.googleAuth.signOut();

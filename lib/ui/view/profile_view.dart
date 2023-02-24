@@ -1,5 +1,3 @@
-import 'package:dokudoku/ui/components/bookshelves_tabbar.dart';
-import 'package:dokudoku/ui/components/navigation_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 
@@ -55,7 +53,7 @@ class _ProfileViewState extends State<ProfileView> {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 60,
           ),
           Row(

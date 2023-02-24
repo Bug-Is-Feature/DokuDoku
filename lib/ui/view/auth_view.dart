@@ -4,7 +4,6 @@ import 'package:dokudoku/ui/components/loader.dart';
 import 'package:dokudoku/ui/view/forgot_password_view.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
-import 'package:dokudoku/theme_app.dart';
 
 class AuthView extends StatefulWidget {
   const AuthView({Key? key}) : super(key: key);

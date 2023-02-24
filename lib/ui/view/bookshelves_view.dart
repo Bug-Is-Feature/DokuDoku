@@ -39,7 +39,7 @@ class _BookShelvesViewState extends State<BookShelvesView> {
           Expanded(
             child: Container(
               color: context.resources.color.colorWhite,
-              child: BookShelvesTabBar(),
+              child: const BookShelvesTabBar(),
             ),
           ),
           Expanded(
@@ -56,9 +56,6 @@ class _BookShelvesViewState extends State<BookShelvesView> {
                             bookID: book[i].id,
                           ),
                         );
-                        // context.router.push(
-                        //   TimerRoute(),
-                        // );
                       },
                     )
                 ],

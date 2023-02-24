@@ -47,7 +47,7 @@ class _IncompleteShelfViewState extends State<IncompleteShelfView> {
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: [QuestCard()],
+          children: const [QuestCard()],
         ),
       ),
     );

@@ -1,6 +1,5 @@
 import 'package:dokudoku/services/timer_service.dart';
 import 'package:dokudoku/ui/components/button.dart';
-import 'package:dokudoku/ui/view/hourglass_view.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:flutter/services.dart';
@@ -164,7 +163,7 @@ class HourglassInputState extends State<HourglassInput> {
               width: 1,
               color: context.resources.color.colorWhite,
             ),
-            borderRadius: BorderRadius.all(
+            borderRadius: const BorderRadius.all(
               Radius.circular(10),
             ),
           ),
@@ -173,14 +172,14 @@ class HourglassInputState extends State<HourglassInput> {
               width: 1,
               color: context.resources.color.colorWhite,
             ),
-            borderRadius: BorderRadius.all(
+            borderRadius: const BorderRadius.all(
               Radius.circular(10),
             ),
           ),
           filled: true,
           fillColor: context.resources.color.colorWhite,
-          border: OutlineInputBorder(),
-          labelStyle: TextStyle(color: Color(0xff92603D), fontSize: 15),
+          border: const OutlineInputBorder(),
+          labelStyle: const TextStyle(color: Color(0xff92603D), fontSize: 15),
           labelText: widget.label,
           isDense: true),
     );

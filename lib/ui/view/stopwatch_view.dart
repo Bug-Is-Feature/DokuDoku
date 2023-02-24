@@ -1,4 +1,3 @@
-import 'package:dokudoku/routes/router.gr.dart';
 import 'package:dokudoku/services/timer_service.dart';
 import 'package:dokudoku/ui/components/button.dart';
 import 'package:dokudoku/ui/components/custom_dialog_box.dart';

@@ -11,7 +11,7 @@ class _CompleteShelfViewState extends State<CompleteShelfView> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [Text('Incomplete shelf')],
+      children: const [Text('Incomplete shelf')],
     );
   }
 }

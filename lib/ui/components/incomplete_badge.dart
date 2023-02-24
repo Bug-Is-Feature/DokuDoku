@@ -1,7 +1,5 @@
 import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class IncompleteStatusBadge extends StatefulWidget {
   const IncompleteStatusBadge({super.key});
@@ -27,7 +25,7 @@ class _IncompleteStatusBadgeState extends State<IncompleteStatusBadge> {
             (index) => BoxShadow(
               color: context.resources.color.grey,
               blurRadius: 2,
-              offset: Offset(0, 3),
+              offset: const Offset(0, 3),
             ),
           ),
         ),
