@@ -1,25 +1,16 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/empty_router_widgets.dart';
+import 'package:dokudoku/ui/components/timer_mode_tabbar.dart';
 import 'package:dokudoku/ui/view/auth_view.dart';
+import 'package:dokudoku/ui/view/book_details_view.dart';
 import 'package:dokudoku/ui/view/bookshelves_view.dart';
 import 'package:dokudoku/ui/view/home_view.dart';
-import 'package:dokudoku/ui/view/note_history_view.dart';
 import 'package:dokudoku/ui/view/profile_view.dart';
 import 'package:dokudoku/ui/view/quest_board_view.dart';
-import 'package:dokudoku/ui/view/validate_auth_view.dart';
+import 'package:flutter/material.dart';
 
 @MaterialAutoRouter(
-  replaceInRouteName: 'Page,Route',
   routes: [
-    AutoRoute(
-      path: '/',
-      name: 'ValidateAuthRoute',
-      initial: true,
-      page: EmptyRouterPage,
-      children: [
-        AutoRoute(path: '', page: ValidateAuthView),
-      ],
-    ),
     AutoRoute(
       path: '/auth',
       name: 'AuthRoute',
@@ -29,36 +20,55 @@ import 'package:dokudoku/ui/view/validate_auth_view.dart';
       ],
     ),
     AutoRoute(
-      path: '/user',
+      path: '/',
       name: 'HomeRoute',
-      page: HomeView,
+      page: EmptyRouterPage,
       children: [
         AutoRoute(
           path: 'home',
-          name: 'BookShelvesRoute',
-          page: EmptyRouterPage,
+          initial: true,
+          page: HomeView,
           children: [
-            AutoRoute(path: '', page: BookShelvesView),
+            AutoRoute(
+              path: 'book_shelves',
+              name: 'BookShelvesRoute',
+              page: EmptyRouterPage,
+              children: [
+                AutoRoute(path: '', page: BookShelvesView),
+                AutoRoute(
+                    path: ':bookID',
+                    name: 'BookDetailsRoute',
+                    page: BookDetailsView),
+              ],
+            ),
+            AutoRoute(
+              path: 'quest_board',
+              name: 'QuestBoardRoute',
+              page: EmptyRouterPage,
+              children: [
+                AutoRoute(path: '', page: QuestBoardView),
+              ],
+            ),
+            AutoRoute(
+              path: 'profile',
+              name: 'profileRoute',
+              page: EmptyRouterPage,
+              children: [
+                AutoRoute(path: '', page: ProfileView),
+              ],
+            ),
           ],
         ),
         AutoRoute(
-          path: 'questBoard',
-          name: 'QuestBoardRoute',
+          path: 'timer',
+          name: 'TimerRoute',
           page: EmptyRouterPage,
           children: [
-            AutoRoute(path: '', page: QuestBoardView),
+            AutoRoute(path: '', page: TimerModeTabBar),
           ],
         ),
-        AutoRoute(
-          path: 'profile',
-          name: 'profileRoute',
-          page: EmptyRouterPage,
-          children: [
-            AutoRoute(path: '', page: ProfileView),
-          ],
-        )
       ],
-    )
+    ),
   ],
 )
 class $AppRouter {}
