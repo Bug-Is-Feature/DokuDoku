@@ -1,3 +1,5 @@
+import 'package:dokudoku/services/auth_service.dart';
+import 'package:dokudoku/provider/timer_provider.dart';
 import 'package:dokudoku/services/timer_service.dart';
 import 'package:dokudoku/ui/components/button.dart';
 import 'package:dokudoku/ui/components/custom_dialog_box.dart';
@@ -6,19 +8,32 @@ import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:provider/provider.dart';
 
-class StopwatchView extends StatelessWidget {
-  const StopwatchView({super.key});
+class StopwatchView extends StatefulWidget {
+  final int id;
+  final String title;
+  const StopwatchView({super.key, required this.id, required this.title});
 
   @override
-  Widget build(BuildContext context) {
-    final provider = Provider.of<TimerService>(context);
+  State<StopwatchView> createState() => _StopwatchViewState();
+}
 
+class _StopwatchViewState extends State<StopwatchView> {
+  @override
+  Widget build(BuildContext context) {
+    final provider = Provider.of<TimerProvider>(context);
     return Scaffold(
       backgroundColor: context.resources.color.colorLightest,
       body: SingleChildScrollView(
         child: Center(
           child: Column(
             children: [
+              Text(
+                'Book: ${widget.title}',
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               const SizedBox(
                 height: 60,
               ),
@@ -28,18 +43,26 @@ class StopwatchView extends StatelessWidget {
                 backgroundColor: provider.timerPlaying
                     ? context.resources.color.colorDarkest
                     : context.resources.color.colorDark,
-                onPressed: () {
+                onPressed: () async {
                   if (provider.timerPlaying) {
-                    Provider.of<TimerService>(context, listen: false).stop();
+                    Provider.of<TimerProvider>(context, listen: false).stop();
+                    if (provider.totalDuration >= 5) {
+                      await TimerService.saveTimer(
+                        context,
+                        widget.id,
+                        provider.totalDuration,
+                      );
+                    }
+                    if (!mounted) return;
                     showDialog(
                       barrierDismissible: false,
                       context: context,
                       builder: (context) => CustomDialog(
-                        title: provider.totalDuration >= 300
+                        title: provider.totalDuration >= 5
                             ? "Reading result"
                             : '/ᐠ｡_｡ᐟ\\',
-                        description: provider.totalDuration >= 300
-                            ? Provider.of<TimerService>(context, listen: false)
+                        description: provider.totalDuration >= 5
+                            ? Provider.of<TimerProvider>(context, listen: false)
                                 .formattedTotalDuration(provider.totalDuration)
                             : 'You can do it better next time',
                         buttonText: "View Stat",
@@ -51,9 +74,9 @@ class StopwatchView extends StatelessWidget {
                         onPressed: () {},
                       ),
                     );
-                    Provider.of<TimerService>(context, listen: false).reset();
+                    Provider.of<TimerProvider>(context, listen: false).reset();
                   } else {
-                    Provider.of<TimerService>(context, listen: false)
+                    Provider.of<TimerProvider>(context, listen: false)
                         .start(context);
                   }
                 },
