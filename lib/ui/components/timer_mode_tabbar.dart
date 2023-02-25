@@ -1,4 +1,4 @@
-import 'package:dokudoku/services/timer_service.dart';
+import 'package:dokudoku/provider/timer_provider.dart';
 import 'package:dokudoku/ui/components/hourglass_session_input.dart';
 import 'package:dokudoku/ui/view/stopwatch_view.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +7,10 @@ import 'package:provider/provider.dart';
 import 'package:dokudoku/ui/components/snack_bar_utils.dart';
 
 class TimerModeTabBar extends StatefulWidget {
-  const TimerModeTabBar({super.key});
+  final int id;
+  final String title;
+
+  const TimerModeTabBar({super.key, required this.id, required this.title});
 
   @override
   State<TimerModeTabBar> createState() => _TimerModeTabBarState();
@@ -35,7 +38,7 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<TimerService>(context);
+    final provider = Provider.of<TimerProvider>(context);
     return Scaffold(
       backgroundColor: context.resources.color.colorLightest,
       body: Padding(
@@ -118,12 +121,18 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
                 child: TabBarView(
                   controller: _tabController,
                   physics: const NeverScrollableScrollPhysics(),
-                  children: const [
+                  children: [
                     Center(
-                      child: StopwatchView(),
+                      child: StopwatchView(
+                        id: widget.id,
+                        title: widget.title,
+                      ),
                     ),
                     Center(
-                      child: HourglassSessionInput(),
+                      child: HourglassSessionInput(
+                        id: widget.id,
+                        title: widget.title,
+                      ),
                     ),
                   ],
                 ),

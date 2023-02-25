@@ -1,4 +1,4 @@
-import 'package:dokudoku/services/timer_service.dart';
+import 'package:dokudoku/provider/timer_provider.dart';
 import 'package:dokudoku/ui/components/timer_display.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
@@ -10,7 +10,7 @@ class StopwatchTimer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int maxMin = 120;
-    final provider = Provider.of<TimerService>(context);
+    final provider = Provider.of<TimerProvider>(context);
     return SizedBox(
       width: 250,
       height: 250,

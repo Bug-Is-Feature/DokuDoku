@@ -1,4 +1,4 @@
-import 'package:dokudoku/services/timer_service.dart';
+import 'package:dokudoku/provider/timer_provider.dart';
 import 'package:dokudoku/ui/components/button.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
@@ -6,7 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class HourglassSessionInput extends StatefulWidget {
-  const HourglassSessionInput({super.key});
+  final int id;
+  final String title;
+  const HourglassSessionInput(
+      {super.key, required this.id, required this.title});
 
   @override
   State<HourglassSessionInput> createState() => _HourglassSessionInputState();
@@ -15,7 +18,7 @@ class HourglassSessionInput extends StatefulWidget {
 class _HourglassSessionInputState extends State<HourglassSessionInput> {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<TimerService>(context);
+    final provider = Provider.of<TimerProvider>(context);
 
     Widget hourglassInput(
         String text, TextEditingController controller, String label) {
@@ -31,7 +34,7 @@ class _HourglassSessionInputState extends State<HourglassSessionInput> {
             height: 35,
             child: HourglassInput(
               onSubmitted: (_) =>
-                  Provider.of<TimerService>(context).submitData(context),
+                  Provider.of<TimerProvider>(context).submitData(context),
               keyboardType: const TextInputType.numberWithOptions(
                 signed: false,
                 decimal: false,
@@ -94,8 +97,12 @@ class _HourglassSessionInputState extends State<HourglassSessionInput> {
                           child: Button(
                             child: Text('Confirm'),
                             onPressed: () {
-                              Provider.of<TimerService>(context, listen: false)
-                                  .validator(context);
+                              Provider.of<TimerProvider>(context, listen: false)
+                                  .validator(
+                                context,
+                                widget.id,
+                                widget.title,
+                              );
                             },
                             backgroundColor: context.resources.color.colorDark,
                             size: const Size(99, 44),
