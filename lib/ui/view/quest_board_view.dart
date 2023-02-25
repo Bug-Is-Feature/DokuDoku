@@ -1,3 +1,5 @@
+import 'package:dokudoku/ui/components/quest_card.dart';
+
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 
@@ -30,11 +32,11 @@ class _QuestBoardViewState extends State<QuestBoardView> {
             height: MediaQuery.of(context).size.height * 0.8,
             child: ListView(
               children: [
-                // QuestCard(),
-                // QuestCard(),
-                // QuestCard(),
-                // QuestCard(),
-                // QuestCard(),
+                QuestCard(),
+                QuestCard(),
+                QuestCard(),
+                QuestCard(),
+                QuestCard(),
               ],
             ),
           ),

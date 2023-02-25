@@ -2,7 +2,6 @@
 
 import 'package:dokudoku/ui/components/sort_by_button.dart';
 import 'package:flutter/material.dart';
-import 'package:dokudoku/res/AppContextExtension.dart';
 import 'search_box.dart';
 
 class SearchSortBookshelves extends StatefulWidget {
@@ -33,7 +32,12 @@ class _SearchSortBookshelvesState extends State<SearchSortBookshelves> {
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.02,
           ),
-          Expanded(child: SearchBox(label: 'Search')),
+          Expanded(
+            child: SearchBox(
+              label: 'Search',
+              width: MediaQuery.of(context).size.width * 0.50,
+            ),
+          ),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.03,
           ),

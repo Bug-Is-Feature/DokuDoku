@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 
 class TabBarFilterStatistic extends StatefulWidget {
-  final Widget dayResultFilter;
-  final Widget weekResultFilter;
-  final Widget monthResultFilter;
-  final Widget yearResultFilter;
+  // final Widget dayResultFilter;
+  // final Widget weekResultFilter;
+  // final Widget monthResultFilter;
+  // final Widget yearResultFilter;
 
   const TabBarFilterStatistic({
     super.key,
-    required this.dayResultFilter,
-    required this.weekResultFilter,
-    required this.monthResultFilter,
-    required this.yearResultFilter,
+    // required this.dayResultFilter,
+    // required this.weekResultFilter,
+    // required this.monthResultFilter,
+    // required this.yearResultFilter,
   });
 
   @override
@@ -60,10 +60,14 @@ class _TabBarFilterStatisticState extends State<TabBarFilterStatistic> {
             Expanded(
               child: TabBarView(
                 children: [
-                  widget.dayResultFilter,
-                  widget.weekResultFilter,
-                  widget.monthResultFilter,
-                  widget.yearResultFilter,
+                  Tab(text: "Day"),
+                  Tab(text: 'Week'),
+                  Tab(text: 'Month'),
+                  Tab(text: 'Year'),
+                  // widget.dayResultFilter,
+                  // widget.weekResultFilter,
+                  // widget.monthResultFilter,
+                  // widget.yearResultFilter,
                 ],
               ),
             ),

@@ -1,16 +1,17 @@
+import 'package:dokudoku/ui/components/search_box.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 
 class TabBarFilterBookshelves extends StatefulWidget {
-  final Widget bothResultFilter;
-  final Widget titleResultFilter;
-  final Widget authorResultFilter;
+  // final Widget bothResultFilter;
+  // final Widget titleResultFilter;
+  // final Widget authorResultFilter;
 
   const TabBarFilterBookshelves({
     super.key,
-    required this.bothResultFilter,
-    required this.titleResultFilter,
-    required this.authorResultFilter,
+    // required this.bothResultFilter,
+    // required this.titleResultFilter,
+    // required this.authorResultFilter,
   });
 
   @override
@@ -27,8 +28,13 @@ class _TabBarFilterBookshelvesState extends State<TabBarFilterBookshelves> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
+            SearchBox(
+              label: 'Search',
+              width: MediaQuery.of(context).size.width,
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
             Container(
-              height: MediaQuery.of(context).size.height * 0.06,
+              height: MediaQuery.of(context).size.height * 0.05,
               decoration: BoxDecoration(
                 color: context.resources.color.greyLighter,
                 borderRadius: BorderRadius.circular(15),
@@ -58,9 +64,19 @@ class _TabBarFilterBookshelvesState extends State<TabBarFilterBookshelves> {
             Expanded(
               child: TabBarView(
                 children: [
-                  widget.bothResultFilter,
-                  widget.titleResultFilter,
-                  widget.authorResultFilter
+                  Text(
+                    "Both",
+                  ),
+                  Text(
+                    "Title",
+                  ),
+                  Text(
+                    "Author",
+                  ),
+
+                  // widget.bothResultFilter,
+                  // widget.titleResultFilter,
+                  // widget.authorResultFilter
                 ],
               ),
             ),

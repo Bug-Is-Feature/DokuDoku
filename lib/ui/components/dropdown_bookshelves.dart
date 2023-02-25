@@ -30,7 +30,7 @@ class _DropdownBookshelevesState extends State<DropdownBooksheleves> {
           color: context.resources.color.colorDarkest,
           size: 20,
         ),
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(20),
         isExpanded: true,
         isDense: true,
         style: TextStyle(

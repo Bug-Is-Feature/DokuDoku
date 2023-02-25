@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
+import 'package:dokudoku/services/auth_service.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:dokudoku/routes/router.gr.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -131,6 +134,15 @@ class _ProfileViewState extends State<ProfileView> {
                 ],
               )
             ],
+          ),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            color: context.resources.color.colorDarkest,
+            onPressed: () async {
+              await AuthService.googleAuth.signOut();
+              await AuthService.signOut();
+              context.router.replace(const AuthRoute());
+            },
           ),
         ],
       ),
