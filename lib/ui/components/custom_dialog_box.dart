@@ -82,7 +82,7 @@ class _CustomDialogState extends State<CustomDialog> {
                     TextButton(
                       style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all<Color>(
-                          Color(0xffC78F68),
+                          const Color(0xffC78F68),
                         ),
                       ),
                       onPressed: widget.onPressed,
@@ -93,7 +93,7 @@ class _CustomDialogState extends State<CustomDialog> {
                       TextButton(
                         style: ButtonStyle(
                           foregroundColor: MaterialStateProperty.all<Color>(
-                            Color(0xff92603D),
+                            const Color(0xff92603D),
                           ),
                         ),
                         onPressed: widget.onPressed2!,

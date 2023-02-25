@@ -167,7 +167,7 @@ class _ForgotPassWordViewState extends State<ForgotPassWordView> {
   Future resetPassword() async {
     showDialog(
       context: context,
-      builder: (context) => Center(
+      builder: (context) => const Center(
         child: Loader(),
       ),
     );

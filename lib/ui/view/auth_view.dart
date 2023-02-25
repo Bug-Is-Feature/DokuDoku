@@ -2,7 +2,6 @@ import 'package:dokudoku/services/auth_service.dart';
 import 'package:dokudoku/services/email_auth.dart';
 import 'package:dokudoku/ui/components/loader.dart';
 import 'package:dokudoku/ui/view/forgot_password_view.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 

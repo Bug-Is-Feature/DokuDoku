@@ -3,7 +3,8 @@ import 'package:dokudoku/res/AppContextExtension.dart';
 
 class SearchBox extends StatefulWidget {
   final String label;
-  const SearchBox({super.key, required this.label});
+  double width;
+  SearchBox({super.key, required this.label, required this.width});
 
   @override
   State<SearchBox> createState() => _SearchBoxState();
@@ -14,7 +15,8 @@ class _SearchBoxState extends State<SearchBox> {
   Widget build(BuildContext context) {
     return IntrinsicHeight(
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.50,
+        width: widget.width,
+        // MediaQuery.of(context).size.width * 0.50,
         height: MediaQuery.of(context).size.height * 0.042,
         child: TextField(
           cursorColor: context.resources.color.colorDarkest,
