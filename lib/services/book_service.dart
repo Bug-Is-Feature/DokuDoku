@@ -162,7 +162,7 @@ class BookService {
     }
   }
 
-  static Future<void> updateBookStatus(int id) async {
+  static Future<void> updateBookStatus(int id, bool is_completed) async {
     final currentUser = FirebaseAuth.instance.currentUser!;
     String idToken = await currentUser.getIdToken();
 
@@ -173,7 +173,7 @@ class BookService {
         'Authorization': 'Bearer $idToken'
       },
       body: jsonEncode({
-        'is_completed': true,
+        'is_completed': is_completed,
       }),
     );
 
