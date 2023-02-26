@@ -5,7 +5,7 @@ class Library {
   final int id, bookCount, completedCount, incompleteCount;
   final Users createdBy;
   final String createdAt;
-  final List<LibraryBooks> libraryBooks;
+  List<LibraryBooks> libraryBooks;
 
   Library({
     required this.id,
