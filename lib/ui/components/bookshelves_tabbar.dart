@@ -1,15 +1,16 @@
 import 'package:dokudoku/model/library.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
-import 'package:dokudoku/ui/view/complete_shelf_view.dart';
-import 'package:dokudoku/ui/view/incomplete_shelf_view.dart';
+import 'package:dokudoku/ui/view/bookshelves_tab_view.dart';
 import 'package:flutter/material.dart';
 
 class BookShelvesTabBar extends StatefulWidget {
   Future<Library> library;
+  final void Function(bool) callback;
 
   BookShelvesTabBar({
     super.key,
     required this.library,
+    required this.callback,
   });
 
   @override
@@ -31,14 +32,6 @@ class _BookShelvesTabBarState extends State<BookShelvesTabBar>
     super.dispose();
     _tabController.dispose();
   }
-
-//   Future<Library> _getLibrary() async {
-//     List<Library> library = await BookService.getLibrary();
-//     library[0]
-//         .libraryBooks
-//         .removeWhere((libraryBook) => libraryBook.isCompleted == true);
-//     return library[0];
-//   }
 
   @override
   Widget build(BuildContext context) {
@@ -112,16 +105,20 @@ class _BookShelvesTabBarState extends State<BookShelvesTabBar>
               physics: const NeverScrollableScrollPhysics(),
               children: [
                 Center(
-                  child: IncompleteShelfView(
+                  child: BookshelvesTabView(
                     library: widget.library,
+                    type: 'incomplete',
+                    callback: widget.callback,
                   ),
                 ),
                 Center(
-                  child: CompleteShelfView(),
+                  child: BookshelvesTabView(
+                    library: widget.library,
+                    type: 'completed',
+                    callback: widget.callback,
+                  ),
                 ),
               ],
-              //   );
-              //   },
             ),
           ),
         ],

@@ -1,14 +1,13 @@
 import 'package:dokudoku/services/book_service.dart';
-import 'package:dokudoku/ui/components/bookcard.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 
-class DropdownBookshelves extends StatefulWidget {
+class BookCardDropdown extends StatefulWidget {
   final int libraryBookId;
   final void Function(bool) callback;
   bool bookStatus;
 
-  DropdownBookshelves({
+  BookCardDropdown({
     super.key,
     required this.libraryBookId,
     required this.callback,
@@ -16,10 +15,10 @@ class DropdownBookshelves extends StatefulWidget {
   });
 
   @override
-  State<DropdownBookshelves> createState() => _DropdownBookshelvesState();
+  State<BookCardDropdown> createState() => _BookCardDropdownState();
 }
 
-class _DropdownBookshelvesState extends State<DropdownBookshelves> {
+class _BookCardDropdownState extends State<BookCardDropdown> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -72,20 +71,20 @@ class _DropdownBookshelvesState extends State<DropdownBookshelves> {
   }
 
   void dropdownCallback(String? selectedValue) async {
-    if (selectedValue is String) {
+    String currentStatus = widget.bookStatus ? 'Completed' : 'Incomplete';
+    if (selectedValue is String && selectedValue != currentStatus) {
       await BookService.updateBookStatus(
         widget.libraryBookId,
-        !widget.bookStatus,
+        selectedValue == 'Completed' ? true : false,
       );
-      setState(() {
-        if (selectedValue == "Completed") {
-          widget.bookStatus = true;
-          widget.callback(true);
-        } else if (selectedValue == "Incomplete") {
-          widget.bookStatus = false;
-          widget.callback(false);
-        }
-      });
+
+      if (selectedValue == "Completed") {
+        widget.bookStatus = true;
+      } else if (selectedValue == "Incomplete") {
+        widget.bookStatus = false;
+      }
+
+      widget.callback(widget.bookStatus);
     }
   }
 }

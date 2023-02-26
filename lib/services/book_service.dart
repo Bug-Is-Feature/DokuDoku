@@ -25,12 +25,17 @@ class BookService {
         'book_data': {
           'title': gBook.volumeInfo.title,
           'subtitle': gBook.volumeInfo.subtitle,
-          'category': gBook.volumeInfo.categories,
+          'category': gBook.volumeInfo.categories.isEmpty
+              ? ''
+              : gBook.volumeInfo.categories[0],
           'thumbnail': gBook.volumeInfo.thumbnail,
           'description': gBook.volumeInfo.description,
-          'page_count': gBook.volumeInfo.pageCount,
-          'currency_code': gBook.saleInfo.currencyCode,
-          'price': gBook.saleInfo.price,
+          'page_count':
+              gBook.volumeInfo.pageCount == -1 ? 0 : gBook.volumeInfo.pageCount,
+          'currency_code': gBook.saleInfo.currencyCode == ''
+              ? null
+              : gBook.saleInfo.currencyCode,
+          'price': gBook.saleInfo.price == -1 ? 0 : gBook.saleInfo.price,
           'google_book_id': gBook.googleBookId,
           'authors': gBook.volumeInfo.authors
               .map((author) => {'name': author})

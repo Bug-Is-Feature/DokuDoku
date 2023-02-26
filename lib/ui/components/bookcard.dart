@@ -1,16 +1,18 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:dokudoku/model/library_books.dart';
-import 'package:dokudoku/ui/components/dropdown_bookshelves.dart';
+import 'package:dokudoku/ui/components/bookcard_dropdown.dart';
 import 'package:dokudoku/ui/view/book_detail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 
 class BookCard extends StatefulWidget {
   LibraryBooks libraryBook;
+  final void Function(bool) callback;
 
   BookCard({
     super.key,
     required this.libraryBook,
+    required this.callback,
   });
 
   @override
@@ -101,14 +103,10 @@ class _BookCardState extends State<BookCard> {
                       height: MediaQuery.of(context).size.height * 0.01,
                     ),
                     //Drop Down  show if in bookshelf
-                    DropdownBookshelves(
+                    BookCardDropdown(
                       libraryBookId: widget.libraryBook.libraryBookId,
                       bookStatus: widget.libraryBook.isCompleted,
-                      callback: (bool bookStatus) {
-                        setState(() {
-                          widget.libraryBook.isCompleted = bookStatus;
-                        });
-                      },
+                      callback: widget.callback,
                     )
                   ],
                 ),

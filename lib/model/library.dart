@@ -1,8 +1,10 @@
 import 'package:dokudoku/model/library_books.dart';
 import 'package:dokudoku/model/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Library {
-  final int id, bookCount, completedCount, incompleteCount;
+  final int id;
+  int bookCount, completedCount, incompleteCount;
   final Users createdBy;
   final String createdAt;
   List<LibraryBooks> libraryBooks;
@@ -35,4 +37,23 @@ class Library {
   Map<String, dynamic> toJson() => {
         'uid': createdBy.uid,
       };
+
+  Library copyWith({
+    int? id,
+    int? bookCount,
+    int? completedCount,
+    int? incompleteCount,
+    User? createdBy,
+    String? createdAt,
+    List<LibraryBooks>? libraryBooks,
+  }) =>
+      Library(
+        id: id ?? this.id,
+        bookCount: bookCount ?? this.bookCount,
+        completedCount: completedCount ?? this.completedCount,
+        incompleteCount: incompleteCount ?? this.incompleteCount,
+        createdBy: createdBy == null ? Users.fromJson({}) : this.createdBy,
+        createdAt: createdAt ?? this.createdAt,
+        libraryBooks: libraryBooks ?? this.libraryBooks,
+      );
 }
