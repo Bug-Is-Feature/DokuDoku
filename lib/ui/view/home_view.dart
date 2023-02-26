@@ -6,10 +6,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dokudoku/routes/router.gr.dart';
 
 class HomeView extends StatefulWidget {
-  final int id;
-  final String title;
+//   final int id;
+//   final String title;
 
-  const HomeView({super.key, required this.id, required this.title});
+  const HomeView({super.key});
 
   @override
   State<HomeView> createState() => _HomeViewState();
