@@ -64,7 +64,7 @@ import 'package:flutter/material.dart';
           name: 'TimerRoute',
           page: EmptyRouterPage,
           children: [
-            AutoRoute(path: '', page: TimerModeTabBar),
+            AutoRoute(path: ':id/:title', page: TimerModeTabBar),
           ],
         ),
       ],

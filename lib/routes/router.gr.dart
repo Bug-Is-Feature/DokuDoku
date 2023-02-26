@@ -109,9 +109,19 @@ class AppRouter extends _i9.RootStackRouter {
       );
     },
     TimerModeTabBarRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<TimerModeTabBarRouteArgs>(
+          orElse: () => TimerModeTabBarRouteArgs(
+                id: pathParams.getInt('id'),
+                title: pathParams.getString('title'),
+              ));
       return _i9.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i8.TimerModeTabBar(),
+        child: _i8.TimerModeTabBar(
+          key: args.key,
+          id: args.id,
+          title: args.title,
+        ),
       );
     },
   };
@@ -195,7 +205,7 @@ class AppRouter extends _i9.RootStackRouter {
               children: [
                 _i9.RouteConfig(
                   TimerModeTabBarRoute.name,
-                  path: '',
+                  path: ':id/:title',
                   parent: TimerRoute.name,
                 )
               ],
@@ -381,12 +391,43 @@ class ProfileViewRoute extends _i9.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i8.TimerModeTabBar]
-class TimerModeTabBarRoute extends _i9.PageRouteInfo<void> {
-  const TimerModeTabBarRoute()
-      : super(
+class TimerModeTabBarRoute extends _i9.PageRouteInfo<TimerModeTabBarRouteArgs> {
+  TimerModeTabBarRoute({
+    _i10.Key? key,
+    required int id,
+    required String title,
+  }) : super(
           TimerModeTabBarRoute.name,
-          path: '',
+          path: ':id/:title',
+          args: TimerModeTabBarRouteArgs(
+            key: key,
+            id: id,
+            title: title,
+          ),
+          rawPathParams: {
+            'id': id,
+            'title': title,
+          },
         );
 
   static const String name = 'TimerModeTabBarRoute';
+}
+
+class TimerModeTabBarRouteArgs {
+  const TimerModeTabBarRouteArgs({
+    this.key,
+    required this.id,
+    required this.title,
+  });
+
+  final _i10.Key? key;
+
+  final int id;
+
+  final String title;
+
+  @override
+  String toString() {
+    return 'TimerModeTabBarRouteArgs{key: $key, id: $id, title: $title}';
+  }
 }
