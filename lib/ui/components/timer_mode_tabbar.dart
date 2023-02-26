@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:dokudoku/provider/timer_provider.dart';
 import 'package:dokudoku/ui/components/hourglass_session_input.dart';
 import 'package:dokudoku/ui/view/stopwatch_view.dart';
@@ -10,7 +11,10 @@ class TimerModeTabBar extends StatefulWidget {
   final int id;
   final String title;
 
-  const TimerModeTabBar({super.key, required this.id, required this.title});
+  const TimerModeTabBar(
+      {super.key,
+      @PathParam() required this.id,
+      @PathParam() required this.title});
 
   @override
   State<TimerModeTabBar> createState() => _TimerModeTabBarState();
@@ -65,8 +69,9 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
                 child: TabBar(
                   controller: _tabController,
                   indicator: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: context.resources.color.colorDarkest),
+                    borderRadius: BorderRadius.circular(25),
+                    color: context.resources.color.colorDarkest,
+                  ),
                   labelColor: context.resources.color.colorNormal2,
                   unselectedLabelColor: context.resources.color.colorDarkest,
                   tabs: [
@@ -79,8 +84,10 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
                           ),
                           Text(
                             'Stopwatch',
-                            style:
-                                TextStyle(fontSize: 22, fontFamily: 'primary'),
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontFamily: 'primary',
+                            ),
                           ),
                         ],
                       ),
