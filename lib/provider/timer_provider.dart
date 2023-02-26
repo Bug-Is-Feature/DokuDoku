@@ -272,6 +272,7 @@ class TimerProvider extends ChangeNotifier {
 
   void reset() {
     currentDuration = 0;
+    notifyListeners();
   }
 
   String formattedSeconds(int time) {
