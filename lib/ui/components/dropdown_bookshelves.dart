@@ -1,29 +1,39 @@
+import 'package:dokudoku/services/book_service.dart';
+import 'package:dokudoku/ui/components/bookcard.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 
-class DropdownBooksheleves extends StatefulWidget {
-  const DropdownBooksheleves({super.key});
+class DropdownBookshelves extends StatefulWidget {
+  final int libraryBookId;
+  final void Function(bool) callback;
+  bool bookStatus;
+
+  DropdownBookshelves({
+    super.key,
+    required this.libraryBookId,
+    required this.callback,
+    required this.bookStatus,
+  });
 
   @override
-  State<DropdownBooksheleves> createState() => _DropdownBookshelevesState();
+  State<DropdownBookshelves> createState() => _DropdownBookshelvesState();
 }
 
-class _DropdownBookshelevesState extends State<DropdownBooksheleves> {
-  String dropdownValue = 'Incomplete';
+class _DropdownBookshelvesState extends State<DropdownBookshelves> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.028,
       width: MediaQuery.of(context).size.width * 0.33,
       child: DropdownButtonFormField(
-        items: <String>['Incomplete', 'Complete']
+        items: <String>['Incomplete', 'Completed']
             .map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(value),
           );
         }).toList(),
-        value: dropdownValue,
+        value: widget.bookStatus ? "Completed" : "Incomplete",
         onChanged: dropdownCallback,
         icon: Icon(
           Icons.keyboard_arrow_down_outlined,
@@ -61,10 +71,20 @@ class _DropdownBookshelevesState extends State<DropdownBooksheleves> {
     );
   }
 
-  void dropdownCallback(String? selectedValue) {
+  void dropdownCallback(String? selectedValue) async {
     if (selectedValue is String) {
+      await BookService.updateBookStatus(
+        widget.libraryBookId,
+        !widget.bookStatus,
+      );
       setState(() {
-        dropdownValue = selectedValue;
+        if (selectedValue == "Completed") {
+          widget.bookStatus = true;
+          widget.callback(true);
+        } else if (selectedValue == "Incomplete") {
+          widget.bookStatus = false;
+          widget.callback(false);
+        }
       });
     }
   }

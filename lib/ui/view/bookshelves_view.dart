@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:dokudoku/model/library.dart';
 import 'package:dokudoku/routes/router.gr.dart';
+import 'package:dokudoku/services/book_service.dart';
 import 'package:dokudoku/ui/components/bookcard.dart';
 import 'package:dokudoku/ui/components/bookshelves_tabbar.dart';
 import 'package:dokudoku/ui/components/incomplete_badge.dart';
@@ -20,28 +22,41 @@ class BookShelvesView extends StatefulWidget {
 }
 
 class _BookShelvesViewState extends State<BookShelvesView> {
+  late Future<Library> library = _getLibrary();
   List book = [
     Book(id: 0),
     Book(id: 1),
     Book(id: 2),
   ];
 
+  Future<Library> _getLibrary() async {
+    List<Library> library = await BookService.getLibrary();
+    return library[0];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          Stack(children: [
-            Container(
-              height: MediaQuery.of(context).size.height * 0.2,
-              color: context.resources.color.colorLighter2,
-            ),
-            IncompleteStatusBadge(),
-          ], alignment: Alignment.center),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height * 0.2,
+                color: context.resources.color.colorLighter2,
+              ),
+              IncompleteStatusBadge(
+                library: library,
+              ),
+            ],
+          ),
           Expanded(
             child: Container(
               color: context.resources.color.colorWhite,
-              child: const BookShelvesTabBar(),
+              child: BookShelvesTabBar(
+                library: library,
+              ),
             ),
           ),
           // Expanded(
@@ -76,10 +91,10 @@ class Book<Widget> {
   Book({required this.id});
 }
 
-class BooKCard extends StatelessWidget {
+class BookCard extends StatelessWidget {
   final int id;
   final GestureTapCallback onTap;
-  BooKCard({required this.id, required this.onTap});
+  BookCard({required this.id, required this.onTap});
 
   Widget build(BuildContext context) {
     return ListTile(title: Text('Book $id'), onTap: onTap);

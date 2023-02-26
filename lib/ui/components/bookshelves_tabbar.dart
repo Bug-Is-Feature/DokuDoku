@@ -1,10 +1,16 @@
+import 'package:dokudoku/model/library.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:dokudoku/ui/view/complete_shelf_view.dart';
 import 'package:dokudoku/ui/view/incomplete_shelf_view.dart';
 import 'package:flutter/material.dart';
 
 class BookShelvesTabBar extends StatefulWidget {
-  const BookShelvesTabBar({super.key});
+  Future<Library> library;
+
+  BookShelvesTabBar({
+    super.key,
+    required this.library,
+  });
 
   @override
   State<BookShelvesTabBar> createState() => _BookShelvesTabBarState();
@@ -25,6 +31,14 @@ class _BookShelvesTabBarState extends State<BookShelvesTabBar>
     super.dispose();
     _tabController.dispose();
   }
+
+//   Future<Library> _getLibrary() async {
+//     List<Library> library = await BookService.getLibrary();
+//     library[0]
+//         .libraryBooks
+//         .removeWhere((libraryBook) => libraryBook.isCompleted == true);
+//     return library[0];
+//   }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +73,10 @@ class _BookShelvesTabBarState extends State<BookShelvesTabBar>
                     children: const [
                       Text(
                         'Incomplete',
-                        style: TextStyle(fontSize: 22, fontFamily: 'primary'),
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontFamily: 'primary',
+                        ),
                       ),
                     ],
                   ),
@@ -84,17 +101,27 @@ class _BookShelvesTabBarState extends State<BookShelvesTabBar>
           ),
           const SizedBox(height: 10),
           Expanded(
-            child: TabBarView(
+            child:
+                // child: FutureBuilder<Library>(
+                //   future: widget.library,
+                //   builder: (BuildContext context, AsyncSnapshot<Library> snapshot) {
+                //     return snapshot.connectionState == ConnectionState.waiting
+                //         ? const Center(child: CircularProgressIndicator())
+                TabBarView(
               controller: _tabController,
               physics: const NeverScrollableScrollPhysics(),
-              children: const [
+              children: [
                 Center(
-                  child: IncompleteShelfView(),
+                  child: IncompleteShelfView(
+                    library: widget.library,
+                  ),
                 ),
                 Center(
                   child: CompleteShelfView(),
                 ),
               ],
+              //   );
+              //   },
             ),
           ),
         ],

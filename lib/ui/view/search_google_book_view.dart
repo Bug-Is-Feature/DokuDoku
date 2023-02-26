@@ -9,6 +9,8 @@ import 'package:dokudoku/ui/view/google_book_detail_view.dart';
 import 'package:flutter/material.dart';
 
 class SearchGoogleBookView extends StatefulWidget {
+  const SearchGoogleBookView({super.key});
+
   @override
   State<SearchGoogleBookView> createState() => _SearchGoogleBookViewState();
 }
@@ -69,16 +71,7 @@ class _SearchGoogleBookViewState extends State<SearchGoogleBookView> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => GoogleBookDetailView(
-                            title: gBook.volumeInfo.title,
-                            subtitle: gBook.volumeInfo.subtitle,
-                            categories: gBook.volumeInfo.categories,
-                            thumbnail: gBook.volumeInfo.thumbnail,
-                            description: gBook.volumeInfo.description,
-                            pageCount: gBook.volumeInfo.pageCount,
-                            currencyCode: gBook.saleInfo.currencyCode,
-                            price: gBook.saleInfo.price,
-                            authors: gBook.volumeInfo.authors,
-                            googleBookId: gBook.googleBookId,
+                            googleBook: gBook,
                           ),
                         ),
                       );

@@ -1,36 +1,16 @@
 import 'package:dokudoku/model/author.dart';
+import 'package:dokudoku/model/book.dart';
 import 'package:dokudoku/model/library_books.dart';
 import 'package:dokudoku/services/book_service.dart';
 import 'package:dokudoku/ui/components/edit_book_dialog.dart';
 import 'package:flutter/material.dart';
 
 class BookDetailView extends StatefulWidget {
-  final int id, pageCount;
-  final double price;
-  final String title,
-      subtitle,
-      category,
-      thumbnail,
-      description,
-      currencyCode,
-      googleBookId;
-  final List<Author> author;
-  final bool isCompleted;
+  final LibraryBooks libraryBook;
 
   const BookDetailView({
     super.key,
-    required this.id,
-    required this.pageCount,
-    required this.price,
-    required this.title,
-    required this.subtitle,
-    required this.category,
-    required this.thumbnail,
-    required this.description,
-    required this.currencyCode,
-    required this.author,
-    required this.googleBookId,
-    required this.isCompleted,
+    required this.libraryBook,
   });
 
   @override
@@ -52,20 +32,20 @@ class _BookDetailViewState extends State<BookDetailView> {
             child: Text('Book Detail'),
           ),
           actions: <Widget>[
-            if (widget.googleBookId.isEmpty) ...[
+            if (widget.libraryBook.book.googleBookId.isEmpty) ...[
               IconButton(
                 onPressed: () {
                   editBookDialog.editBookPopup(
                     context,
-                    widget.id,
-                    widget.pageCount,
-                    widget.price,
-                    widget.title,
-                    widget.subtitle,
-                    widget.category,
-                    widget.thumbnail,
-                    widget.description,
-                    widget.currencyCode,
+                    widget.libraryBook.book.id,
+                    widget.libraryBook.book.pageCount,
+                    widget.libraryBook.book.price,
+                    widget.libraryBook.book.title,
+                    widget.libraryBook.book.subtitle,
+                    widget.libraryBook.book.category,
+                    widget.libraryBook.book.thumbnail,
+                    widget.libraryBook.book.description,
+                    widget.libraryBook.book.currencyCode,
                   );
 
                   setState(() {});
@@ -82,34 +62,31 @@ class _BookDetailViewState extends State<BookDetailView> {
             Container(
               alignment: Alignment.center,
               child: Image.network(
-                widget.thumbnail,
+                widget.libraryBook.book.thumbnail,
                 errorBuilder: ((context, error, stackTrace) =>
                     Image.asset('assets/images/default_book_cover.png')),
               ),
             ),
             const SizedBox(height: 10),
-            Text(widget.title),
+            Text(widget.libraryBook.book.title),
             const SizedBox(height: 10),
-            if (widget.author.isEmpty) ...[
+            if (widget.libraryBook.book.authors.isEmpty) ...[
               const Text('No author details')
             ] else ...[
               Text(
-                  'by ${widget.author.map((author) => author.name).join(', ')}'),
+                  'by ${widget.libraryBook.book.authors.map((author) => author.name).join(', ')}'),
             ],
             const SizedBox(height: 50),
-            if (widget.isCompleted) ...[
-              const Text('Reading Status: Complete'),
-            ] else ...[
-              const Text('Reading Status: Incomplete'),
-            ],
+            Text(
+                'Reading Status: ${widget.libraryBook.isCompleted ? 'Completed' : 'Incomplete'}'),
             const SizedBox(height: 10),
-            if (widget.price < 0) ...[
+            if (widget.libraryBook.book.price < 0) ...[
               const Text('Price: No price details')
             ] else ...[
-              Text('Price: ${widget.price.toString()}'),
+              Text('Price: ${widget.libraryBook.book.price.toString()}'),
             ],
             const SizedBox(height: 10),
-            Text('Book Page: ${widget.pageCount.toString()}'),
+            Text('Book Page: ${widget.libraryBook.book.pageCount.toString()}'),
           ],
         ));
   }

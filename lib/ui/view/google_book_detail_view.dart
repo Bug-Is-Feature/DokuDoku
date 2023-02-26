@@ -1,28 +1,12 @@
+import 'package:dokudoku/model/google_book.dart';
 import 'package:flutter/material.dart';
 
 class GoogleBookDetailView extends StatefulWidget {
-  final int pageCount;
-  final double price;
-  final String title,
-      subtitle,
-      thumbnail,
-      description,
-      currencyCode,
-      googleBookId;
-  final List<String> authors, categories;
+  final GoogleBook googleBook;
 
   const GoogleBookDetailView({
     super.key,
-    required this.googleBookId,
-    required this.pageCount,
-    required this.price,
-    required this.title,
-    required this.subtitle,
-    required this.thumbnail,
-    required this.description,
-    required this.currencyCode,
-    required this.authors,
-    required this.categories,
+    required this.googleBook,
   });
 
   @override
@@ -52,25 +36,26 @@ class _GoogleBookDetailViewState extends State<GoogleBookDetailView> {
             Container(
               alignment: Alignment.center,
               child: Image.network(
-                widget.thumbnail,
+                widget.googleBook.volumeInfo.thumbnail,
               ),
             ),
             const SizedBox(height: 10),
-            Text(widget.title),
+            Text(widget.googleBook.volumeInfo.title),
             const SizedBox(height: 10),
-            if (widget.authors.isEmpty) ...[
+            if (widget.googleBook.volumeInfo.authors.isEmpty) ...[
               const Text('no author')
             ] else ...[
-              Text('by ${widget.authors.join(', ')}'),
+              Text('by ${widget.googleBook.volumeInfo.authors.join(', ')}'),
             ],
             const SizedBox(height: 50),
-            if (widget.price < 0) ...[
+            if (widget.googleBook.saleInfo.price < 0) ...[
               const Text('Price: No price details')
             ] else ...[
-              Text('Price: ${widget.price.toString()}'),
+              Text('Price: ${widget.googleBook.saleInfo.price.toString()}'),
             ],
             const SizedBox(height: 10),
-            Text('Book Page: ${widget.pageCount.toString()}'),
+            Text(
+                'Book Page: ${widget.googleBook.volumeInfo.pageCount.toString()}'),
           ],
         ));
   }

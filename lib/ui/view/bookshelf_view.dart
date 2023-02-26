@@ -23,13 +23,13 @@ class _BookShelfViewState extends State<BookShelfView> {
   @override
   void initState() {
     super.initState();
-    refreshBooks();
+    // refreshBooks();
   }
 
-  Future refreshBooks() async {
-    setState(() => isLoading = true);
-    setState(() => isLoading = false);
-  }
+//   Future refreshBooks() async {
+//     setState(() => isLoading = true);
+//     setState(() => isLoading = false);
+//   }
 
   Future<Library> _getLibrary() async {
     List<Library> library = await BookService.getLibrary();
@@ -102,9 +102,9 @@ class _BookShelfViewState extends State<BookShelfView> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) => HomeView(
-                                                      id: libraryBook.book.id,
-                                                      title: libraryBook
-                                                          .book.title,
+                                                    //   id: libraryBook.book.id,
+                                                    //   title: libraryBook
+                                                    //       .book.title,
                                                     )),
                                           );
                                         },
@@ -124,33 +124,33 @@ class _BookShelfViewState extends State<BookShelfView> {
                                     setState(() {});
                                   },
                                   onTap: () async {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => BookDetailView(
-                                                id: libraryBook.book.id,
-                                                title: libraryBook.book.title,
-                                                subtitle:
-                                                    libraryBook.book.subtitle,
-                                                category:
-                                                    libraryBook.book.category,
-                                                thumbnail:
-                                                    libraryBook.book.thumbnail,
-                                                description: libraryBook
-                                                    .book.description,
-                                                pageCount:
-                                                    libraryBook.book.pageCount,
-                                                currencyCode: libraryBook
-                                                    .book.currencyCode,
-                                                price: libraryBook.book.price,
-                                                googleBookId: libraryBook
-                                                    .book.googleBookId,
-                                                author:
-                                                    libraryBook.book.authors,
-                                                isCompleted:
-                                                    libraryBook.isCompleted,
-                                              )),
-                                    );
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //       builder: (context) => BookDetailView(
+                                    //             id: libraryBook.book.id,
+                                    //             title: libraryBook.book.title,
+                                    //             subtitle:
+                                    //                 libraryBook.book.subtitle,
+                                    //             category:
+                                    //                 libraryBook.book.category,
+                                    //             thumbnail:
+                                    //                 libraryBook.book.thumbnail,
+                                    //             description: libraryBook
+                                    //                 .book.description,
+                                    //             pageCount:
+                                    //                 libraryBook.book.pageCount,
+                                    //             currencyCode: libraryBook
+                                    //                 .book.currencyCode,
+                                    //             price: libraryBook.book.price,
+                                    //             googleBookId: libraryBook
+                                    //                 .book.googleBookId,
+                                    //             author:
+                                    //                 libraryBook.book.authors,
+                                    //             isCompleted:
+                                    //                 libraryBook.isCompleted,
+                                    //           )),
+                                    // );
                                   },
                                 ),
                               );
