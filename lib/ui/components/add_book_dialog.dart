@@ -1,127 +1,247 @@
 import 'package:dokudoku/provider/book_provider.dart';
+import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:dokudoku/services/book_service.dart';
+import 'package:dokudoku/ui/components/author_card.dart';
+import 'package:dokudoku/ui/components/textfield_custombook.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AddBookDialog {
-  Widget inputField(String label, TextEditingController controller) {
-    return TextFormField(
-      decoration: InputDecoration(
-        labelText: 'Book $label',
-        border: const OutlineInputBorder(),
-      ),
-      controller: controller,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter a book $label';
-        } else {
-          return null;
-        }
-      },
-    );
-  }
+class AddBookDialog extends StatefulWidget {
+  const AddBookDialog({super.key});
 
-  Future<void> addBookPopup(BuildContext context) async {
+  @override
+  State<AddBookDialog> createState() => _AddBookDialogState();
+}
+
+class _AddBookDialogState extends State<AddBookDialog> {
+  List<String> authorList = [];
+  @override
+  Widget build(BuildContext context) {
     final provider = Provider.of<BookProvider>(context, listen: false);
+    return SingleChildScrollView(
+      child: Form(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 12,
+              ),
+              child: TextFieldCustomBook(
+                label: "title",
+                controller: provider.titleController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a book ';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 12,
+              ),
+              child: TextFieldCustomBook(
+                label: "Subtitle",
+                controller: provider.subtitleController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a book ';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 12,
+              ),
+              child: TextFieldCustomBook(
+                label: "category",
+                controller: provider.categoryController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a book ';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 12,
+              ),
+              child: TextFieldCustomBook(
+                label: "Author",
+                controller: provider.authorController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a book ';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 12,
+              ),
+              child: TextFieldCustomBook(
+                label: "description",
+                controller: provider.descriptionController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a book ';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 12,
+              ),
+              child: TextFieldCustomBook(
+                label: "currency code",
+                controller: provider.currencyCodeController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a book';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 12,
+              ),
+              child: TextFieldCustomBook(
+                label: "pages",
+                controller: provider.pageCountController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a book ';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 12,
+              ),
+              child: TextFieldCustomBook(
+                label: "price",
+                controller: provider.bookPriceController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a book ';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 12,
+              ),
+              child: TextFieldCustomBook(
+                label: "picture",
+                controller: provider.thumbnailController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a book ';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            // const SizedBox(height: 20),
 
-    return await showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          actions: [
-            ElevatedButton(
-              onPressed: () async {
-                await BookService.addCustomBook(context);
-                Provider.of<BookProvider>(context, listen: false)
-                    .clearBookControllers();
-                Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Custom book added successfully'),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.brown[400],
-              ),
-              child: const Text('Upload'),
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.pop(context, false),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.brown[400],
-              ),
-              child: const Text('No'),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       Text(
+            //         "Author",
+            //         style: TextStyle(
+            //             color: context.resources.color.colorDark,
+            //             fontSize: 16,
+            //             fontWeight: FontWeight.w600),
+            //       ),
+            //       IconButton(
+            //         icon: const Icon(Icons.add),
+            //         color: context.resources.color.colorDark,
+            //         onPressed: () {
+            //           showDialog(
+            //             context: context,
+            //             builder: (context) => AlertDialog(
+            //               shape: RoundedRectangleBorder(
+            //                 borderRadius: BorderRadius.circular(20),
+            //               ),
+            //               content: TextFormField(
+            //                 controller: provider.authorController,
+            //                 decoration: const InputDecoration(
+            //                   labelText: 'Author name',
+            //                   border: OutlineInputBorder(
+            //                       borderRadius:
+            //                           BorderRadius.all(Radius.circular(20))),
+            //                 ),
+            //               ),
+            //               actions: [
+            //                 TextButton(
+            //                   onPressed: () async {
+            //                     authorList.add(provider.authorController.text);
+            //                     Navigator.of(context).pop();
+            //                   },
+            //                   child: Text('Add'),
+            //                 ),
+            //                 TextButton(
+            //                   onPressed: () {
+            //                     Navigator.of(context).pop();
+            //                   },
+            //                   child: Text('No'),
+            //                 ),
+            //               ],
+            //             ),
+            //           );
+            //         },
+            //       ),
+            //     ],
+            //   ),
+            // ),
           ],
-          title: const Text('Add Book'),
-          content: SingleChildScrollView(
-            child: Form(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10.0,
-                    ),
-                    child: inputField('title', provider.titleController),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10.0,
-                    ),
-                    child: inputField('subtitle', provider.subtitleController),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10.0,
-                    ),
-                    child: inputField('category', provider.categoryController),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10.0,
-                    ),
-                    child: inputField('author', provider.authorController),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10.0,
-                    ),
-                    child: inputField(
-                        'description', provider.descriptionController),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10.0,
-                    ),
-                    child: inputField(
-                        'currency code', provider.currencyCodeController),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10.0,
-                    ),
-                    child: inputField('pages', provider.pageCountController),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10.0,
-                    ),
-                    child: inputField('price', provider.bookPriceController),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10.0,
-                    ),
-                    child: inputField('picture', provider.thumbnailController),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
+          // ListView.builder(
+          //   itemCount: authorList.length,
+          //   itemBuilder: (context, index) {
+          //     // print(authorList.length);
+          //     // print(index);
+          //     return AuthorCard(
+          //       authorName: authorList[index],
+          //     );
+          //   },
+          // ),
+        ),
+      ),
+      //   itemCount: authorList.length,
+      //   itemBuilder: (context, index) {
+      //     // print(authorList.length);
+      //     // print(index);
+      //     return AuthorCard(
+      //       authorName: authorList[index],
+      //     );
+      //   },
     );
   }
 }

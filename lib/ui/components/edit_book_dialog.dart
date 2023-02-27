@@ -1,151 +1,254 @@
+import 'package:dokudoku/model/library_books.dart';
 import 'package:dokudoku/provider/book_provider.dart';
 import 'package:dokudoku/services/book_service.dart';
+import 'package:dokudoku/ui/components/textfield_custombook.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class EditBookDialog {
-  Widget inputField(String label, TextEditingController controller) {
-    return TextFormField(
-      decoration: InputDecoration(
-        labelText: 'Book $label',
-        border: const OutlineInputBorder(),
-      ),
-      controller: controller,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter a book $label';
-        } else {
-          return null;
-        }
-      },
-    );
-  }
+class EditBookDialog extends StatefulWidget {
+  final LibraryBooks libraryBook;
+  const EditBookDialog({super.key, required this.libraryBook});
 
-  Future<void> editBookPopup(
-    BuildContext context,
-    int id,
-    int pageCount,
-    double price,
-    String title,
-    String subtitle,
-    String category,
-    String thumbnail,
-    String description,
-    String currencyCode,
-  ) async {
+  @override
+  State<EditBookDialog> createState() => _EditBookDialogState();
+}
+
+class _EditBookDialogState extends State<EditBookDialog> {
+  @override
+  Widget build(BuildContext context) {
     final provider = Provider.of<BookProvider>(context, listen: false);
+    return SingleChildScrollView(
+      child: Form(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 12,
+              ),
+              child: TextFieldCustomBook(
+                label: "title",
+                controller: provider.editTitleController
+                  ..text = widget.libraryBook.book.title,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a book ';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 12,
+              ),
+              child: TextFieldCustomBook(
+                label: "Subtitle",
+                controller: provider.editSubtitleController
+                  ..text = widget.libraryBook.book.subtitle,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a book ';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 12,
+              ),
+              child: TextFieldCustomBook(
+                label: "category",
+                controller: provider.editCategoryController
+                  ..text = widget.libraryBook.book.category,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a book ';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 12,
+              ),
+              child: TextFieldCustomBook(
+                label: "Author",
+                controller: provider.editAuthorController..text = 'Author',
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a book ';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 12,
+              ),
+              child: TextFieldCustomBook(
+                label: "description",
+                controller: provider.editDescriptionController
+                  ..text = widget.libraryBook.book.description,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a book ';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 12,
+              ),
+              child: TextFieldCustomBook(
+                label: "currency code",
+                controller: provider.editCurrencyCodeController
+                  ..text = widget.libraryBook.book.currencyCode,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a book';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 12,
+              ),
+              child: TextFieldCustomBook(
+                label: "pages",
+                controller: provider.editPageCountController
+                  ..text = widget.libraryBook.book.pageCount.toString(),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a book ';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 12,
+              ),
+              child: TextFieldCustomBook(
+                label: "price",
+                controller: provider.editBookPriceController
+                  ..text = widget.libraryBook.book.price.toString(),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a book ';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 12,
+              ),
+              child: TextFieldCustomBook(
+                label: "picture",
+                controller: provider.editThumbnailController
+                  ..text = widget.libraryBook.book.thumbnail,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a book ';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            // const SizedBox(height: 20),
 
-    return await showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          actions: [
-            ElevatedButton(
-              onPressed: () async {
-                await BookService.updateBook(context, id);
-                Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Custom book updated successfully'),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.brown[400],
-              ),
-              child: const Text('Edit'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context, false);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.brown[400],
-              ),
-              child: const Text('No'),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       Text(
+            //         "Author",
+            //         style: TextStyle(
+            //             color: context.resources.color.colorDark,
+            //             fontSize: 16,
+            //             fontWeight: FontWeight.w600),
+            //       ),
+            //       IconButton(
+            //         icon: const Icon(Icons.add),
+            //         color: context.resources.color.colorDark,
+            //         onPressed: () {
+            //           showDialog(
+            //             context: context,
+            //             builder: (context) => AlertDialog(
+            //               shape: RoundedRectangleBorder(
+            //                 borderRadius: BorderRadius.circular(20),
+            //               ),
+            //               content: TextFormField(
+            //                 controller: provider.authorController,
+            //                 decoration: const InputDecoration(
+            //                   labelText: 'Author name',
+            //                   border: OutlineInputBorder(
+            //                       borderRadius:
+            //                           BorderRadius.all(Radius.circular(20))),
+            //                 ),
+            //               ),
+            //               actions: [
+            //                 TextButton(
+            //                   onPressed: () async {
+            //                     authorList.add(provider.authorController.text);
+            //                     Navigator.of(context).pop();
+            //                   },
+            //                   child: Text('Add'),
+            //                 ),
+            //                 TextButton(
+            //                   onPressed: () {
+            //                     Navigator.of(context).pop();
+            //                   },
+            //                   child: Text('No'),
+            //                 ),
+            //               ],
+            //             ),
+            //           );
+            //         },
+            //       ),
+            //     ],
+            //   ),
+            // ),
           ],
-          title: const Text('Edit Book'),
-          content: SingleChildScrollView(
-            child: Form(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10.0,
-                    ),
-                    child: inputField(
-                        'title', provider.editTitleController..text = title),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10.0,
-                    ),
-                    child: inputField('subtitle',
-                        provider.editSubtitleController..text = subtitle),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10.0,
-                    ),
-                    child: inputField('category',
-                        provider.editCategoryController..text = category),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10.0,
-                    ),
-                    child: inputField('author',
-                        provider.editAuthorController..text = 'author'),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10.0,
-                    ),
-                    child: inputField('description',
-                        provider.editDescriptionController..text = description),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10.0,
-                    ),
-                    child: inputField(
-                        'currency code',
-                        provider.editCurrencyCodeController
-                          ..text = currencyCode),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10.0,
-                    ),
-                    child: inputField(
-                        'pages',
-                        provider.editPageCountController
-                          ..text = pageCount.toString()),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10.0,
-                    ),
-                    child: inputField(
-                        'price',
-                        provider.editBookPriceController
-                          ..text = price.toString()),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10.0,
-                    ),
-                    child: inputField('picture',
-                        provider.editThumbnailController..text = thumbnail),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
+          // ListView.builder(
+          //   itemCount: authorList.length,
+          //   itemBuilder: (context, index) {
+          //     // print(authorList.length);
+          //     // print(index);
+          //     return AuthorCard(
+          //       authorName: authorList[index],
+          //     );
+          //   },
+          // ),
+        ),
+      ),
+      //   itemCount: authorList.length,
+      //   itemBuilder: (context, index) {
+      //     // print(authorList.length);
+      //     // print(index);
+      //     return AuthorCard(
+      //       authorName: authorList[index],
+      //     );
+      //   },
     );
   }
 }
