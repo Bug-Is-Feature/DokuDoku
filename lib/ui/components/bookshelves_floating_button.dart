@@ -1,10 +1,15 @@
 import 'package:dokudoku/model/library.dart';
 import 'package:dokudoku/model/library_books.dart';
+import 'package:dokudoku/provider/book_provider.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
+import 'package:dokudoku/services/book_service.dart';
 import 'package:dokudoku/ui/view/search_google_book_view.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/ui/components/add_book_dialog.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:provider/provider.dart';
 
 class BookshelvesFloatingButton extends StatefulWidget {
   Future<Library> library;
@@ -23,7 +28,7 @@ class BookshelvesFloatingButton extends StatefulWidget {
 }
 
 class _BookshelvesFloatingButtonState extends State<BookshelvesFloatingButton> {
-  AddBookDialog addBookDialog = AddBookDialog();
+  String? scanResult;
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +43,11 @@ class _BookshelvesFloatingButtonState extends State<BookshelvesFloatingButton> {
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => SearchGoogleBookView(
-                  library: widget.library,
-                  addCallback: widget.addCallback,
-                  removeCallback: widget.removeCallback),
+                library: widget.library,
+                addCallback: widget.addCallback,
+                removeCallback: widget.removeCallback,
+                isbn: '',
+              ),
             ));
           },
         ),
@@ -52,7 +59,41 @@ class _BookshelvesFloatingButtonState extends State<BookshelvesFloatingButton> {
           ),
           label: 'Add Book',
           onTap: () async {
-            await addBookDialog.addBookPopup(context);
+            await showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    actions: [
+                      ElevatedButton(
+                        onPressed: () async {
+                          await BookService.addCustomBook(context);
+                          if (!mounted) return;
+                          Provider.of<BookProvider>(context, listen: false)
+                              .clearBookControllers();
+                          Navigator.of(context).pop();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Custom book added successfully'),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.brown[400],
+                        ),
+                        child: const Text('Upload'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () => Navigator.pop(context, false),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.brown[400],
+                        ),
+                        child: const Text('No'),
+                      ),
+                    ],
+                    title: const Text('Add Book'),
+                    content: const AddBookDialog(),
+                  );
+                });
             setState(() {});
           },
         ),
@@ -63,9 +104,41 @@ class _BookshelvesFloatingButtonState extends State<BookshelvesFloatingButton> {
             color: context.resources.color.colorWhite,
           ),
           label: 'Add Book by ISBN',
-          onTap: () {},
+          onTap: () {
+            scanIsbn();
+          },
         ),
       ],
     );
+  }
+
+  Future scanIsbn() async {
+    String scanResult;
+
+    try {
+      scanResult = await FlutterBarcodeScanner.scanBarcode(
+        '#ff6666',
+        'Cancel',
+        true,
+        ScanMode.BARCODE,
+      );
+    } on PlatformException {
+      scanResult = 'Failed to get platform version';
+    }
+    if (!mounted) return;
+
+    setState(() {
+      this.scanResult = scanResult;
+    });
+
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => SearchGoogleBookView(
+        library: widget.library,
+        isbn: scanResult,
+        addCallback: widget.addCallback,
+        removeCallback: widget.removeCallback,
+      ),
+    ));
+    print('scanResult: $scanResult');
   }
 }
