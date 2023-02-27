@@ -35,10 +35,10 @@ import 'package:flutter/material.dart';
               page: EmptyRouterPage,
               children: [
                 AutoRoute(path: '', page: BookShelvesView),
-                AutoRoute(
-                    path: ':bookID',
-                    name: 'BookDetailsRoute',
-                    page: BookDetailsView),
+                // AutoRoute(
+                //     path: ':bookID',
+                //     name: 'BookDetailsRoute',
+                //     page: BookDetailsView),
               ],
             ),
             AutoRoute(
