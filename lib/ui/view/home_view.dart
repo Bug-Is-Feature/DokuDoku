@@ -25,7 +25,7 @@ class _HomeViewState extends State<HomeView> {
         // appBarBuilder: (context, tabsRouter) => AppBar(
         //   elevation: 0,
         //   backgroundColor: Colors.transparent,
-        //   centerTitle: true,
+        //   centerTitle: true
         //   leading: const AutoBackButton(),
         //   actions: [
         //     IconButton(

@@ -48,7 +48,7 @@ class _BookShelfViewState extends State<BookShelfView> {
         actions: [
           IconButton(
             onPressed: () async {
-              await addBookDialog.addBookPopup(context);
+              AddBookDialog;
               setState(() {});
             },
             icon: const Icon(Icons.add),

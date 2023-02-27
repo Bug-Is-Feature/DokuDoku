@@ -86,6 +86,7 @@ class _BookshelvesTabViewState extends State<BookshelvesTabView> {
                                 snapshot.data!.libraryBooks[index];
                             return Column(
                               children: [
+                                const SizedBox(height: 14),
                                 BookCard(
                                   libraryBook: libraryBook,
                                   callback: (bool bookStatus) async {
@@ -100,20 +101,7 @@ class _BookshelvesTabViewState extends State<BookshelvesTabView> {
 
                                     widget.callback(bookStatus);
                                   },
-                                  //     onLongPress: () async {
-                                  //       await BookService.removeBookById(
-                                  //           libraryBook.libraryBookId);
-                                  //       ScaffoldMessenger.of(context)
-                                  //           .showSnackBar(
-                                  //         const SnackBar(
-                                  //           content:
-                                  //               Text('removed book successfully'),
-                                  //         ),
-                                  //       );
-                                  //       setState(() {});
-                                  //     },
                                 ),
-                                const SizedBox(height: 20),
                               ],
                             );
                           },

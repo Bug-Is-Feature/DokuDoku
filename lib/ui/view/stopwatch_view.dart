@@ -27,18 +27,19 @@ class _StopwatchViewState extends State<StopwatchView> {
         child: Center(
           child: Column(
             children: [
-              Text(
-                'Book: ${widget.title}',
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
               const SizedBox(
                 height: 60,
               ),
               const StopwatchTimer(),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.09),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+              Text(
+                'Book: ${widget.title}',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
               Button(
                 backgroundColor: provider.timerPlaying
                     ? context.resources.color.colorDarkest

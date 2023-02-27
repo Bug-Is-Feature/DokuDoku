@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dokudoku/model/library_books.dart';
 import 'package:dokudoku/ui/components/bookcard_dropdown.dart';
 import 'package:dokudoku/ui/view/book_detail_view.dart';
+import 'package:dokudoku/ui/view/book_details_view.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 
@@ -27,7 +28,7 @@ class _BookCardState extends State<BookCard> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => BookDetailView(
+            builder: (context) => BookDetailsView(
               libraryBook: widget.libraryBook,
             ),
           ),
