@@ -3,6 +3,7 @@ import 'package:dokudoku/model/library_books.dart';
 import 'package:dokudoku/ui/components/bookcard.dart';
 import 'package:dokudoku/ui/components/bookshelves_floating_button.dart';
 import 'package:dokudoku/ui/components/search_sort_bookshelves.dart';
+import 'package:dokudoku/ui/components/snack_bar_utils.dart';
 import 'package:flutter/material.dart';
 
 class BookshelvesTabView extends StatefulWidget {
@@ -22,6 +23,8 @@ class BookshelvesTabView extends StatefulWidget {
 }
 
 class _BookshelvesTabViewState extends State<BookshelvesTabView> {
+  String error = '';
+
   @override
   void initState() {
     super.initState();
@@ -45,7 +48,27 @@ class _BookshelvesTabViewState extends State<BookshelvesTabView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: const BookshelvesFloatingButton(),
+      floatingActionButton: BookshelvesFloatingButton(
+        library: widget.library,
+        addCallback: (bool isSuccess, LibraryBooks libraryBook) async {
+          if (isSuccess) {
+            Library library = await widget.library;
+            setState(() => library.libraryBooks.add(libraryBook));
+          } else {
+            SnackBarUtils.showWarningSnackBar(
+                context: context, content: 'Something went wrong');
+          }
+        },
+        removeCallback: (bool isSuccess, LibraryBooks libraryBook) async {
+          if (isSuccess) {
+            Library library = await widget.library;
+            setState(() => library.libraryBooks.remove(libraryBook));
+          } else {
+            SnackBarUtils.showWarningSnackBar(
+                context: context, content: 'Something went wrong');
+          }
+        },
+      ),
       body: Stack(
         children: [
           FutureBuilder<Library>(

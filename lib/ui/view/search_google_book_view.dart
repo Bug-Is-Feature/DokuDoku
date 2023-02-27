@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:dokudoku/model/google_book.dart';
+import 'package:dokudoku/model/library.dart';
+import 'package:dokudoku/model/library_books.dart';
 import 'package:dokudoku/services/book_service.dart';
 import 'package:dokudoku/services/google_book_api.dart';
 import 'package:dokudoku/ui/components/search.dart';
@@ -9,7 +11,15 @@ import 'package:dokudoku/ui/view/google_book_detail_view.dart';
 import 'package:flutter/material.dart';
 
 class SearchGoogleBookView extends StatefulWidget {
-  const SearchGoogleBookView({super.key});
+  Future<Library> library;
+  final void Function(bool, LibraryBooks) addCallback, removeCallback;
+
+  SearchGoogleBookView({
+    super.key,
+    required this.library,
+    required this.addCallback,
+    required this.removeCallback,
+  });
 
   @override
   State<SearchGoogleBookView> createState() => _SearchGoogleBookViewState();
@@ -23,7 +33,7 @@ class _SearchGoogleBookViewState extends State<SearchGoogleBookView> {
 
   @override
   void initState() {
-    // getIds();
+    _getIdList();
     super.initState();
   }
 
@@ -31,6 +41,12 @@ class _SearchGoogleBookViewState extends State<SearchGoogleBookView> {
   void dispose() {
     debouncer?.cancel();
     super.dispose();
+  }
+
+  void _getIdList() {
+    widget.library.then((value) => setState(() => idList = value.libraryBooks
+        .map((libraryBook) => libraryBook.book.googleBookId)
+        .toList()));
   }
 
   void debounce(
@@ -62,26 +78,55 @@ class _SearchGoogleBookViewState extends State<SearchGoogleBookView> {
               itemBuilder: (context, index) {
                 final book = books[index];
                 return GoogleBookSearchCard(
-                    book: book,
-                    imageHeight: 100.0,
-                    imageWidth: 64.0,
-                    idList: idList,
-                    onTap: (GoogleBook gBook) async {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => GoogleBookDetailView(
-                            googleBook: gBook,
-                          ),
+                  book: book,
+                  imageHeight: 100.0,
+                  imageWidth: 64.0,
+                  idList: idList,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GoogleBookDetailView(
+                          googleBook: book,
                         ),
-                      );
-                    },
-                    onPressed: (GoogleBook gBook) async {
-                      await BookService.addGoogleBook(gBook);
-                      setState(() {
-                        idList.add(gBook.googleBookId);
-                      });
-                    });
+                      ),
+                    );
+                  },
+                  onPressed: (bool isAdd) async {
+                    String error = '';
+
+                    if (isAdd) {
+                      LibraryBooks libraryBook =
+                          await BookService.addGoogleBook(book)
+                              .catchError((e) => error = e);
+                      if (error.isEmpty) {
+                        setState(() => idList.add(book.googleBookId));
+                        widget.addCallback(error.isEmpty, libraryBook);
+                      } else {
+                        print(error);
+                      }
+                    } else {
+                      final libraryBook = await widget.library.then((value) =>
+                          value
+                              .libraryBooks
+                              .where((libraryBook) =>
+                                  libraryBook.book.googleBookId ==
+                                  book.googleBookId)
+                              .first);
+
+                      await BookService.removeBookById(
+                              libraryBook.libraryBookId)
+                          .catchError((e) => error = e);
+
+                      if (error.isEmpty) {
+                        setState(() => idList.remove(book.googleBookId));
+                        widget.removeCallback(error.isEmpty, libraryBook);
+                      } else {
+                        print(error);
+                      }
+                    }
+                  },
+                );
               },
             ),
           ),

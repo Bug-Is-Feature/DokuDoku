@@ -6,8 +6,8 @@ class GoogleBookSearchCard extends StatefulWidget {
   final double imageHeight;
   final double imageWidth;
   final List<String> idList;
-  final Function(GoogleBook) onPressed;
-  final Function(GoogleBook) onTap;
+  final void Function(bool) onPressed;
+  final VoidCallback onTap;
 
   const GoogleBookSearchCard({
     super.key,
@@ -29,7 +29,7 @@ class _GoogleBookSearchCardState extends State<GoogleBookSearchCard> {
   @override
   Widget build(BuildContext context) => GestureDetector(
         onTap: () => {
-          widget.onTap(widget.book),
+          widget.onTap(),
         },
         child: Card(
           child: Padding(
@@ -114,8 +114,10 @@ class _GoogleBookSearchCardState extends State<GoogleBookSearchCard> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () => {
-                    widget.onPressed(widget.book),
+                  onPressed: () {
+                    widget.idList.contains(widget.book.googleBookId)
+                        ? widget.onPressed(false)
+                        : widget.onPressed(true);
                   },
                   color: Colors.brown[400],
                   iconSize: 50,

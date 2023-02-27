@@ -1,3 +1,5 @@
+import 'package:dokudoku/model/library.dart';
+import 'package:dokudoku/model/library_books.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:dokudoku/ui/view/search_google_book_view.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +7,15 @@ import 'package:dokudoku/ui/components/add_book_dialog.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class BookshelvesFloatingButton extends StatefulWidget {
-  const BookshelvesFloatingButton({super.key});
+  Future<Library> library;
+  final void Function(bool, LibraryBooks) addCallback, removeCallback;
+
+  BookshelvesFloatingButton({
+    super.key,
+    required this.library,
+    required this.addCallback,
+    required this.removeCallback,
+  });
 
   @override
   State<BookshelvesFloatingButton> createState() =>
@@ -27,7 +37,10 @@ class _BookshelvesFloatingButtonState extends State<BookshelvesFloatingButton> {
           label: 'Search Book',
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => SearchGoogleBookView(),
+              builder: (context) => SearchGoogleBookView(
+                  library: widget.library,
+                  addCallback: widget.addCallback,
+                  removeCallback: widget.removeCallback),
             ));
           },
         ),

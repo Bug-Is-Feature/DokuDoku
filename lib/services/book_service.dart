@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 class BookService {
-  static Future<void> addGoogleBook(GoogleBook gBook) async {
+  static Future<LibraryBooks> addGoogleBook(GoogleBook gBook) async {
     final currentUser = FirebaseAuth.instance.currentUser!;
     String idToken = await currentUser.getIdToken();
 
@@ -47,8 +47,11 @@ class BookService {
 
     if (response.statusCode == 201) {
       print('Add google book successfully');
+      final data = jsonDecode(response.body);
+      return LibraryBooks.fromJson(data);
     } else {
       print('API_ERROR: ${response.statusCode}');
+      return Future.error('Something went wrong.');
     }
   }
 

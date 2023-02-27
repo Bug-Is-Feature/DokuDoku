@@ -16,7 +16,7 @@ class _CompleteShelfViewState extends State<CompleteShelfView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: const BookshelvesFloatingButton(),
+      // floatingActionButton: const BookshelvesFloatingButton(),
       body: Stack(
         children: [
           SingleChildScrollView(
