@@ -13,12 +13,14 @@ import 'package:flutter/material.dart';
 class SearchGoogleBookView extends StatefulWidget {
   Future<Library> library;
   final void Function(bool, LibraryBooks) addCallback, removeCallback;
+  final String isbn;
 
   SearchGoogleBookView({
     super.key,
     required this.library,
     required this.addCallback,
     required this.removeCallback,
+    required this.isbn,
   });
 
   @override
@@ -29,6 +31,7 @@ class _SearchGoogleBookViewState extends State<SearchGoogleBookView> {
   List<GoogleBook> books = [];
   List<String> idList = [];
   String query = '';
+  String isbn = '';
   Timer? debouncer;
 
   @override
@@ -70,7 +73,11 @@ class _SearchGoogleBookViewState extends State<SearchGoogleBookView> {
       ),
       body: Column(
         children: <Widget>[
-          buildSearch(),
+          if (widget.isbn.isNotEmpty) ...[
+            buildSearchIsbn()
+          ] else ...[
+            buildSearch()
+          ],
           Expanded(
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
@@ -152,5 +159,22 @@ class _SearchGoogleBookViewState extends State<SearchGoogleBookView> {
             this.books = books;
           });
         }
+      });
+
+  Widget buildSearchIsbn() => SearchWidget(
+        text: widget.isbn,
+        hintText: 'Title or Author Name',
+        onChanged: searchBookByIsbn,
+      );
+
+  Future<void> searchBookByIsbn(String isbn) async => debounce(() async {
+        final books = await FetchGoogleBook.getBookByIsbn(widget.isbn);
+
+        if (!mounted) return;
+
+        setState(() {
+          this.isbn = widget.isbn;
+          this.books = books;
+        });
       });
 }
