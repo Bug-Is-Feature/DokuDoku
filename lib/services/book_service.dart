@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dokudoku/model/book.dart';
 import 'package:dokudoku/model/google_book.dart';
 import 'package:dokudoku/model/library.dart';
 import 'package:dokudoku/model/library_books.dart';
@@ -55,7 +56,7 @@ class BookService {
     }
   }
 
-  static Future<void> addCustomBook(BuildContext context) async {
+  static Future<LibraryBooks> addCustomBook(BuildContext context) async {
     final provider = Provider.of<BookProvider>(context, listen: false);
     final currentUser = FirebaseAuth.instance.currentUser!;
     String idToken = await currentUser.getIdToken();
@@ -89,8 +90,11 @@ class BookService {
 
     if (response.statusCode == 201) {
       print('Add book successfully');
+      final data = jsonDecode(response.body);
+      return LibraryBooks.fromJson(data);
     } else {
       print('API_ERROR: ${response.statusCode}');
+      return Future.error('Something went wrong.');
     }
   }
 
@@ -110,10 +114,11 @@ class BookService {
       print('Remove book successfully');
     } else {
       print('API_ERROR: ${response.statusCode}');
+      return Future.error('Something went wrong.');
     }
   }
 
-  static Future<void> updateBook(BuildContext context, int id) async {
+  static Future<Book> updateBook(BuildContext context, int id) async {
     final currentUser = FirebaseAuth.instance.currentUser!;
     String idToken = await currentUser.getIdToken();
     final provider = Provider.of<BookProvider>(context, listen: false);
@@ -142,8 +147,11 @@ class BookService {
 
     if (response.statusCode == 200) {
       print('Update book successfully');
+      final data = jsonDecode(response.body);
+      return Book.fromJson(data);
     } else {
       print('API_ERROR: ${response.statusCode}');
+      return Future.error('Something went wrong.');
     }
   }
 

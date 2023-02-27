@@ -4,7 +4,7 @@ class LibraryBooks {
   final int libraryBookId;
   bool isCompleted;
   final String cratedAt;
-  final Book book;
+  Book book;
 
   LibraryBooks({
     required this.libraryBookId,

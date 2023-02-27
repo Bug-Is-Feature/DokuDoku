@@ -3,6 +3,7 @@ import 'package:dokudoku/model/library_books.dart';
 import 'package:dokudoku/provider/book_provider.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:dokudoku/services/book_service.dart';
+import 'package:dokudoku/ui/components/snack_bar_utils.dart';
 import 'package:dokudoku/ui/view/search_google_book_view.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/ui/components/add_book_dialog.dart';
@@ -66,16 +67,24 @@ class _BookshelvesFloatingButtonState extends State<BookshelvesFloatingButton> {
                     actions: [
                       ElevatedButton(
                         onPressed: () async {
-                          await BookService.addCustomBook(context);
+                          String error = '';
+                          LibraryBooks libraryBook =
+                              await BookService.addCustomBook(context)
+                                  .catchError((e) => error = e);
                           if (!mounted) return;
-                          Provider.of<BookProvider>(context, listen: false)
-                              .clearBookControllers();
-                          Navigator.of(context).pop();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Custom book added successfully'),
-                            ),
-                          );
+                          if (error.isEmpty) {
+                            Provider.of<BookProvider>(context, listen: false)
+                                .clearBookControllers();
+                            Navigator.of(context).pop();
+                            SnackBarUtils.showSuccessSnackBar(
+                                context: context,
+                                content: 'Added book successfully');
+                            widget.addCallback(error.isEmpty, libraryBook);
+                          } else {
+                            SnackBarUtils.showWarningSnackBar(
+                                context: context,
+                                content: 'Something went wrong.');
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.brown[400],

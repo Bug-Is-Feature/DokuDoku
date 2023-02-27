@@ -4,13 +4,13 @@ import 'package:dokudoku/res/AppContextExtension.dart';
 
 class BookCardDropdown extends StatefulWidget {
   final int libraryBookId;
-  final void Function(bool) callback;
+  final void Function(bool) libraryBookUpdateCallback;
   bool bookStatus;
 
   BookCardDropdown({
     super.key,
     required this.libraryBookId,
-    required this.callback,
+    required this.libraryBookUpdateCallback,
     required this.bookStatus,
   });
 
@@ -84,7 +84,7 @@ class _BookCardDropdownState extends State<BookCardDropdown> {
         widget.bookStatus = false;
       }
 
-      widget.callback(widget.bookStatus);
+      widget.libraryBookUpdateCallback(widget.bookStatus);
     }
   }
 }

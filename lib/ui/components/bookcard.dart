@@ -1,19 +1,21 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:dokudoku/model/book.dart';
 import 'package:dokudoku/model/library_books.dart';
 import 'package:dokudoku/ui/components/bookcard_dropdown.dart';
-import 'package:dokudoku/ui/view/book_detail_view.dart';
 import 'package:dokudoku/ui/view/book_details_view.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 
 class BookCard extends StatefulWidget {
   LibraryBooks libraryBook;
-  final void Function(bool) callback;
+  final void Function(bool) libraryBookUpdateCallback;
+  final void Function(bool, Book) bookUpdateCallback;
 
   BookCard({
     super.key,
     required this.libraryBook,
-    required this.callback,
+    required this.libraryBookUpdateCallback,
+    required this.bookUpdateCallback,
   });
 
   @override
@@ -30,6 +32,7 @@ class _BookCardState extends State<BookCard> {
           MaterialPageRoute(
             builder: (context) => BookDetailsView(
               libraryBook: widget.libraryBook,
+              bookUpdateCallback: widget.bookUpdateCallback,
             ),
           ),
         );
@@ -107,7 +110,8 @@ class _BookCardState extends State<BookCard> {
                     BookCardDropdown(
                       libraryBookId: widget.libraryBook.libraryBookId,
                       bookStatus: widget.libraryBook.isCompleted,
-                      callback: widget.callback,
+                      libraryBookUpdateCallback:
+                          widget.libraryBookUpdateCallback,
                     )
                   ],
                 ),

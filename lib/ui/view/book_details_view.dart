@@ -2,17 +2,25 @@ import 'dart:ui';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:dokudoku/model/library_books.dart';
+import 'package:dokudoku/model/book.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:dokudoku/services/book_service.dart';
 import 'package:dokudoku/ui/components/button.dart';
 import 'package:dokudoku/ui/components/custom_dialog_box.dart';
 import 'package:dokudoku/ui/components/edit_book_dialog.dart';
+import 'package:dokudoku/ui/components/snack_bar_utils.dart';
 import 'package:dokudoku/ui/view/bookshelves_view.dart';
 import 'package:flutter/material.dart';
 
 class BookDetailsView extends StatefulWidget {
   final LibraryBooks libraryBook;
-  const BookDetailsView({super.key, required this.libraryBook});
+  final void Function(bool, Book) bookUpdateCallback;
+
+  const BookDetailsView({
+    super.key,
+    required this.libraryBook,
+    required this.bookUpdateCallback,
+  });
 
   @override
   State<BookDetailsView> createState() => _BookDetailsViewState();
@@ -105,22 +113,34 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                                     actions: [
                                       ElevatedButton(
                                         onPressed: () async {
-                                          await BookService.updateBook(context,
-                                              widget.libraryBook.book.id);
+                                          String error = '';
+                                          Book editedBook =
+                                              await BookService.updateBook(
+                                                      context,
+                                                      widget
+                                                          .libraryBook.book.id)
+                                                  .catchError((e) => error = e);
 
                                           if (!mounted) return;
                                           Navigator.of(context).pop();
 
-                                          setState(() {
-                                            widget.libraryBook.book;
-                                          });
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            const SnackBar(
-                                              content: Text(
-                                                  'Custom book updated successfully'),
-                                            ),
-                                          );
+                                          if (error.isEmpty) {
+                                            setState(() {
+                                              widget.libraryBook.book =
+                                                  editedBook;
+                                            });
+                                            SnackBarUtils.showSuccessSnackBar(
+                                                context: context,
+                                                content:
+                                                    'Updated book successfully');
+                                            widget.bookUpdateCallback(
+                                                error.isEmpty, editedBook);
+                                          } else {
+                                            SnackBarUtils.showWarningSnackBar(
+                                                context: context,
+                                                content:
+                                                    'Something went wrong');
+                                          }
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.brown[400],

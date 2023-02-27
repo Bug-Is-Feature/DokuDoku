@@ -1,3 +1,4 @@
+import 'package:dokudoku/model/book.dart';
 import 'package:dokudoku/model/library.dart';
 import 'package:dokudoku/model/library_books.dart';
 import 'package:dokudoku/ui/components/bookcard.dart';
@@ -9,13 +10,15 @@ import 'package:flutter/material.dart';
 class BookshelvesTabView extends StatefulWidget {
   Future<Library> library;
   final String type;
-  final void Function(bool) callback;
+  final void Function(bool) libraryBookUpdateCallback;
+  final void Function(bool, Book) bookUpdateCallback;
 
   BookshelvesTabView({
     super.key,
     required this.library,
     required this.type,
-    required this.callback,
+    required this.libraryBookUpdateCallback,
+    required this.bookUpdateCallback,
   });
 
   @override
@@ -89,7 +92,8 @@ class _BookshelvesTabViewState extends State<BookshelvesTabView> {
                                 const SizedBox(height: 14),
                                 BookCard(
                                   libraryBook: libraryBook,
-                                  callback: (bool bookStatus) async {
+                                  libraryBookUpdateCallback:
+                                      (bool libraryBookStatus) async {
                                     Library library = await widget.library;
                                     LibraryBooks target = library.libraryBooks
                                         .where((element) =>
@@ -97,10 +101,12 @@ class _BookshelvesTabViewState extends State<BookshelvesTabView> {
                                             snapshot.data?.libraryBooks[index]
                                                 .libraryBookId)
                                         .first;
-                                    target.isCompleted = bookStatus;
+                                    target.isCompleted = libraryBookStatus;
 
-                                    widget.callback(bookStatus);
+                                    widget.libraryBookUpdateCallback(
+                                        libraryBookStatus);
                                   },
+                                  bookUpdateCallback: widget.bookUpdateCallback,
                                 ),
                               ],
                             );

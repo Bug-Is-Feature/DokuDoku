@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'package:dokudoku/model/book.dart';
 import 'package:dokudoku/model/library.dart';
 import 'package:dokudoku/services/book_service.dart';
 import 'package:dokudoku/ui/components/bookshelves_badge.dart';
 import 'package:dokudoku/ui/components/bookshelves_tabbar.dart';
+import 'package:dokudoku/ui/components/snack_bar_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 
@@ -15,11 +17,11 @@ class BookShelvesView extends StatefulWidget {
 
 class _BookShelvesViewState extends State<BookShelvesView> {
   late Future<Library> library = _getLibrary();
-  List book = [
-    Book(id: 0),
-    Book(id: 1),
-    Book(id: 2),
-  ];
+  // List book = [
+  //   Book(id: 0),
+  //   Book(id: 1),
+  //   Book(id: 2),
+  // ];
 
   Future<Library> _getLibrary() async {
     List<Library> library = await BookService.getLibrary();
@@ -48,21 +50,26 @@ class _BookShelvesViewState extends State<BookShelvesView> {
               color: context.resources.color.colorWhite,
               child: BookShelvesTabBar(
                 library: library,
-                callback: (bool bookStatus) {
-                  setState(() {
-                    if (bookStatus) {
-                      library.then((value) {
-                        value.completedCount++;
-                        value.incompleteCount--;
-                      });
-                    } else {
-                      library.then((value) {
-                        value.completedCount--;
-                        value.incompleteCount++;
-                      });
-                    }
-                  });
-                },
+                libraryBookUpdateCallback: (bool bookStatus) => setState(() {
+                  bookStatus
+                      ? library.then((value) {
+                          value.completedCount++;
+                          value.incompleteCount--;
+                        })
+                      : library.then((value) {
+                          value.completedCount--;
+                          value.incompleteCount++;
+                        });
+                }),
+                bookUpdateCallback: (bool isSuccess, Book book) => isSuccess
+                    ? setState(() {
+                        library.then((value) => value.libraryBooks
+                            .where((element) => element.book.id == book.id)
+                            .first
+                            .book = book);
+                      })
+                    : SnackBarUtils.showWarningSnackBar(
+                        context: context, content: 'Something went wrong'),
               ),
             ),
           ),
@@ -92,11 +99,11 @@ class _BookShelvesViewState extends State<BookShelvesView> {
   }
 }
 
-class Book<Widget> {
-  final int id;
+// class Book<Widget> {
+//   final int id;
 
-  Book({required this.id});
-}
+//   Book({required this.id});
+// }
 
 class BookCard extends StatelessWidget {
   final int id;

@@ -1,3 +1,4 @@
+import 'package:dokudoku/model/book.dart';
 import 'package:dokudoku/model/library.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:dokudoku/ui/view/bookshelves_tab_view.dart';
@@ -5,12 +6,14 @@ import 'package:flutter/material.dart';
 
 class BookShelvesTabBar extends StatefulWidget {
   Future<Library> library;
-  final void Function(bool) callback;
+  final void Function(bool) libraryBookUpdateCallback;
+  final void Function(bool, Book) bookUpdateCallback;
 
   BookShelvesTabBar({
     super.key,
     required this.library,
-    required this.callback,
+    required this.libraryBookUpdateCallback,
+    required this.bookUpdateCallback,
   });
 
   @override
@@ -108,14 +111,16 @@ class _BookShelvesTabBarState extends State<BookShelvesTabBar>
                   child: BookshelvesTabView(
                     library: widget.library,
                     type: 'incomplete',
-                    callback: widget.callback,
+                    libraryBookUpdateCallback: widget.libraryBookUpdateCallback,
+                    bookUpdateCallback: widget.bookUpdateCallback,
                   ),
                 ),
                 Center(
                   child: BookshelvesTabView(
                     library: widget.library,
                     type: 'completed',
-                    callback: widget.callback,
+                    libraryBookUpdateCallback: widget.libraryBookUpdateCallback,
+                    bookUpdateCallback: widget.bookUpdateCallback,
                   ),
                 ),
               ],
