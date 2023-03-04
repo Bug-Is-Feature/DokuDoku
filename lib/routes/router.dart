@@ -5,6 +5,7 @@ import 'package:dokudoku/ui/view/auth_view.dart';
 import 'package:dokudoku/ui/view/book_details_view.dart';
 import 'package:dokudoku/ui/view/bookshelves_view.dart';
 import 'package:dokudoku/ui/view/home_view.dart';
+import 'package:dokudoku/ui/view/hourglass_view.dart';
 import 'package:dokudoku/ui/view/profile_view.dart';
 import 'package:dokudoku/ui/view/quest_board_view.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +65,11 @@ import 'package:flutter/material.dart';
           name: 'TimerRoute',
           page: EmptyRouterPage,
           children: [
-            AutoRoute(path: ':id/:title', page: TimerModeTabBar),
+            AutoRoute(path: ':id/:title', initial: true, page: TimerModeTabBar),
+            AutoRoute(
+                path: ':id/:title/hourglass_view',
+                name: "HourglassRoute",
+                page: HourglassView),
           ],
         ),
       ],
