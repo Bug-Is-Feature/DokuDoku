@@ -37,10 +37,10 @@ class Book {
   factory Book.fromJson(json) => Book(
         id: json['id'],
         title: utf8.decode(json['title'].toString().codeUnits),
-        subtitle: json['subtitle'] ?? '',
-        category: json['category'] ?? '',
+        subtitle: utf8.decode(json['subtitle'].toString().codeUnits),
+        category: utf8.decode(json['category'].toString().codeUnits),
         thumbnail: json['thumbnail'] ?? '',
-        description: json['description'] ?? '',
+        description: utf8.decode(json['description'].toString().codeUnits),
         pageCount: json['page_count'] ?? -1,
         currencyCode: json['currency_code'] ?? '',
         price: json['price'] ?? -1,
