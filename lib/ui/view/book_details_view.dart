@@ -8,18 +8,19 @@ import 'package:dokudoku/services/book_service.dart';
 import 'package:dokudoku/ui/components/button.dart';
 import 'package:dokudoku/ui/components/custom_dialog_box.dart';
 import 'package:dokudoku/ui/components/edit_book_dialog.dart';
-import 'package:dokudoku/ui/components/snack_bar_utils.dart';
 import 'package:dokudoku/ui/view/bookshelves_view.dart';
 import 'package:flutter/material.dart';
 
 class BookDetailsView extends StatefulWidget {
   final LibraryBooks libraryBook;
   final void Function(bool, Book) bookUpdateCallback;
+  final void Function(bool, LibraryBooks) libraryBookRemoveCallback;
 
   const BookDetailsView({
     super.key,
     required this.libraryBook,
     required this.bookUpdateCallback,
+    required this.libraryBookRemoveCallback,
   });
 
   @override
@@ -42,7 +43,11 @@ class _BookDetailsViewState extends State<BookDetailsView> {
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: Image.network(widget.libraryBook.book.thumbnail).image,
+                image: Image.network(
+                  widget.libraryBook.book.thumbnail,
+                  errorBuilder: ((context, error, stackTrace) =>
+                      Image.asset('assets/images/book_cover.png')),
+                ).image,
                 fit: BoxFit.cover,
               ),
             ),
@@ -60,29 +65,33 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         widget.libraryBook.book.title,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 30,
                             color: context.resources.color.colorWhite),
                       ),
+                      SizedBox(height: 2),
                       Text(
                         widget.libraryBook.book.subtitle,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 14,
                             color: context.resources.color.greyLight),
                       ),
+                      SizedBox(height: 4),
                       if (widget.libraryBook.book.authors.isEmpty) ...[
                         Text(
                           'No author details',
                           style: TextStyle(
                             color: context.resources.color.colorWhite,
-                            fontSize: 12,
+                            fontSize: 14,
                           ),
                         )
                       ] else ...[
@@ -90,83 +99,55 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                           'by ${widget.libraryBook.book.authors.map((author) => author.name).join(', ')}',
                           style: TextStyle(
                             color: context.resources.color.colorWhite,
-                            fontSize: 12,
+                            fontSize: 14,
                           ),
                         ),
                       ],
+                      SizedBox(height: 4),
                       Text(
                         "${widget.libraryBook.book.pageCount} pages",
                         style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 14,
+                            color: context.resources.color.colorWhite),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        "${widget.libraryBook.book.price} ${widget.libraryBook.book.currencyCode}",
+                        style: TextStyle(
+                            fontSize: 14,
                             color: context.resources.color.colorWhite),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          const SizedBox(width: 10),
-                          IconButton(
-                            onPressed: () async {
-                              await showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    actions: [
-                                      ElevatedButton(
-                                        onPressed: () async {
-                                          String error = '';
-                                          Book editedBook =
-                                              await BookService.updateBook(
-                                                      context,
-                                                      widget
-                                                          .libraryBook.book.id)
-                                                  .catchError((e) => error = e);
-
-                                          if (!mounted) return;
-                                          Navigator.of(context).pop();
-
-                                          if (error.isEmpty) {
-                                            setState(() {
-                                              widget.libraryBook.book =
-                                                  editedBook;
-                                            });
-                                            SnackBarUtils.showSuccessSnackBar(
-                                                context: context,
-                                                content:
-                                                    'Updated book successfully');
-                                            widget.bookUpdateCallback(
-                                                error.isEmpty, editedBook);
-                                          } else {
-                                            SnackBarUtils.showWarningSnackBar(
-                                                context: context,
-                                                content:
-                                                    'Something went wrong');
-                                          }
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.brown[400],
-                                        ),
-                                        child: const Text('Edit'),
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, false),
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.brown[400],
-                                        ),
-                                        child: const Text('No'),
-                                      ),
-                                    ],
-                                    title: const Text('edit Book'),
-                                    content: EditBookDialog(
+                          const SizedBox(width: 3),
+                          if (widget.libraryBook.book.googleBookId.isEmpty) ...[
+                            IconButton(
+                              onPressed: () async {
+                                await showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return EditBookDialog(
                                       libraryBook: widget.libraryBook,
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                            icon: const Icon(Icons.edit),
-                            color: context.resources.color.colorWhite,
-                          ),
+                                      bookUpdateCallback:
+                                          (bool isSuccess, Book editedBook) {
+                                        if (isSuccess) {
+                                          setState(() {
+                                            widget.libraryBook.book =
+                                                editedBook;
+                                          });
+                                          widget.bookUpdateCallback(
+                                              isSuccess, editedBook);
+                                        }
+                                      },
+                                    );
+                                  },
+                                );
+                              },
+                              icon: const Icon(Icons.edit),
+                              color: context.resources.color.colorWhite,
+                            ),
+                          ],
                           IconButton(
                             onPressed: () async {
                               showDialog(
@@ -177,18 +158,28 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                                     buttonText: 'Delete',
                                     buttonText2: 'Cancel',
                                     onPressed: () async {
+                                      String error = '';
                                       await BookService.removeBookById(
-                                          widget.libraryBook.libraryBookId);
+                                              widget.libraryBook.libraryBookId)
+                                          .catchError((e) => error = e);
                                       setState(() {
                                         widget.libraryBook.libraryBookId;
                                       });
                                       if (!mounted) return;
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const BookShelvesView(),
-                                        ),
-                                      );
+                                      //   Navigator.of(context).push(
+                                      //     MaterialPageRoute(
+                                      //       builder: (context) =>
+                                      //           const BookShelvesView(),
+                                      //     ),
+                                      //   );
+                                      if (error.isEmpty) {
+                                        // TODO: find a way to go back to bookshelves view
+                                        Navigator.popUntil(
+                                            context, (route) => route.isFirst);
+
+                                        widget.libraryBookRemoveCallback(
+                                            error.isEmpty, widget.libraryBook);
+                                      }
                                     },
                                     onPressed2: () {
                                       Navigator.pop(context);
@@ -237,6 +228,11 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                             ),
                             child: Image.network(
                               widget.libraryBook.book.thumbnail,
+                              errorBuilder: ((context, error, stackTrace) =>
+                                  Image.asset('assets/images/book_cover.png',
+                                      width: 100,
+                                      height: 150,
+                                      fit: BoxFit.cover)),
                             ),
                           ),
                         ),

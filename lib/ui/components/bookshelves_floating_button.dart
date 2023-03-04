@@ -1,26 +1,24 @@
 import 'package:dokudoku/model/library.dart';
 import 'package:dokudoku/model/library_books.dart';
-import 'package:dokudoku/provider/book_provider.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
-import 'package:dokudoku/services/book_service.dart';
-import 'package:dokudoku/ui/components/snack_bar_utils.dart';
 import 'package:dokudoku/ui/view/search_google_book_view.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/ui/components/add_book_dialog.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:provider/provider.dart';
 
 class BookshelvesFloatingButton extends StatefulWidget {
   Future<Library> library;
-  final void Function(bool, LibraryBooks) addCallback, removeCallback;
+  final void Function(bool, LibraryBooks) libraryBookAddCallback,
+      libraryBookRemoveCallback;
 
   BookshelvesFloatingButton({
     super.key,
     required this.library,
-    required this.addCallback,
-    required this.removeCallback,
+    required this.libraryBookAddCallback,
+    required this.libraryBookRemoveCallback,
   });
 
   @override
@@ -34,6 +32,7 @@ class _BookshelvesFloatingButtonState extends State<BookshelvesFloatingButton> {
   @override
   Widget build(BuildContext context) {
     return SpeedDial(
+      elevation: 6,
       backgroundColor: context.resources.color.colorDarkest,
       icon: Icons.add,
       children: [
@@ -45,8 +44,8 @@ class _BookshelvesFloatingButtonState extends State<BookshelvesFloatingButton> {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => SearchGoogleBookView(
                 library: widget.library,
-                addCallback: widget.addCallback,
-                removeCallback: widget.removeCallback,
+                libraryBookAddCallback: widget.libraryBookAddCallback,
+                libraryBookRemoveCallback: widget.libraryBookRemoveCallback,
                 isbn: '',
               ),
             ));
@@ -55,52 +54,16 @@ class _BookshelvesFloatingButtonState extends State<BookshelvesFloatingButton> {
         SpeedDialChild(
           backgroundColor: context.resources.color.colorDark,
           child: Icon(
-            Icons.my_library_add,
+            CupertinoIcons.book_fill,
             color: context.resources.color.colorWhite,
           ),
-          label: 'Add Book',
+          label: 'Custom Book',
           onTap: () async {
             await showDialog(
                 context: context,
                 builder: (context) {
-                  return AlertDialog(
-                    actions: [
-                      ElevatedButton(
-                        onPressed: () async {
-                          String error = '';
-                          LibraryBooks libraryBook =
-                              await BookService.addCustomBook(context)
-                                  .catchError((e) => error = e);
-                          if (!mounted) return;
-                          if (error.isEmpty) {
-                            Provider.of<BookProvider>(context, listen: false)
-                                .clearBookControllers();
-                            Navigator.of(context).pop();
-                            SnackBarUtils.showSuccessSnackBar(
-                                context: context,
-                                content: 'Added book successfully');
-                            widget.addCallback(error.isEmpty, libraryBook);
-                          } else {
-                            SnackBarUtils.showWarningSnackBar(
-                                context: context,
-                                content: 'Something went wrong.');
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.brown[400],
-                        ),
-                        child: const Text('Upload'),
-                      ),
-                      ElevatedButton(
-                        onPressed: () => Navigator.pop(context, false),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.brown[400],
-                        ),
-                        child: const Text('No'),
-                      ),
-                    ],
-                    title: const Text('Add Book'),
-                    content: const AddBookDialog(),
+                  return AddBookDialog(
+                    libraryBookAddCallback: widget.libraryBookAddCallback,
                   );
                 });
             setState(() {});
@@ -109,7 +72,7 @@ class _BookshelvesFloatingButtonState extends State<BookshelvesFloatingButton> {
         SpeedDialChild(
           backgroundColor: context.resources.color.colorDark,
           child: Icon(
-            Icons.camera_alt,
+            CupertinoIcons.barcode_viewfinder,
             color: context.resources.color.colorWhite,
           ),
           label: 'Add Book by ISBN',
@@ -144,8 +107,8 @@ class _BookshelvesFloatingButtonState extends State<BookshelvesFloatingButton> {
       builder: (context) => SearchGoogleBookView(
         library: widget.library,
         isbn: scanResult,
-        addCallback: widget.addCallback,
-        removeCallback: widget.removeCallback,
+        libraryBookAddCallback: widget.libraryBookAddCallback,
+        libraryBookRemoveCallback: widget.libraryBookRemoveCallback,
       ),
     ));
     print('scanResult: $scanResult');

@@ -3,23 +3,27 @@ import 'dart:async';
 import 'package:dokudoku/model/google_book.dart';
 import 'package:dokudoku/model/library.dart';
 import 'package:dokudoku/model/library_books.dart';
+import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:dokudoku/services/book_service.dart';
 import 'package:dokudoku/services/google_book_api.dart';
 import 'package:dokudoku/ui/components/search.dart';
 import 'package:dokudoku/ui/components/search_book_card_widget.dart';
+import 'package:dokudoku/ui/components/search_box.dart';
+import 'package:dokudoku/ui/components/snack_bar_utils.dart';
 import 'package:dokudoku/ui/view/google_book_detail_view.dart';
 import 'package:flutter/material.dart';
 
 class SearchGoogleBookView extends StatefulWidget {
   Future<Library> library;
-  final void Function(bool, LibraryBooks) addCallback, removeCallback;
+  final void Function(bool, LibraryBooks) libraryBookAddCallback,
+      libraryBookRemoveCallback;
   final String isbn;
 
   SearchGoogleBookView({
     super.key,
     required this.library,
-    required this.addCallback,
-    required this.removeCallback,
+    required this.libraryBookAddCallback,
+    required this.libraryBookRemoveCallback,
     required this.isbn,
   });
 
@@ -65,18 +69,44 @@ class _SearchGoogleBookViewState extends State<SearchGoogleBookView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Center(
-          child: Text('Search Books'),
-        ),
-        backgroundColor: Colors.brown,
-      ),
       body: Column(
         children: <Widget>[
           if (widget.isbn.isNotEmpty) ...[
-            buildSearchIsbn()
+            Container(
+              decoration: BoxDecoration(
+                color: context.resources.color.colorDark,
+                boxShadow: [
+                  BoxShadow(
+                    color: context.resources.color.grey,
+                    blurRadius: 2,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              width: MediaQuery.of(context).size.width,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(20, 40, 20, 20),
+                child: buildSearchIsbn(),
+              ),
+            ),
           ] else ...[
-            buildSearch()
+            Container(
+              decoration: BoxDecoration(
+                color: context.resources.color.colorDark,
+                boxShadow: [
+                  BoxShadow(
+                    color: context.resources.color.grey,
+                    blurRadius: 2,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              width: MediaQuery.of(context).size.width,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(20, 40, 20, 20),
+                child: buildSearch(),
+              ),
+            )
           ],
           Expanded(
             child: ListView.builder(
@@ -106,9 +136,15 @@ class _SearchGoogleBookViewState extends State<SearchGoogleBookView> {
                       LibraryBooks libraryBook =
                           await BookService.addGoogleBook(book)
                               .catchError((e) => error = e);
+                      if (!mounted) return;
+
                       if (error.isEmpty) {
+                        SnackBarUtils.showSuccessSnackBar(
+                            context: context,
+                            content: 'Added to incomplete shelf');
                         setState(() => idList.add(book.googleBookId));
-                        widget.addCallback(error.isEmpty, libraryBook);
+                        widget.libraryBookAddCallback(
+                            error.isEmpty, libraryBook);
                       } else {
                         print(error);
                       }
@@ -124,10 +160,14 @@ class _SearchGoogleBookViewState extends State<SearchGoogleBookView> {
                       await BookService.removeBookById(
                               libraryBook.libraryBookId)
                           .catchError((e) => error = e);
+                      if (!mounted) return;
 
                       if (error.isEmpty) {
+                        SnackBarUtils.showSuccessSnackBar(
+                            context: context, content: 'removed book');
                         setState(() => idList.remove(book.googleBookId));
-                        widget.removeCallback(error.isEmpty, libraryBook);
+                        widget.libraryBookRemoveCallback(
+                            error.isEmpty, libraryBook);
                       } else {
                         print(error);
                       }
@@ -142,11 +182,17 @@ class _SearchGoogleBookViewState extends State<SearchGoogleBookView> {
     );
   }
 
-  Widget buildSearch() => SearchWidget(
-        text: query,
-        hintText: 'Title or Author Name',
-        onChanged: searchBook,
-      );
+  Widget buildSearch() => SearchBox(
+      text: query,
+      label: query,
+      width: MediaQuery.of(context).size.width,
+      onChanged: searchBook);
+
+//    SearchWidget(
+//         text: query,
+//         hintText: 'Title or Author Name',
+//         onChanged: searchBook,
+//       );
 
   Future searchBook(String query) async => debounce(() async {
         if (query.trim() != '') {
@@ -161,11 +207,17 @@ class _SearchGoogleBookViewState extends State<SearchGoogleBookView> {
         }
       });
 
-  Widget buildSearchIsbn() => SearchWidget(
-        text: widget.isbn,
-        hintText: 'Title or Author Name',
+  Widget buildSearchIsbn() => SearchBox(
+        text: query,
+        label: widget.isbn,
+        width: MediaQuery.of(context).size.width,
         onChanged: searchBookByIsbn,
       );
+//   SearchWidget(
+//         text: widget.isbn,
+//         hintText: 'Title or Author Name',
+//         onChanged: searchBookByIsbn,
+//       );
 
   Future<void> searchBookByIsbn(String isbn) async => debounce(() async {
         final books = await FetchGoogleBook.getBookByIsbn(widget.isbn);

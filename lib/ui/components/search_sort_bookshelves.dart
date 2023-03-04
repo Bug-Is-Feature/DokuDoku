@@ -34,6 +34,8 @@ class _SearchSortBookshelvesState extends State<SearchSortBookshelves> {
           ),
           Expanded(
             child: SearchBox(
+              text: '',
+              onChanged: (value) {},
               label: 'Search',
               width: MediaQuery.of(context).size.width * 0.50,
             ),

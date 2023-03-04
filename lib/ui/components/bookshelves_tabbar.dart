@@ -1,18 +1,23 @@
 import 'package:dokudoku/model/book.dart';
 import 'package:dokudoku/model/library.dart';
+import 'package:dokudoku/model/library_books.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:dokudoku/ui/view/bookshelves_tab_view.dart';
 import 'package:flutter/material.dart';
 
 class BookShelvesTabBar extends StatefulWidget {
   Future<Library> library;
-  final void Function(bool) libraryBookUpdateCallback;
+  final void Function(bool) libraryBookStatusUpdateCallback;
   final void Function(bool, Book) bookUpdateCallback;
+  final void Function(bool, LibraryBooks) libraryBookAddCallback,
+      libraryBookRemoveCallback;
 
   BookShelvesTabBar({
     super.key,
     required this.library,
-    required this.libraryBookUpdateCallback,
+    required this.libraryBookAddCallback,
+    required this.libraryBookRemoveCallback,
+    required this.libraryBookStatusUpdateCallback,
     required this.bookUpdateCallback,
   });
 
@@ -111,7 +116,10 @@ class _BookShelvesTabBarState extends State<BookShelvesTabBar>
                   child: BookshelvesTabView(
                     library: widget.library,
                     type: 'incomplete',
-                    libraryBookUpdateCallback: widget.libraryBookUpdateCallback,
+                    libraryBookAddCallback: widget.libraryBookAddCallback,
+                    libraryBookRemoveCallback: widget.libraryBookRemoveCallback,
+                    libraryBookStatusUpdateCallback:
+                        widget.libraryBookStatusUpdateCallback,
                     bookUpdateCallback: widget.bookUpdateCallback,
                   ),
                 ),
@@ -119,7 +127,10 @@ class _BookShelvesTabBarState extends State<BookShelvesTabBar>
                   child: BookshelvesTabView(
                     library: widget.library,
                     type: 'completed',
-                    libraryBookUpdateCallback: widget.libraryBookUpdateCallback,
+                    libraryBookAddCallback: widget.libraryBookAddCallback,
+                    libraryBookRemoveCallback: widget.libraryBookRemoveCallback,
+                    libraryBookStatusUpdateCallback:
+                        widget.libraryBookStatusUpdateCallback,
                     bookUpdateCallback: widget.bookUpdateCallback,
                   ),
                 ),

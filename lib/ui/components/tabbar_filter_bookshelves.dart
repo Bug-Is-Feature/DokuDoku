@@ -29,6 +29,8 @@ class _TabBarFilterBookshelvesState extends State<TabBarFilterBookshelves> {
         child: Column(
           children: [
             SearchBox(
+              text: '',
+              onChanged: (value) {},
               label: 'Search',
               width: MediaQuery.of(context).size.width,
             ),

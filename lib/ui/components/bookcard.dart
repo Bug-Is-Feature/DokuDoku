@@ -8,14 +8,16 @@ import 'package:dokudoku/res/AppContextExtension.dart';
 
 class BookCard extends StatefulWidget {
   LibraryBooks libraryBook;
-  final void Function(bool) libraryBookUpdateCallback;
+  final void Function(bool) libraryBookStatusUpdateCallback;
   final void Function(bool, Book) bookUpdateCallback;
+  final void Function(bool, LibraryBooks) libraryBookRemoveCallback;
 
   BookCard({
     super.key,
     required this.libraryBook,
-    required this.libraryBookUpdateCallback,
     required this.bookUpdateCallback,
+    required this.libraryBookRemoveCallback,
+    required this.libraryBookStatusUpdateCallback,
   });
 
   @override
@@ -33,6 +35,7 @@ class _BookCardState extends State<BookCard> {
             builder: (context) => BookDetailsView(
               libraryBook: widget.libraryBook,
               bookUpdateCallback: widget.bookUpdateCallback,
+              libraryBookRemoveCallback: widget.libraryBookRemoveCallback,
             ),
           ),
         );
@@ -72,8 +75,10 @@ class _BookCardState extends State<BookCard> {
                 child: Image.network(
                   widget.libraryBook.book.thumbnail,
                   fit: BoxFit.cover,
-                  errorBuilder: ((context, error, stackTrace) =>
-                      Image.asset('assets/images/default_book_cover.png')),
+                  errorBuilder: ((context, error, stackTrace) => Image.asset(
+                        'assets/images/book_cover.png',
+                        fit: BoxFit.cover,
+                      )),
                 ),
               ),
               SizedBox(
@@ -110,8 +115,8 @@ class _BookCardState extends State<BookCard> {
                     BookCardDropdown(
                       libraryBookId: widget.libraryBook.libraryBookId,
                       bookStatus: widget.libraryBook.isCompleted,
-                      libraryBookUpdateCallback:
-                          widget.libraryBookUpdateCallback,
+                      libraryBookStatusUpdateCallback:
+                          widget.libraryBookStatusUpdateCallback,
                     )
                   ],
                 ),

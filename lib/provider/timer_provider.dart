@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'package:auto_route/auto_route.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
+import 'package:dokudoku/routes/router.gr.dart';
 import 'package:dokudoku/services/timer_service.dart';
 import 'package:dokudoku/ui/components/custom_dialog_box.dart';
+import 'package:dokudoku/ui/components/hourglass_session_input.dart';
 import 'package:dokudoku/ui/components/snack_bar_utils.dart';
 import 'package:dokudoku/ui/view/hourglass_view.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +28,7 @@ class TimerProvider extends ChangeNotifier {
   TimerState currentState = TimerState.focus;
 
   int tempId = 0;
-  String? tempTitle;
+  String tempTitle = '';
 
   int currentDuration = 0;
   int seconds = 0;
@@ -37,9 +40,9 @@ class TimerProvider extends ChangeNotifier {
   Timer? timer;
 
   void submitData(BuildContext context) {
-    inputSession = int.parse(sessionDurationController.text * 60);
+    inputSession = int.parse(sessionDurationController.text);
     inputSessionNum = int.parse(sessionIterationController.text);
-    inputBreak = int.parse(breakDurationController.text * 60);
+    inputBreak = int.parse(breakDurationController.text);
 
     if (currentState == TimerState.end) {
       iteration = 1;
@@ -83,14 +86,17 @@ class TimerProvider extends ChangeNotifier {
       );
     } else {
       submitData(context);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (BuildContext context) {
-            return HourglassView(id: id, title: title);
-          },
-        ),
+      AutoRouter.of(context).push(
+        HourglassRoute(id: id, title: title),
       );
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (BuildContext context) {
+      //         return HourglassView(id: id, title: title);
+      //       },
+      //     ),
+      //   );
     }
   }
 
@@ -170,7 +176,21 @@ class TimerProvider extends ChangeNotifier {
           if (isWillPop) {
             Navigator.of(context).pop(true);
           } else {
+            // Navigator.of(ctx).pop(true);
+            // AutoRouter.of(context).pop();
             Navigator.of(context).popUntil((route) => route.isFirst);
+            // Navigator.of(context).pop();
+            // Navigator.of(context).push(
+            //   MaterialPageRoute(
+            //     builder: (ctx) =>
+            //         HourglassSessionInput(id: tempId, title: tempTitle),
+            //   ),
+            // );
+            // Navigator.of(context).push(
+            //   MaterialPageRoute(
+            //     builder: (ctx) => HourglassView(id: tempId, title: tempTitle),
+            //   ),
+            // );
           }
         },
         buttonText2: 'No',
@@ -222,6 +242,7 @@ class TimerProvider extends ChangeNotifier {
         buttonText: 'Ok',
         onPressed: () {
           Navigator.of(context).popUntil((route) => route.isFirst);
+          //   Navigator.of(context).popUntil((route) => true);
         },
       ),
     );

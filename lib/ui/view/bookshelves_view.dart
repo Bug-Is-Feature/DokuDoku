@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:dokudoku/model/book.dart';
 import 'package:dokudoku/model/library.dart';
+import 'package:dokudoku/model/library_books.dart';
 import 'package:dokudoku/services/book_service.dart';
 import 'package:dokudoku/ui/components/bookshelves_badge.dart';
 import 'package:dokudoku/ui/components/bookshelves_tabbar.dart';
@@ -50,7 +51,32 @@ class _BookShelvesViewState extends State<BookShelvesView> {
               color: context.resources.color.colorWhite,
               child: BookShelvesTabBar(
                 library: library,
-                libraryBookUpdateCallback: (bool bookStatus) => setState(() {
+                libraryBookAddCallback:
+                    (bool isSuccess, LibraryBooks libraryBook) => isSuccess
+                        ? setState(() {
+                            library.then((value) {
+                              value.libraryBooks.add(libraryBook);
+                              value.bookCount++;
+                              value.incompleteCount++;
+                            });
+                          })
+                        : SnackBarUtils.showWarningSnackBar(
+                            context: context, content: 'Something went wrong'),
+                libraryBookRemoveCallback:
+                    (bool isSuccess, LibraryBooks libraryBook) => isSuccess
+                        ? setState(() {
+                            library.then((value) {
+                              value.libraryBooks.remove(libraryBook);
+                              libraryBook.isCompleted
+                                  ? value.completedCount--
+                                  : value.incompleteCount--;
+                              value.bookCount--;
+                            });
+                          })
+                        : SnackBarUtils.showWarningSnackBar(
+                            context: context, content: 'Something went wrong'),
+                libraryBookStatusUpdateCallback: (bool bookStatus) =>
+                    setState(() {
                   bookStatus
                       ? library.then((value) {
                           value.completedCount++;

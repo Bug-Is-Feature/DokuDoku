@@ -10,14 +10,18 @@ import 'package:flutter/material.dart';
 class BookshelvesTabView extends StatefulWidget {
   Future<Library> library;
   final String type;
-  final void Function(bool) libraryBookUpdateCallback;
+  final void Function(bool) libraryBookStatusUpdateCallback;
   final void Function(bool, Book) bookUpdateCallback;
+  final void Function(bool, LibraryBooks) libraryBookAddCallback,
+      libraryBookRemoveCallback;
 
   BookshelvesTabView({
     super.key,
     required this.library,
     required this.type,
-    required this.libraryBookUpdateCallback,
+    required this.libraryBookAddCallback,
+    required this.libraryBookRemoveCallback,
+    required this.libraryBookStatusUpdateCallback,
     required this.bookUpdateCallback,
   });
 
@@ -53,24 +57,8 @@ class _BookshelvesTabViewState extends State<BookshelvesTabView> {
     return Scaffold(
       floatingActionButton: BookshelvesFloatingButton(
         library: widget.library,
-        addCallback: (bool isSuccess, LibraryBooks libraryBook) async {
-          if (isSuccess) {
-            Library library = await widget.library;
-            setState(() => library.libraryBooks.add(libraryBook));
-          } else {
-            SnackBarUtils.showWarningSnackBar(
-                context: context, content: 'Something went wrong');
-          }
-        },
-        removeCallback: (bool isSuccess, LibraryBooks libraryBook) async {
-          if (isSuccess) {
-            Library library = await widget.library;
-            setState(() => library.libraryBooks.remove(libraryBook));
-          } else {
-            SnackBarUtils.showWarningSnackBar(
-                context: context, content: 'Something went wrong');
-          }
-        },
+        libraryBookAddCallback: widget.libraryBookAddCallback,
+        libraryBookRemoveCallback: widget.libraryBookRemoveCallback,
       ),
       body: Stack(
         children: [
@@ -92,7 +80,7 @@ class _BookshelvesTabViewState extends State<BookshelvesTabView> {
                                 const SizedBox(height: 14),
                                 BookCard(
                                   libraryBook: libraryBook,
-                                  libraryBookUpdateCallback:
+                                  libraryBookStatusUpdateCallback:
                                       (bool libraryBookStatus) async {
                                     Library library = await widget.library;
                                     LibraryBooks target = library.libraryBooks
@@ -103,9 +91,11 @@ class _BookshelvesTabViewState extends State<BookshelvesTabView> {
                                         .first;
                                     target.isCompleted = libraryBookStatus;
 
-                                    widget.libraryBookUpdateCallback(
+                                    widget.libraryBookStatusUpdateCallback(
                                         libraryBookStatus);
                                   },
+                                  libraryBookRemoveCallback:
+                                      widget.libraryBookRemoveCallback,
                                   bookUpdateCallback: widget.bookUpdateCallback,
                                 ),
                               ],
