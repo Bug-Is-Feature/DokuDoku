@@ -33,7 +33,7 @@ class BookService {
           'description': gBook.volumeInfo.description,
           'page_count':
               gBook.volumeInfo.pageCount == -1 ? 0 : gBook.volumeInfo.pageCount,
-          'currency_code': gBook.saleInfo.currencyCode == ''
+          'currency_code': gBook.saleInfo.currencyCode.toUpperCase() == ''
               ? null
               : gBook.saleInfo.currencyCode,
           'price': gBook.saleInfo.price == -1 ? 0 : gBook.saleInfo.price,
@@ -48,7 +48,8 @@ class BookService {
 
     if (response.statusCode == 201) {
       print('Add google book successfully');
-      final data = jsonDecode(response.body);
+      final utf8Response = utf8.decode(response.bodyBytes);
+      final data = jsonDecode(utf8Response);
       return LibraryBooks.fromJson(data);
     } else {
       print('API_ERROR: ${response.statusCode}');
@@ -75,7 +76,7 @@ class BookService {
           'thumbnail': provider.thumbnailController.text,
           'description': provider.descriptionController.text,
           'page_count': provider.pageCountController.text,
-          'currency_code': provider.currencyCodeController.text,
+          'currency_code': provider.currencyCodeController.text.toUpperCase(),
           'price': provider.bookPriceController.text,
           'created_by': currentUser.uid,
           'authors': provider.authorController.text
@@ -90,7 +91,8 @@ class BookService {
 
     if (response.statusCode == 201) {
       print('Add book successfully');
-      final data = jsonDecode(response.body);
+      final utf8Response = utf8.decode(response.bodyBytes);
+      final data = jsonDecode(utf8Response);
       return LibraryBooks.fromJson(data);
     } else {
       print('API_ERROR: ${response.statusCode}');
@@ -136,7 +138,7 @@ class BookService {
         'thumbnail': provider.editThumbnailController.text,
         'description': provider.editDescriptionController.text,
         'page_count': provider.editPageCountController.text,
-        'currency_code': provider.editCurrencyCodeController.text,
+        'currency_code': provider.editCurrencyCodeController.text.toUpperCase(),
         'price': provider.editBookPriceController.text,
         // 'authors': provider.authorController.text
         //     .split(',')
@@ -147,7 +149,8 @@ class BookService {
 
     if (response.statusCode == 200) {
       print('Update book successfully');
-      final data = jsonDecode(response.body);
+      final utf8Response = utf8.decode(response.bodyBytes);
+      final data = jsonDecode(utf8Response);
       return Book.fromJson(data);
     } else {
       print('API_ERROR: ${response.statusCode}');
@@ -214,7 +217,8 @@ class BookService {
         },
       );
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+        final utf8Response = utf8.decode(response.bodyBytes);
+        final data = jsonDecode(utf8Response);
         print('Get book detail successfully');
         return LibraryBooks.fromJson(data);
       } else {
