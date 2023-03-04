@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dokudoku/services/auth_service.dart';
 import 'package:dokudoku/provider/timer_provider.dart';
 import 'package:dokudoku/services/timer_service.dart';
@@ -32,11 +34,20 @@ class _StopwatchViewState extends State<StopwatchView> {
               ),
               const StopwatchTimer(),
               SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-              Text(
-                'Book: ${widget.title}',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: context.resources.color.colorWhite.withOpacity(0.5),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    widget.title.replaceAll('%2520', ' '),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.05),

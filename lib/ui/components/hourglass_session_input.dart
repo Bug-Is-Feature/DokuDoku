@@ -88,9 +88,20 @@ class _HourglassSessionInputState extends State<HourglassSessionInput> {
                         hourglassInput('Break time',
                             provider.breakDurationController, 'Minutes'),
                         const SizedBox(height: 20),
-                        const Text(
-                          'Think again',
-                          style: TextStyle(fontSize: 20),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: context.resources.color.colorWhite
+                                .withOpacity(0.5),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                            child: Text(
+                              widget.title.replaceAll('%2520', ' '),
+                              style: const TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                          ),
                         ),
                         const SizedBox(height: 20),
                         Center(

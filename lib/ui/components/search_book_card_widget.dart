@@ -1,4 +1,5 @@
 import 'package:dokudoku/model/google_book.dart';
+import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:flutter/material.dart';
 
 class GoogleBookSearchCard extends StatefulWidget {
@@ -55,7 +56,7 @@ class _GoogleBookSearchCardState extends State<GoogleBookSearchCard> {
                     width: widget.imageWidth,
                     height: widget.imageHeight,
                     errorBuilder: ((context, error, stackTrace) =>
-                        Image.asset('assets/images/default_book_cover.png')),
+                        Image.asset('assets/images/book_cover.png')),
                   ),
                 ),
                 const SizedBox(width: 20),
@@ -94,6 +95,7 @@ class _GoogleBookSearchCardState extends State<GoogleBookSearchCard> {
                                 ? ''
                                 : widget.book.volumeInfo.categories[0],
                             style: const TextStyle(color: Colors.grey),
+                            overflow: TextOverflow.ellipsis,
                           ),
                           Text(
                             widget.book.volumeInfo.categories.isNotEmpty &&
@@ -101,12 +103,14 @@ class _GoogleBookSearchCardState extends State<GoogleBookSearchCard> {
                                 ? ' — '
                                 : '',
                             style: const TextStyle(color: Colors.grey),
+                            overflow: TextOverflow.ellipsis,
                           ),
                           Text(
                             widget.book.volumeInfo.pageCount == -1
                                 ? ''
                                 : '${widget.book.volumeInfo.pageCount} Pages',
                             style: const TextStyle(color: Colors.grey),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ],
                       ),
@@ -119,7 +123,7 @@ class _GoogleBookSearchCardState extends State<GoogleBookSearchCard> {
                         ? widget.onPressed(false)
                         : widget.onPressed(true);
                   },
-                  color: Colors.brown[400],
+                  color: context.resources.color.colorDarkest,
                   iconSize: 50,
                   icon: Icon(
                     widget.idList.contains(widget.book.googleBookId)
