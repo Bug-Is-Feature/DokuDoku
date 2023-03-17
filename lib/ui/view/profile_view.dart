@@ -27,149 +27,167 @@ class _ProfileViewState extends State<ProfileView> {
       body: Column(
         children: [
           Padding(
-              padding: const EdgeInsets.only(top: 25),
-              child: FutureBuilder<Users>(
-                  future: provider.user,
-                  builder:
-                      (BuildContext context, AsyncSnapshot<Users> snapshot) {
-                    return snapshot.connectionState == ConnectionState.waiting
-                        ? const Center(child: CircularProgressIndicator())
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.person,
-                                size: 100,
-                                color: context.resources.color.colorDarkest,
-                              ),
-                              const SizedBox(
-                                width: 35,
-                              ),
-                              Column(
-                                children: [
-                                  Text(
-                                    'Lvl ${snapshot.data!.currentLvl}',
-                                    style: const TextStyle(fontSize: 70),
-                                  ),
-                                  Text(
-                                    "${snapshot.data!.currentExp}/1000 EXP",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  SizedBox(
-                                    width: 100,
-                                    height: 5,
-                                    child: LinearProgressIndicator(
-                                      value: 0.5,
-                                      backgroundColor:
-                                          context.resources.color.colorWhite,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                          context.resources.color.colorDark),
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          );
-                  })),
+            padding: const EdgeInsets.only(top: 50),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(60),
+                    color: context.resources.color.colorDarkest,
+                  ),
+                  child: Icon(
+                    Icons.person,
+                    size: 100,
+                    color: context.resources.color.colorWhite,
+                  ),
+                ),
+                Column(
+                  children: [
+                    const Text(
+                      "LV 2",
+                      style: TextStyle(fontSize: 70),
+                    ),
+                    const Text(
+                      "200/1000 EXP",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    SizedBox(
+                      width: 100,
+                      height: 5,
+                      child: LinearProgressIndicator(
+                        value: 0.5,
+                        backgroundColor: context.resources.color.colorWhite,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            context.resources.color.colorDark),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
           const SizedBox(
             height: 60,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40)),
+                  color: context.resources.color.colorLighter),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Row(
+                  SizedBox(width: MediaQuery.of(context).size.width * 0.1),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(
-                        Icons.bar_chart,
-                        color: context.resources.color.colorDarkest,
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.05),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.bar_chart,
+                            color: context.resources.color.colorDarkest,
+                            size: 30,
+                          ),
+                          const SizedBox(width: 30),
+                          const Text(
+                            'Statistic',
+                            style: TextStyle(fontSize: 24),
+                          )
+                        ],
                       ),
-                      const SizedBox(width: 30),
-                      //   const Text(
-                      //     'Statistic',
-                      //     style: TextStyle(fontSize: 20),
-                      //   ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const StatisticView()));
-                        },
-                        child: const Text(
-                          'Statistic',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.calendar_month,
-                        color: context.resources.color.colorDarkest,
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.03),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.calendar_month,
+                            color: context.resources.color.colorDarkest,
+                            size: 30,
+                          ),
+                          const SizedBox(width: 30),
+                          const Text(
+                            'Calendar Month',
+                            style: TextStyle(fontSize: 24),
+                          )
+                        ],
                       ),
-                      const SizedBox(width: 30),
-                      const Text(
-                        'Calendar Month',
-                        style: TextStyle(fontSize: 20),
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.history,
-                        color: context.resources.color.colorDarkest,
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.03),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.history,
+                            color: context.resources.color.colorDarkest,
+                            size: 30,
+                          ),
+                          const SizedBox(width: 30),
+                          const Text(
+                            'Note History',
+                            style: TextStyle(fontSize: 24),
+                          )
+                        ],
                       ),
-                      const SizedBox(width: 30),
-                      const Text(
-                        'Note History',
-                        style: TextStyle(fontSize: 20),
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.settings,
-                        color: context.resources.color.colorDarkest,
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.03),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.settings,
+                            color: context.resources.color.colorDarkest,
+                            size: 30,
+                          ),
+                          const SizedBox(width: 30),
+                          const Text(
+                            'Achievement',
+                            style: TextStyle(fontSize: 24),
+                          )
+                        ],
                       ),
-                      const SizedBox(width: 30),
-                      const Text(
-                        'Achievement',
-                        style: TextStyle(fontSize: 20),
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.notifications,
-                        color: context.resources.color.colorDarkest,
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.03),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.notifications,
+                            color: context.resources.color.colorDarkest,
+                            size: 30,
+                          ),
+                          const SizedBox(width: 30),
+                          const Text(
+                            'Notification',
+                            style: TextStyle(fontSize: 24),
+                          )
+                        ],
                       ),
-                      const SizedBox(width: 30),
-                      const Text(
-                        'Notification',
-                        style: TextStyle(fontSize: 20),
-                      )
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.03),
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              await AuthService.googleAuth.signOut();
+                              await AuthService.signOut();
+                              context.router.replace(const AuthRoute());
+                            },
+                            child: Icon(
+                              (Icons.logout),
+                              color: context.resources.color.colorDarkest,
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ],
-              )
-            ],
-          ),
-          IconButton(
-            icon: const Icon(Icons.logout),
-            color: context.resources.color.colorDarkest,
-            onPressed: () async {
-              await AuthService.googleAuth.signOut();
-              await AuthService.signOut();
-              context.router.replace(const AuthRoute());
-            },
+              ),
+            ),
           ),
         ],
       ),
