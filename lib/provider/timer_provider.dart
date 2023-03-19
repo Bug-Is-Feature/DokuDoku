@@ -86,17 +86,13 @@ class TimerProvider extends ChangeNotifier {
       );
     } else {
       submitData(context);
-      AutoRouter.of(context).push(
-        HourglassRoute(id: id, title: title),
+      context.pushRoute(
+        TimerRoute(
+          children: [
+            HourglassRoute(id: id, title: title),
+          ],
+        ),
       );
-      //   Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //       builder: (BuildContext context) {
-      //         return HourglassView(id: id, title: title);
-      //       },
-      //     ),
-      //   );
     }
   }
 
@@ -171,26 +167,16 @@ class TimerProvider extends ChangeNotifier {
             "Your progress won't record.\nYou've already read\n${formattedTotalDuration(sumTime)}",
         buttonText: 'Yes',
         onPressed: () {
-          stopHourglass(context);
+          stopHourglass(ctx);
           currentDuration = 0;
           if (isWillPop) {
             Navigator.of(context).pop(true);
           } else {
             // Navigator.of(ctx).pop(true);
-            // AutoRouter.of(context).pop();
-            Navigator.of(context).popUntil((route) => route.isFirst);
-            // Navigator.of(context).pop();
-            // Navigator.of(context).push(
-            //   MaterialPageRoute(
-            //     builder: (ctx) =>
-            //         HourglassSessionInput(id: tempId, title: tempTitle),
-            //   ),
-            // );
-            // Navigator.of(context).push(
-            //   MaterialPageRoute(
-            //     builder: (ctx) => HourglassView(id: tempId, title: tempTitle),
-            //   ),
-            // );
+            Navigator.of(context, rootNavigator: true).pop();
+            ctx.replaceRoute(
+              TimerModeTabBarRoute(id: tempId, title: tempTitle),
+            );
           }
         },
         buttonText2: 'No',
@@ -241,8 +227,10 @@ class TimerProvider extends ChangeNotifier {
         description: "You've already read\n${formattedTotalDuration(sumTime)}.",
         buttonText: 'Ok',
         onPressed: () {
-          Navigator.of(context).popUntil((route) => route.isFirst);
-          //   Navigator.of(context).popUntil((route) => true);
+          Navigator.of(context, rootNavigator: true).pop();
+          ctx3.replaceRoute(
+            TimerModeTabBarRoute(id: tempId, title: tempTitle),
+          );
         },
       ),
     );

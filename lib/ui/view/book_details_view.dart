@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dokudoku/model/library_books.dart';
 import 'package:dokudoku/model/book.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
+import 'package:dokudoku/routes/router.gr.dart';
 import 'package:dokudoku/services/book_service.dart';
 import 'package:dokudoku/ui/components/button.dart';
 import 'package:dokudoku/ui/components/custom_dialog_box.dart';
@@ -174,8 +175,10 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                                       //   );
                                       if (error.isEmpty) {
                                         // TODO: find a way to go back to bookshelves view
-                                        Navigator.popUntil(
-                                            context, (route) => route.isFirst);
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pop();
+                                        context.router.navigateBack();
 
                                         widget.libraryBookRemoveCallback(
                                             error.isEmpty, widget.libraryBook);

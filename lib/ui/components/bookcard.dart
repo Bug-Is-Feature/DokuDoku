@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:dokudoku/model/book.dart';
 import 'package:dokudoku/model/library_books.dart';
+import 'package:dokudoku/routes/router.gr.dart';
 import 'package:dokudoku/ui/components/bookcard_dropdown.dart';
 import 'package:dokudoku/ui/view/book_details_view.dart';
+import 'package:dokudoku/ui/view/bookshelves_view.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 
@@ -14,10 +16,10 @@ class BookCard extends StatefulWidget {
 
   BookCard({
     super.key,
-    required this.libraryBook,
-    required this.bookUpdateCallback,
-    required this.libraryBookRemoveCallback,
-    required this.libraryBookStatusUpdateCallback,
+    @PathParam() required this.libraryBook,
+    @PathParam() required this.bookUpdateCallback,
+    @PathParam() required this.libraryBookRemoveCallback,
+    @PathParam() required this.libraryBookStatusUpdateCallback,
   });
 
   @override
@@ -29,15 +31,11 @@ class _BookCardState extends State<BookCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BookDetailsView(
+        context.router.push(
+          BookDetailsRoute(
               libraryBook: widget.libraryBook,
               bookUpdateCallback: widget.bookUpdateCallback,
-              libraryBookRemoveCallback: widget.libraryBookRemoveCallback,
-            ),
-          ),
+              libraryBookRemoveCallback: widget.libraryBookRemoveCallback),
         );
       },
       child: Container(
@@ -109,33 +107,45 @@ class _BookCardState extends State<BookCard> {
                       style: TextStyle(color: context.resources.color.greyDark),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.01,
+                      height: MediaQuery.of(context).size.height * 0.0005,
                     ),
                     //Drop Down  show if in bookshelf
-                    BookCardDropdown(
-                      libraryBookId: widget.libraryBook.libraryBookId,
-                      bookStatus: widget.libraryBook.isCompleted,
-                      libraryBookStatusUpdateCallback:
-                          widget.libraryBookStatusUpdateCallback,
+                    Row(
+                      children: [
+                        BookCardDropdown(
+                          libraryBookId: widget.libraryBook.libraryBookId,
+                          bookStatus: widget.libraryBook.isCompleted,
+                          libraryBookStatusUpdateCallback:
+                              widget.libraryBookStatusUpdateCallback,
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.03,
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.timer_outlined,
+                            color: context.resources.color.colorDarkest,
+                            size: 30,
+                          ),
+                          onPressed: () {
+                            context.navigateTo(
+                              TimerRoute(
+                                children: [
+                                  TimerModeTabBarRoute(
+                                      id: widget.libraryBook.book.id,
+                                      title: widget.libraryBook.book.title)
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     )
                   ],
                 ),
               ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.03,
-              ),
+
               // show if in bookshelf
-              IconButton(
-                icon: Icon(
-                  Icons.timer_outlined,
-                  color: context.resources.color.colorDarkest,
-                  size: 30,
-                ),
-                onPressed: () {
-                  AutoRouter.of(context).navigateNamed(
-                      "timer/${widget.libraryBook.book.id}/${widget.libraryBook.book.title}");
-                },
-              ),
             ],
           ),
         ),

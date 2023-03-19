@@ -36,10 +36,7 @@ import 'package:flutter/material.dart';
               page: EmptyRouterPage,
               children: [
                 AutoRoute(path: '', page: BookShelvesView),
-                // AutoRoute(
-                //     path: ':bookID',
-                //     name: 'BookDetailsRoute',
-                //     page: BookDetailsView),
+                AutoRoute(name: 'BookDetailsRoute', page: BookDetailsView),
               ],
             ),
             AutoRoute(
@@ -65,7 +62,11 @@ import 'package:flutter/material.dart';
           name: 'TimerRoute',
           page: EmptyRouterPage,
           children: [
-            AutoRoute(path: ':id/:title', initial: true, page: TimerModeTabBar),
+            AutoRoute(
+                path: ':id/:title',
+                initial: true,
+                name: "TimerModeTabBarRoute",
+                page: TimerModeTabBar),
             AutoRoute(
                 path: ':id/:title/hourglass_view',
                 name: "HourglassRoute",
