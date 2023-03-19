@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:dokudoku/provider/timer_provider.dart';
+import 'package:dokudoku/routes/router.gr.dart';
 import 'package:dokudoku/ui/components/hourglass_session_input.dart';
 import 'package:dokudoku/ui/view/stopwatch_view.dart';
 import 'package:flutter/material.dart';
@@ -45,8 +46,22 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
     final provider = Provider.of<TimerProvider>(context);
     return Scaffold(
       backgroundColor: context.resources.color.colorLightest,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(28),
+        child: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            color: context.resources.color.colorDarkest,
+            onPressed: () {
+              AutoRouter.of(context).navigateBack();
+            },
+          ),
+        ),
+      ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(30, 50, 30, 10),
+        padding: const EdgeInsets.fromLTRB(30, 22, 30, 10),
         child: Container(
           decoration: const BoxDecoration(
             color: Colors.transparent,

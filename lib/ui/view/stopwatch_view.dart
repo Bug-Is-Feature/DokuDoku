@@ -97,7 +97,7 @@ class _StopwatchViewState extends State<StopwatchView> {
                     ? const Text('Stop')
                     : const Text('Start'),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.09),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.08),
               if (provider.timerPlaying == false) ...[
                 Column(
                   children: [

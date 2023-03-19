@@ -49,6 +49,8 @@ class _HourglassViewState extends State<HourglassView> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.06,
               ),
+              Text("book Title : ${widget.title}",
+                  style: const TextStyle(fontSize: 25)),
               if (provider.currentState == TimerState.focus ||
                   provider.currentState == TimerState.end) ...[
                 Text("${provider.iteration}/${provider.inputSessionNum} Rounds",
