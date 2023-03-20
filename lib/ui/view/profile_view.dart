@@ -1,3 +1,4 @@
+import 'package:dokudoku/ui/view/statistic_view.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:dokudoku/services/auth_service.dart';
@@ -72,9 +73,21 @@ class _ProfileViewState extends State<ProfileView> {
                         color: context.resources.color.colorDarkest,
                       ),
                       const SizedBox(width: 30),
-                      const Text(
-                        'Statistic',
-                        style: TextStyle(fontSize: 20),
+                      //   const Text(
+                      //     'Statistic',
+                      //     style: TextStyle(fontSize: 20),
+                      //   ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const StatisticView()));
+                        },
+                        child: const Text(
+                          'Statistic',
+                          style: TextStyle(fontSize: 20),
+                        ),
                       )
                     ],
                   ),
