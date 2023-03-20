@@ -46,7 +46,7 @@ class _BookshelvesBadgeState extends State<BookshelvesBadge> {
                       )
                     : incompleteBadgeRow(
                         context,
-                        '${snapshot.data!.libraryBooks.map((libraryBook) => libraryBook.isCompleted ? 0 : libraryBook.book.price).reduce((a, b) => a + b)} Baht',
+                        '${snapshot.data!.libraryBooks.map((libraryBook) => libraryBook.isCompleted ? 0 : libraryBook.book.price).reduce((a, b) => a + b).toStringAsFixed(2)} Baht',
                         '${(snapshot.data!.incompleteCount / snapshot.data!.bookCount * 100).toStringAsFixed(1)} %',
                       );
           },
