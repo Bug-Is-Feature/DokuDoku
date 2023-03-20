@@ -51,13 +51,19 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
         child: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            color: context.resources.color.colorDarkest,
-            onPressed: () {
-              AutoRouter.of(context).navigateBack();
-            },
-          ),
+          leading: provider.timerPlaying == false
+              ? IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  color: context.resources.color.colorDarkest,
+                  onPressed: () {
+                    AutoRouter.of(context).navigateBack();
+                  },
+                )
+              : IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  color: context.resources.color.colorDarkest,
+                  onPressed: () {},
+                ),
         ),
       ),
       body: Padding(
@@ -164,6 +170,15 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
                 onWillPop: () async {
                   if (_tabController.index == pageIndex[TimerMode.hourglass]) {
                     _tabController.index = pageIndex[TimerMode.stopwatch]!;
+                    return false;
+                  } else if (_tabController.index ==
+                          pageIndex[TimerMode.stopwatch] &&
+                      provider.timerPlaying == true) {
+                    SnackBarUtils.showCustomSnackBar(
+                      context: context,
+                      backgroundColor: context.resources.color.colorNormal3,
+                      content: "You can't go back while timer is running",
+                    );
                     return false;
                   } else {
                     return true;
