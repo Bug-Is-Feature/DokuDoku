@@ -1,4 +1,5 @@
 import 'package:dokudoku/services/book_service.dart';
+import 'package:dokudoku/ui/components/snack_bar_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 
@@ -80,8 +81,20 @@ class _BookCardDropdownState extends State<BookCardDropdown> {
 
       if (selectedValue == "Completed") {
         widget.bookStatus = true;
+        if (!mounted) return;
+        SnackBarUtils.showCustomSnackBar(
+          context: context,
+          backgroundColor: context.resources.color.colorNormal3,
+          content: "Your book moved to Completed shelf",
+        );
       } else if (selectedValue == "Incomplete") {
         widget.bookStatus = false;
+        if (!mounted) return;
+        SnackBarUtils.showCustomSnackBar(
+          context: context,
+          backgroundColor: context.resources.color.colorNormal3,
+          content: "Your book moved to Incomplete shelf",
+        );
       }
 
       widget.libraryBookStatusUpdateCallback(widget.bookStatus);
