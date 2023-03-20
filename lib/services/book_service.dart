@@ -244,7 +244,8 @@ class BookService {
     );
 
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
+      final utf8Response = utf8.decode(response.bodyBytes);
+      final data = jsonDecode(utf8Response);
       return data.map<Library>((json) => Library.fromJson(json)).toList();
     } else {
       print('API_ERROR: ${response.statusCode}');
