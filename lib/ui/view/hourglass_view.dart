@@ -49,7 +49,9 @@ class _HourglassViewState extends State<HourglassView> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.06,
               ),
-              Text("book Title : ${widget.title}",
+              Text(widget.title.replaceAll('%2520', ' '),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 25)),
               if (provider.currentState == TimerState.focus ||
                   provider.currentState == TimerState.end) ...[

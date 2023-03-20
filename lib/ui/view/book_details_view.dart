@@ -4,12 +4,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dokudoku/model/library_books.dart';
 import 'package:dokudoku/model/book.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
-import 'package:dokudoku/routes/router.gr.dart';
 import 'package:dokudoku/services/book_service.dart';
 import 'package:dokudoku/ui/components/button.dart';
 import 'package:dokudoku/ui/components/custom_dialog_box.dart';
 import 'package:dokudoku/ui/components/edit_book_dialog.dart';
-import 'package:dokudoku/ui/view/bookshelves_view.dart';
 import 'package:flutter/material.dart';
 
 class BookDetailsView extends StatefulWidget {
@@ -78,18 +76,28 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                             fontSize: 30,
                             color: context.resources.color.colorWhite),
                       ),
-                      SizedBox(height: 2),
-                      Text(
-                        widget.libraryBook.book.subtitle,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
+                      const SizedBox(height: 2),
+                      if (widget.libraryBook.book.subtitle.isEmpty) ...[
+                        Text(
+                          'No subtitle',
+                          style: TextStyle(
+                            color: context.resources.color.colorWhite,
                             fontSize: 14,
-                            color: context.resources.color.greyLight),
-                      ),
-                      SizedBox(height: 4),
+                          ),
+                        )
+                      ] else ...[
+                        Text(
+                          widget.libraryBook.book.subtitle,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: context.resources.color.greyLight),
+                        )
+                      ],
+                      const SizedBox(height: 4),
                       if (widget.libraryBook.book.authors.isEmpty) ...[
                         Text(
-                          'No author details',
+                          'No author',
                           style: TextStyle(
                             color: context.resources.color.colorWhite,
                             fontSize: 14,
@@ -98,20 +106,21 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                       ] else ...[
                         Text(
                           'by ${widget.libraryBook.book.authors.map((author) => author.name).join(', ')}',
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             color: context.resources.color.colorWhite,
                             fontSize: 14,
                           ),
                         ),
                       ],
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
                         "${widget.libraryBook.book.pageCount} pages",
                         style: TextStyle(
                             fontSize: 14,
                             color: context.resources.color.colorWhite),
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
                         "${widget.libraryBook.book.price} ${widget.libraryBook.book.currencyCode}",
                         style: TextStyle(

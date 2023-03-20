@@ -43,6 +43,8 @@ class _StopwatchViewState extends State<StopwatchView> {
                   padding: const EdgeInsets.all(10.0),
                   child: Text(
                     widget.title.replaceAll('%2520', ' '),
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

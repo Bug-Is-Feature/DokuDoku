@@ -100,12 +100,24 @@ class _BookCardState extends State<BookCard> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.005,
                     ),
-                    Text(
-                      widget.libraryBook.book.authors
-                          .map((author) => author.name)
-                          .join(', '),
-                      style: TextStyle(color: context.resources.color.greyDark),
-                    ),
+                    if (widget.libraryBook.book.authors.isEmpty) ...[
+                      Text(
+                        'No author details',
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: context.resources.color.colorWhite,
+                        ),
+                      )
+                    ] else ...[
+                      Text(
+                        widget.libraryBook.book.authors
+                            .map((author) => author.name)
+                            .join(', '),
+                        overflow: TextOverflow.ellipsis,
+                        style:
+                            TextStyle(color: context.resources.color.greyDark),
+                      )
+                    ],
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.0005,
                     ),

@@ -102,31 +102,46 @@ class _GoogleBookDetailViewState extends State<GoogleBookDetailView> {
                         widget.googleBook.volumeInfo.title,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 30,
                             color: context.resources.color.colorWhite),
                       ),
-                      Text(
-                        widget.googleBook.volumeInfo.subtitle,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: context.resources.color.greyLight),
-                      ),
+                      const SizedBox(height: 2),
+                      if (widget.googleBook.volumeInfo.subtitle.isEmpty) ...[
+                        Text(
+                          'No subtitle',
+                          style: TextStyle(
+                            color: context.resources.color.colorWhite,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ] else ...[
+                        Text(
+                          widget.googleBook.volumeInfo.subtitle,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: context.resources.color.greyLight),
+                        ),
+                      ],
+                      const SizedBox(height: 4),
                       if (widget.googleBook.volumeInfo.authors.isEmpty) ...[
                         Text(
-                          'no author',
+                          'No author',
                           style: TextStyle(
-                              fontSize: 12,
-                              color: context.resources.color.colorWhite),
+                            fontSize: 14,
+                            color: context.resources.color.colorWhite,
+                          ),
                         )
                       ] else ...[
                         Text(
                           'by ${widget.googleBook.volumeInfo.authors.join(', ')}',
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 14,
                               color: context.resources.color.colorWhite),
                         ),
                       ],
+                      const SizedBox(height: 4),
                       if (widget.googleBook.volumeInfo.pageCount != -1) ...[
                         Text(
                           "${widget.googleBook.volumeInfo.pageCount.toString()} pages",

@@ -98,6 +98,8 @@ class _HourglassSessionInputState extends State<HourglassSessionInput> {
                             padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                             child: Text(
                               widget.title.replaceAll('%2520', ' '),
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
                               style: const TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
