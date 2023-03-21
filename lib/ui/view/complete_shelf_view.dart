@@ -1,3 +1,4 @@
+import 'package:dokudoku/ui/components/bookshelves_floating_button.dart';
 import 'package:dokudoku/ui/components/search_sort_bookshelves.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
@@ -15,105 +16,75 @@ class _CompleteShelfViewState extends State<CompleteShelfView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: SpeedDial(
-        backgroundColor: context.resources.color.colorDarkest,
-        icon: Icons.add,
-        children: [
-          SpeedDialChild(
-            backgroundColor: context.resources.color.colorDark,
-            child:
-                Icon(Icons.search, color: context.resources.color.colorWhite),
-            label: 'Search Book',
-            onTap: () {},
-          ),
-          SpeedDialChild(
-            backgroundColor: context.resources.color.colorDark,
-            child: Icon(
-              Icons.my_library_add,
-              color: context.resources.color.colorWhite,
-            ),
-            label: 'Add Book',
-            onTap: () {},
-          ),
-          SpeedDialChild(
-            backgroundColor: context.resources.color.colorDark,
-            child: Icon(
-              Icons.camera_alt,
-              color: context.resources.color.colorWhite,
-            ),
-            label: 'Add Book by ISBN',
-            onTap: () {},
-          ),
-        ],
-      ),
+      // floatingActionButton: const BookshelvesFloatingButton(),
       body: Stack(
         children: [
           SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: 50),
-                BookCard(
-                    bookAuthor: "Por Meung",
-                    bookImage: Image.network(
-                        "http://2.bp.blogspot.com/-M3pfeo9uP0s/VTZKDXO3o2I/AAAAAAAAAHg/3njfg4Th0is/s1600/book%2Blaunch.jpg"),
-                    bookName: "kjjkfdgljlsjdfla",
-                    bookStatus: "Complete"),
-                SizedBox(height: 10),
-                BookCard(
-                    bookAuthor: "Por Meung",
-                    bookImage: Image.network(
-                        "http://2.bp.blogspot.com/-M3pfeo9uP0s/VTZKDXO3o2I/AAAAAAAAAHg/3njfg4Th0is/s1600/book%2Blaunch.jpg"),
-                    bookName: "kjjkfdgljlsjdfla",
-                    bookStatus: "Complete"),
-                SizedBox(height: 10),
-                BookCard(
-                    bookAuthor: "Por Meung",
-                    bookImage: Image.network(
-                        "http://2.bp.blogspot.com/-M3pfeo9uP0s/VTZKDXO3o2I/AAAAAAAAAHg/3njfg4Th0is/s1600/book%2Blaunch.jpg"),
-                    bookName: "kjjkfdgljlsjdfla",
-                    bookStatus: "Complete"),
-                SizedBox(height: 10),
-                BookCard(
-                    bookAuthor: "Por Meung",
-                    bookImage: Image.network(
-                        "http://2.bp.blogspot.com/-M3pfeo9uP0s/VTZKDXO3o2I/AAAAAAAAAHg/3njfg4Th0is/s1600/book%2Blaunch.jpg"),
-                    bookName: "kjjkfdgljlsjdfla",
-                    bookStatus: "Complete"),
-                SizedBox(height: 10),
-                BookCard(
-                    bookAuthor: "Por Meung",
-                    bookImage: Image.network(
-                        "http://2.bp.blogspot.com/-M3pfeo9uP0s/VTZKDXO3o2I/AAAAAAAAAHg/3njfg4Th0is/s1600/book%2Blaunch.jpg"),
-                    bookName: "kjjkfdgljlsjdfla",
-                    bookStatus: "Complete"),
-                SizedBox(height: 10),
-                BookCard(
-                    bookAuthor: "Por Meung",
-                    bookImage: Image.network(
-                        "http://2.bp.blogspot.com/-M3pfeo9uP0s/VTZKDXO3o2I/AAAAAAAAAHg/3njfg4Th0is/s1600/book%2Blaunch.jpg"),
-                    bookName: "kjjkfdgljlsjdfla",
-                    bookStatus: "Complete"),
-                SizedBox(height: 10),
-                BookCard(
-                    bookAuthor: "Por Meung",
-                    bookImage: Image.network(
-                        "http://2.bp.blogspot.com/-M3pfeo9uP0s/VTZKDXO3o2I/AAAAAAAAAHg/3njfg4Th0is/s1600/book%2Blaunch.jpg"),
-                    bookName: "kjjkfdgljlsjdfla",
-                    bookStatus: "Complete"),
-                SizedBox(height: 10),
-                BookCard(
-                    bookAuthor: "Por Meung",
-                    bookImage: Image.network(
-                        "http://2.bp.blogspot.com/-M3pfeo9uP0s/VTZKDXO3o2I/AAAAAAAAAHg/3njfg4Th0is/s1600/book%2Blaunch.jpg"),
-                    bookName: "kjjkfdgljlsjdfla",
-                    bookStatus: "Complete"),
-                SizedBox(height: 10),
-                BookCard(
-                    bookAuthor: "Por Meung",
-                    bookImage: Image.network(
-                        "http://2.bp.blogspot.com/-M3pfeo9uP0s/VTZKDXO3o2I/AAAAAAAAAHg/3njfg4Th0is/s1600/book%2Blaunch.jpg"),
-                    bookName: "kjjkfdgljlsjdfla",
-                    bookStatus: "Complete"),
+                // SizedBox(height: 50),
+                // BookCard(
+                //     bookAuthor: "Por Meung",
+                //     bookImage: Image.network(
+                //         "http://2.bp.blogspot.com/-M3pfeo9uP0s/VTZKDXO3o2I/AAAAAAAAAHg/3njfg4Th0is/s1600/book%2Blaunch.jpg"),
+                //     bookName: "kjjkfdgljlsjdfla",
+                //     bookStatus: "Complete"),
+                // SizedBox(height: 10),
+                // BookCard(
+                //     bookAuthor: "Por Meung",
+                //     bookImage: Image.network(
+                //         "http://2.bp.blogspot.com/-M3pfeo9uP0s/VTZKDXO3o2I/AAAAAAAAAHg/3njfg4Th0is/s1600/book%2Blaunch.jpg"),
+                //     bookName: "kjjkfdgljlsjdfla",
+                //     bookStatus: "Complete"),
+                // SizedBox(height: 10),
+                // BookCard(
+                //     bookAuthor: "Por Meung",
+                //     bookImage: Image.network(
+                //         "http://2.bp.blogspot.com/-M3pfeo9uP0s/VTZKDXO3o2I/AAAAAAAAAHg/3njfg4Th0is/s1600/book%2Blaunch.jpg"),
+                //     bookName: "kjjkfdgljlsjdfla",
+                //     bookStatus: "Complete"),
+                // SizedBox(height: 10),
+                // BookCard(
+                //     bookAuthor: "Por Meung",
+                //     bookImage: Image.network(
+                //         "http://2.bp.blogspot.com/-M3pfeo9uP0s/VTZKDXO3o2I/AAAAAAAAAHg/3njfg4Th0is/s1600/book%2Blaunch.jpg"),
+                //     bookName: "kjjkfdgljlsjdfla",
+                //     bookStatus: "Complete"),
+                // SizedBox(height: 10),
+                // BookCard(
+                //     bookAuthor: "Por Meung",
+                //     bookImage: Image.network(
+                //         "http://2.bp.blogspot.com/-M3pfeo9uP0s/VTZKDXO3o2I/AAAAAAAAAHg/3njfg4Th0is/s1600/book%2Blaunch.jpg"),
+                //     bookName: "kjjkfdgljlsjdfla",
+                //     bookStatus: "Complete"),
+                // SizedBox(height: 10),
+                // BookCard(
+                //     bookAuthor: "Por Meung",
+                //     bookImage: Image.network(
+                //         "http://2.bp.blogspot.com/-M3pfeo9uP0s/VTZKDXO3o2I/AAAAAAAAAHg/3njfg4Th0is/s1600/book%2Blaunch.jpg"),
+                //     bookName: "kjjkfdgljlsjdfla",
+                //     bookStatus: "Complete"),
+                // SizedBox(height: 10),
+                // BookCard(
+                //     bookAuthor: "Por Meung",
+                //     bookImage: Image.network(
+                //         "http://2.bp.blogspot.com/-M3pfeo9uP0s/VTZKDXO3o2I/AAAAAAAAAHg/3njfg4Th0is/s1600/book%2Blaunch.jpg"),
+                //     bookName: "kjjkfdgljlsjdfla",
+                //     bookStatus: "Complete"),
+                // SizedBox(height: 10),
+                // BookCard(
+                //     bookAuthor: "Por Meung",
+                //     bookImage: Image.network(
+                //         "http://2.bp.blogspot.com/-M3pfeo9uP0s/VTZKDXO3o2I/AAAAAAAAAHg/3njfg4Th0is/s1600/book%2Blaunch.jpg"),
+                //     bookName: "kjjkfdgljlsjdfla",
+                //     bookStatus: "Complete"),
+                // SizedBox(height: 10),
+                // BookCard(
+                //     bookAuthor: "Por Meung",
+                //     bookImage: Image.network(
+                //         "http://2.bp.blogspot.com/-M3pfeo9uP0s/VTZKDXO3o2I/AAAAAAAAAHg/3njfg4Th0is/s1600/book%2Blaunch.jpg"),
+                //     bookName: "kjjkfdgljlsjdfla",
+                //     bookStatus: "Complete"),
               ],
             ),
           ),

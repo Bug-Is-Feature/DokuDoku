@@ -1,10 +1,25 @@
+import 'package:dokudoku/model/book.dart';
+import 'package:dokudoku/model/library.dart';
+import 'package:dokudoku/model/library_books.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
-import 'package:dokudoku/ui/view/complete_shelf_view.dart';
-import 'package:dokudoku/ui/view/incomplete_shelf_view.dart';
+import 'package:dokudoku/ui/view/bookshelves_tab_view.dart';
 import 'package:flutter/material.dart';
 
 class BookShelvesTabBar extends StatefulWidget {
-  const BookShelvesTabBar({super.key});
+  Future<Library> library;
+  final void Function(bool) libraryBookStatusUpdateCallback;
+  final void Function(bool, Book) bookUpdateCallback;
+  final void Function(bool, LibraryBooks) libraryBookAddCallback,
+      libraryBookRemoveCallback;
+
+  BookShelvesTabBar({
+    super.key,
+    required this.library,
+    required this.libraryBookAddCallback,
+    required this.libraryBookRemoveCallback,
+    required this.libraryBookStatusUpdateCallback,
+    required this.bookUpdateCallback,
+  });
 
   @override
   State<BookShelvesTabBar> createState() => _BookShelvesTabBarState();
@@ -59,7 +74,10 @@ class _BookShelvesTabBarState extends State<BookShelvesTabBar>
                     children: const [
                       Text(
                         'Incomplete',
-                        style: TextStyle(fontSize: 22, fontFamily: 'primary'),
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontFamily: 'primary',
+                        ),
                       ),
                     ],
                   ),
@@ -84,15 +102,37 @@ class _BookShelvesTabBarState extends State<BookShelvesTabBar>
           ),
           const SizedBox(height: 10),
           Expanded(
-            child: TabBarView(
+            child:
+                // child: FutureBuilder<Library>(
+                //   future: widget.library,
+                //   builder: (BuildContext context, AsyncSnapshot<Library> snapshot) {
+                //     return snapshot.connectionState == ConnectionState.waiting
+                //         ? const Center(child: CircularProgressIndicator())
+                TabBarView(
               controller: _tabController,
               physics: const NeverScrollableScrollPhysics(),
-              children: const [
+              children: [
                 Center(
-                  child: IncompleteShelfView(),
+                  child: BookshelvesTabView(
+                    library: widget.library,
+                    type: 'incomplete',
+                    libraryBookAddCallback: widget.libraryBookAddCallback,
+                    libraryBookRemoveCallback: widget.libraryBookRemoveCallback,
+                    libraryBookStatusUpdateCallback:
+                        widget.libraryBookStatusUpdateCallback,
+                    bookUpdateCallback: widget.bookUpdateCallback,
+                  ),
                 ),
                 Center(
-                  child: CompleteShelfView(),
+                  child: BookshelvesTabView(
+                    library: widget.library,
+                    type: 'completed',
+                    libraryBookAddCallback: widget.libraryBookAddCallback,
+                    libraryBookRemoveCallback: widget.libraryBookRemoveCallback,
+                    libraryBookStatusUpdateCallback:
+                        widget.libraryBookStatusUpdateCallback,
+                    bookUpdateCallback: widget.bookUpdateCallback,
+                  ),
                 ),
               ],
             ),

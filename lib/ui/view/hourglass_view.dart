@@ -1,11 +1,13 @@
-import 'package:dokudoku/services/timer_service.dart';
+import 'package:dokudoku/provider/timer_provider.dart';
 import 'package:dokudoku/ui/components/button.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:provider/provider.dart';
 
 class HourglassView extends StatefulWidget {
-  const HourglassView({super.key});
+  final int id;
+  final String title;
+  const HourglassView({super.key, required this.id, required this.title});
 
   @override
   State<HourglassView> createState() => _HourglassViewState();
@@ -14,12 +16,12 @@ class HourglassView extends StatefulWidget {
 class _HourglassViewState extends State<HourglassView> {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<TimerService>(context);
+    final provider = Provider.of<TimerProvider>(context);
 
     final skipBreakButton = Button(
       onPressed: () {
-        Provider.of<TimerService>(context, listen: false).pauseHourglass();
-        Provider.of<TimerService>(context, listen: false)
+        Provider.of<TimerProvider>(context, listen: false).pauseHourglass();
+        Provider.of<TimerProvider>(context, listen: false)
             .breakTimeDialog(context);
       },
       backgroundColor: context.resources.color.colorDark,
@@ -29,8 +31,8 @@ class _HourglassViewState extends State<HourglassView> {
 
     final cancelButton = Button(
       onPressed: () {
-        Provider.of<TimerService>(context, listen: false).pauseHourglass();
-        Provider.of<TimerService>(context, listen: false)
+        Provider.of<TimerProvider>(context, listen: false).pauseHourglass();
+        Provider.of<TimerProvider>(context, listen: false)
             .cancelTimeDialog(context: context, isWillPop: false);
       },
       backgroundColor: context.resources.color.error,
@@ -47,6 +49,10 @@ class _HourglassViewState extends State<HourglassView> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.06,
               ),
+              Text(widget.title.replaceAll('%2520', ' '),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 25)),
               if (provider.currentState == TimerState.focus ||
                   provider.currentState == TimerState.end) ...[
                 Text("${provider.iteration}/${provider.inputSessionNum} Rounds",
@@ -73,7 +79,7 @@ class _HourglassViewState extends State<HourglassView> {
                   SizedBox(
                     child: Center(
                       child: Text(
-                        Provider.of<TimerService>(context, listen: false)
+                        Provider.of<TimerProvider>(context, listen: false)
                             .formattedHours(provider.currentDuration),
                         style: const TextStyle(fontSize: 60),
                       ),
@@ -92,7 +98,7 @@ class _HourglassViewState extends State<HourglassView> {
                   SizedBox(
                     child: Center(
                       child: Text(
-                        Provider.of<TimerService>(context, listen: false)
+                        Provider.of<TimerProvider>(context, listen: false)
                             .formattedMinutes(provider.currentDuration),
                         style: const TextStyle(fontSize: 60),
                       ),
@@ -111,7 +117,7 @@ class _HourglassViewState extends State<HourglassView> {
                   SizedBox(
                     child: Center(
                       child: Text(
-                        Provider.of<TimerService>(context, listen: false)
+                        Provider.of<TimerProvider>(context, listen: false)
                             .formattedSeconds(provider.currentDuration),
                         style: const TextStyle(fontSize: 60),
                       ),
@@ -162,9 +168,10 @@ class _HourglassViewState extends State<HourglassView> {
               WillPopScope(
                 child: Container(),
                 onWillPop: () async {
-                  Provider.of<TimerService>(context, listen: false)
+                  Provider.of<TimerProvider>(context, listen: false)
                       .pauseHourglass();
-                  return await Provider.of<TimerService>(context, listen: false)
+                  return await Provider.of<TimerProvider>(context,
+                          listen: false)
                       .cancelTimeDialog(context: context, isWillPop: true);
                 },
               )

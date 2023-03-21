@@ -5,9 +5,17 @@ import 'package:dokudoku/services/auth_service.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:dokudoku/routes/router.gr.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
+//   final int id;
+//   final String title;
+
   const HomeView({super.key});
 
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +25,7 @@ class HomeView extends StatelessWidget {
         // appBarBuilder: (context, tabsRouter) => AppBar(
         //   elevation: 0,
         //   backgroundColor: Colors.transparent,
-        //   centerTitle: true,
+        //   centerTitle: true
         //   leading: const AutoBackButton(),
         //   actions: [
         //     IconButton(

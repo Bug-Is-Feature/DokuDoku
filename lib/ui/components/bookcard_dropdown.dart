@@ -1,29 +1,39 @@
+import 'package:dokudoku/services/book_service.dart';
+import 'package:dokudoku/ui/components/snack_bar_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 
-class DropdownBooksheleves extends StatefulWidget {
-  const DropdownBooksheleves({super.key});
+class BookCardDropdown extends StatefulWidget {
+  final int libraryBookId;
+  final void Function(bool) libraryBookStatusUpdateCallback;
+  bool bookStatus;
+
+  BookCardDropdown({
+    super.key,
+    required this.libraryBookId,
+    required this.libraryBookStatusUpdateCallback,
+    required this.bookStatus,
+  });
 
   @override
-  State<DropdownBooksheleves> createState() => _DropdownBookshelevesState();
+  State<BookCardDropdown> createState() => _BookCardDropdownState();
 }
 
-class _DropdownBookshelevesState extends State<DropdownBooksheleves> {
-  String dropdownValue = 'Incomplete';
+class _BookCardDropdownState extends State<BookCardDropdown> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.028,
       width: MediaQuery.of(context).size.width * 0.33,
       child: DropdownButtonFormField(
-        items: <String>['Incomplete', 'Complete']
+        items: <String>['Incomplete', 'Completed']
             .map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(value),
           );
         }).toList(),
-        value: dropdownValue,
+        value: widget.bookStatus ? "Completed" : "Incomplete",
         onChanged: dropdownCallback,
         icon: Icon(
           Icons.keyboard_arrow_down_outlined,
@@ -61,11 +71,33 @@ class _DropdownBookshelevesState extends State<DropdownBooksheleves> {
     );
   }
 
-  void dropdownCallback(String? selectedValue) {
-    if (selectedValue is String) {
-      setState(() {
-        dropdownValue = selectedValue;
-      });
+  void dropdownCallback(String? selectedValue) async {
+    String currentStatus = widget.bookStatus ? 'Completed' : 'Incomplete';
+    if (selectedValue is String && selectedValue != currentStatus) {
+      await BookService.updateBookStatus(
+        widget.libraryBookId,
+        selectedValue == 'Completed' ? true : false,
+      );
+
+      if (selectedValue == "Completed") {
+        widget.bookStatus = true;
+        if (!mounted) return;
+        SnackBarUtils.showCustomSnackBar(
+          context: context,
+          backgroundColor: context.resources.color.colorNormal3,
+          content: "Your book moved to Completed shelf",
+        );
+      } else if (selectedValue == "Incomplete") {
+        widget.bookStatus = false;
+        if (!mounted) return;
+        SnackBarUtils.showCustomSnackBar(
+          context: context,
+          backgroundColor: context.resources.color.colorNormal3,
+          content: "Your book moved to Incomplete shelf",
+        );
+      }
+
+      widget.libraryBookStatusUpdateCallback(widget.bookStatus);
     }
   }
 }

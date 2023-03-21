@@ -1,4 +1,6 @@
-import 'package:dokudoku/services/timer_service.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:dokudoku/provider/timer_provider.dart';
+import 'package:dokudoku/routes/router.gr.dart';
 import 'package:dokudoku/ui/components/hourglass_session_input.dart';
 import 'package:dokudoku/ui/view/stopwatch_view.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +9,13 @@ import 'package:provider/provider.dart';
 import 'package:dokudoku/ui/components/snack_bar_utils.dart';
 
 class TimerModeTabBar extends StatefulWidget {
-  const TimerModeTabBar({super.key});
+  final int id;
+  final String title;
+
+  const TimerModeTabBar(
+      {super.key,
+      @PathParam() required this.id,
+      @PathParam() required this.title});
 
   @override
   State<TimerModeTabBar> createState() => _TimerModeTabBarState();
@@ -35,11 +43,31 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<TimerService>(context);
+    final provider = Provider.of<TimerProvider>(context);
     return Scaffold(
       backgroundColor: context.resources.color.colorLightest,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(28),
+        child: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          leading: provider.timerPlaying == false
+              ? IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  color: context.resources.color.colorDarkest,
+                  onPressed: () {
+                    AutoRouter.of(context).navigateBack();
+                  },
+                )
+              : IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  color: context.resources.color.colorDarkest,
+                  onPressed: () {},
+                ),
+        ),
+      ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(30, 50, 30, 10),
+        padding: const EdgeInsets.fromLTRB(30, 22, 30, 10),
         child: Container(
           decoration: const BoxDecoration(
             color: Colors.transparent,
@@ -62,8 +90,9 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
                 child: TabBar(
                   controller: _tabController,
                   indicator: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: context.resources.color.colorDarkest),
+                    borderRadius: BorderRadius.circular(25),
+                    color: context.resources.color.colorDarkest,
+                  ),
                   labelColor: context.resources.color.colorNormal2,
                   unselectedLabelColor: context.resources.color.colorDarkest,
                   tabs: [
@@ -76,8 +105,10 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
                           ),
                           Text(
                             'Stopwatch',
-                            style:
-                                TextStyle(fontSize: 22, fontFamily: 'primary'),
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontFamily: 'primary',
+                            ),
                           ),
                         ],
                       ),
@@ -118,12 +149,18 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
                 child: TabBarView(
                   controller: _tabController,
                   physics: const NeverScrollableScrollPhysics(),
-                  children: const [
+                  children: [
                     Center(
-                      child: StopwatchView(),
+                      child: StopwatchView(
+                        id: widget.id,
+                        title: widget.title,
+                      ),
                     ),
                     Center(
-                      child: HourglassSessionInput(),
+                      child: HourglassSessionInput(
+                        id: widget.id,
+                        title: widget.title,
+                      ),
                     ),
                   ],
                 ),
@@ -133,6 +170,15 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
                 onWillPop: () async {
                   if (_tabController.index == pageIndex[TimerMode.hourglass]) {
                     _tabController.index = pageIndex[TimerMode.stopwatch]!;
+                    return false;
+                  } else if (_tabController.index ==
+                          pageIndex[TimerMode.stopwatch] &&
+                      provider.timerPlaying == true) {
+                    SnackBarUtils.showCustomSnackBar(
+                      context: context,
+                      backgroundColor: context.resources.color.colorNormal3,
+                      content: "You can't go back while timer is running",
+                    );
                     return false;
                   } else {
                     return true;

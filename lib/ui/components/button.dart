@@ -1,6 +1,6 @@
-import 'package:dokudoku/services/timer_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:dokudoku/provider/timer_provider.dart';
 
 class Button extends StatefulWidget {
   Widget child;
@@ -20,7 +20,7 @@ class Button extends StatefulWidget {
 class _ButtonState extends State<Button> {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<TimerService>(context);
+    final provider = Provider.of<TimerProvider>(context);
 
     return Column(
       mainAxisSize: MainAxisSize.min,
