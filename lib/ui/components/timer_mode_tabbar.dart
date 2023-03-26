@@ -25,8 +25,8 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final Map<TimerMode, int> pageIndex = {
-    TimerMode.stopwatch: 0,
-    TimerMode.hourglass: 1,
+    TimerMode.Stopwatch: 0,
+    TimerMode.Hourglass: 1,
   };
 
   @override
@@ -132,8 +132,8 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
                     ),
                   ],
                   onTap: (value) {
-                    if (provider.currentMode == TimerMode.stopwatch) {
-                      _tabController.index = pageIndex[TimerMode.stopwatch]!;
+                    if (provider.currentMode == TimerMode.Stopwatch) {
+                      _tabController.index = pageIndex[TimerMode.Stopwatch]!;
 
                       SnackBarUtils.showCustomSnackBar(
                         context: context,
@@ -168,11 +168,11 @@ class _TimerModeTabBarState extends State<TimerModeTabBar>
               WillPopScope(
                 child: Container(),
                 onWillPop: () async {
-                  if (_tabController.index == pageIndex[TimerMode.hourglass]) {
-                    _tabController.index = pageIndex[TimerMode.stopwatch]!;
+                  if (_tabController.index == pageIndex[TimerMode.Hourglass]) {
+                    _tabController.index = pageIndex[TimerMode.Stopwatch]!;
                     return false;
                   } else if (_tabController.index ==
-                          pageIndex[TimerMode.stopwatch] &&
+                          pageIndex[TimerMode.Stopwatch] &&
                       provider.timerPlaying == true) {
                     SnackBarUtils.showCustomSnackBar(
                       context: context,

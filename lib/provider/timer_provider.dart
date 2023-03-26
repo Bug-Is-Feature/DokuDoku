@@ -3,6 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:dokudoku/routes/router.gr.dart';
 import 'package:dokudoku/services/timer_service.dart';
+import 'package:dokudoku/services/user_service.dart';
 import 'package:dokudoku/ui/components/custom_dialog_box.dart';
 import 'package:dokudoku/ui/components/hourglass_session_input.dart';
 import 'package:dokudoku/ui/components/snack_bar_utils.dart';
@@ -11,7 +12,7 @@ import 'package:flutter/material.dart';
 
 enum TimerState { focus, breakTime, end }
 
-enum TimerMode { none, stopwatch, hourglass }
+enum TimerMode { none, Stopwatch, Hourglass }
 
 class TimerProvider extends ChangeNotifier {
   final sessionDurationController = TextEditingController();
@@ -29,6 +30,8 @@ class TimerProvider extends ChangeNotifier {
 
   int tempId = 0;
   String tempTitle = '';
+
+  int totalExp = 0;
 
   int currentDuration = 0;
   int seconds = 0;
@@ -97,7 +100,7 @@ class TimerProvider extends ChangeNotifier {
   }
 
   void startHourglass(BuildContext context) {
-    currentMode = TimerMode.hourglass;
+    currentMode = TimerMode.Hourglass;
     timer = Timer.periodic(
       const Duration(seconds: 1),
       (timer) {
@@ -141,11 +144,16 @@ class TimerProvider extends ChangeNotifier {
         iteration++;
       } else if (iteration >= inputSessionNum) {
         sumTime += (inputSession - currentDuration);
+        totalExp += sumTime;
+        print(totalExp);
+
         await TimerService.saveTimer(
           context,
           tempId,
           sumTime,
+          currentMode,
         );
+        await UserServices.updateExp(context, totalExp);
         stopHourglass(context);
         fullTimeDialog(context);
       }
@@ -238,7 +246,7 @@ class TimerProvider extends ChangeNotifier {
 
   void start(BuildContext context) {
     timerPlaying = true;
-    currentMode = TimerMode.stopwatch;
+    currentMode = TimerMode.Stopwatch;
     timer = Timer.periodic(
       const Duration(seconds: 1),
       (timer) {
