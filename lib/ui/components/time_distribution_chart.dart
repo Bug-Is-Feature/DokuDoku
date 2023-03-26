@@ -5,10 +5,12 @@ import 'package:intl/intl.dart';
 
 class TimeDistributionChart extends StatefulWidget {
   Future<List<Session>> session;
+  final void Function(Future<List<Session>>) sessionUpdateCallback;
 
   TimeDistributionChart({
     super.key,
     required this.session,
+    required this.sessionUpdateCallback,
   });
 
   @override
