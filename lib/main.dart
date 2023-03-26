@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:dokudoku/provider/badge_provider.dart';
 import 'package:dokudoku/provider/navigation_provider.dart';
 import 'package:dokudoku/provider/session_provider.dart';
 import 'package:dokudoku/provider/user_provider.dart';
@@ -24,6 +25,7 @@ void main(List<String> args) async {
     ChangeNotifierProvider<SessionProvider>(
         create: (context) => SessionProvider()),
     ChangeNotifierProvider<UserProvider>(create: (context) => UserProvider()),
+    ChangeNotifierProvider<BadgeProvider>(create: (context) => BadgeProvider()),
   ], child: MyApp()));
 }
 
