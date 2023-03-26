@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:dokudoku/provider/navigation_provider.dart';
+import 'package:dokudoku/provider/session_provider.dart';
+import 'package:dokudoku/provider/user_provider.dart';
 import 'package:dokudoku/theme_app.dart';
 import 'package:dokudoku/provider/book_provider.dart';
 import 'package:dokudoku/provider/timer_provider.dart';
@@ -19,6 +21,9 @@ void main(List<String> args) async {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<TimerProvider>(create: (context) => TimerProvider()),
     ChangeNotifierProvider<BookProvider>(create: (context) => BookProvider()),
+    ChangeNotifierProvider<SessionProvider>(
+        create: (context) => SessionProvider()),
+    ChangeNotifierProvider<UserProvider>(create: (context) => UserProvider()),
   ], child: MyApp()));
 }
 
