@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dokudoku/services/auth_service.dart';
 import 'package:dokudoku/provider/timer_provider.dart';
 import 'package:dokudoku/services/timer_service.dart';
+import 'package:dokudoku/services/user_service.dart';
 import 'package:dokudoku/ui/components/button.dart';
 import 'package:dokudoku/ui/components/custom_dialog_box.dart';
 import 'package:dokudoku/ui/components/stopwatch_timer.dart';
@@ -61,11 +62,16 @@ class _StopwatchViewState extends State<StopwatchView> {
                   if (provider.timerPlaying) {
                     Provider.of<TimerProvider>(context, listen: false).stop();
                     if (provider.totalDuration >= 5) {
+                      provider.totalExp += provider.totalDuration;
+                      print(provider.totalExp);
                       await TimerService.saveTimer(
                         context,
                         widget.id,
                         provider.totalDuration,
+                        provider.currentMode,
                       );
+                      if (!mounted) return;
+                      await UserServices.updateExp(context, provider.totalExp);
                     }
                     if (!mounted) return;
                     showDialog(

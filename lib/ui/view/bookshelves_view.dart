@@ -8,6 +8,9 @@ import 'package:dokudoku/ui/components/bookshelves_tabbar.dart';
 import 'package:dokudoku/ui/components/snack_bar_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
+import 'package:provider/provider.dart';
+
+import '../../provider/book_provider.dart';
 
 class BookShelvesView extends StatefulWidget {
   const BookShelvesView({super.key});
@@ -17,20 +20,9 @@ class BookShelvesView extends StatefulWidget {
 }
 
 class _BookShelvesViewState extends State<BookShelvesView> {
-  late Future<Library> library = _getLibrary();
-  // List book = [
-  //   Book(id: 0),
-  //   Book(id: 1),
-  //   Book(id: 2),
-  // ];
-
-  Future<Library> _getLibrary() async {
-    List<Library> library = await BookService.getLibrary();
-    return library[0];
-  }
-
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<BookProvider>(context, listen: false);
     return Scaffold(
       body: Column(
         children: [
@@ -42,7 +34,7 @@ class _BookShelvesViewState extends State<BookShelvesView> {
                 color: context.resources.color.colorLighter2,
               ),
               BookshelvesBadge(
-                library: library,
+                library: provider.library,
               ),
             ],
           ),
@@ -50,11 +42,11 @@ class _BookShelvesViewState extends State<BookShelvesView> {
             child: Container(
               color: context.resources.color.colorWhite,
               child: BookShelvesTabBar(
-                library: library,
+                library: provider.library,
                 libraryBookAddCallback:
                     (bool isSuccess, LibraryBooks libraryBook) => isSuccess
                         ? setState(() {
-                            library.then((value) {
+                            provider.library.then((value) {
                               value.libraryBooks.add(libraryBook);
                               value.bookCount++;
                               value.incompleteCount++;
@@ -65,7 +57,7 @@ class _BookShelvesViewState extends State<BookShelvesView> {
                 libraryBookRemoveCallback:
                     (bool isSuccess, LibraryBooks libraryBook) => isSuccess
                         ? setState(() {
-                            library.then((value) {
+                            provider.library.then((value) {
                               value.libraryBooks.remove(libraryBook);
                               libraryBook.isCompleted
                                   ? value.completedCount--
@@ -78,18 +70,18 @@ class _BookShelvesViewState extends State<BookShelvesView> {
                 libraryBookStatusUpdateCallback: (bool bookStatus) =>
                     setState(() {
                   bookStatus
-                      ? library.then((value) {
+                      ? provider.library.then((value) {
                           value.completedCount++;
                           value.incompleteCount--;
                         })
-                      : library.then((value) {
+                      : provider.library.then((value) {
                           value.completedCount--;
                           value.incompleteCount++;
                         });
                 }),
                 bookUpdateCallback: (bool isSuccess, Book book) => isSuccess
                     ? setState(() {
-                        library.then((value) => value.libraryBooks
+                        provider.library.then((value) => value.libraryBooks
                             .where((element) => element.book.id == book.id)
                             .first
                             .book = book);

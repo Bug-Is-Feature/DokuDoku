@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dokudoku/model/sessions.dart';
+import 'package:dokudoku/provider/book_provider.dart';
 import 'package:dokudoku/provider/timer_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,10 +14,10 @@ class TimerService {
     BuildContext context,
     int bookId,
     int totalDuration,
+    Enum timerType,
   ) async {
     final currentUser = FirebaseAuth.instance.currentUser!;
     String idToken = await currentUser.getIdToken();
-
     final response = await http.post(
       Uri.parse("http://${dotenv.env['BACKEND_PATH']}/api/sessions/"),
       headers: {
@@ -27,6 +28,8 @@ class TimerService {
         'uid': currentUser.uid,
         'book_id': bookId,
         'duration': totalDuration,
+        'timer_type':
+            timerType == TimerMode.Stopwatch ? 'Stopwatch' : 'Hourglass',
       }),
     );
 
