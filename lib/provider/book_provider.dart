@@ -1,3 +1,5 @@
+import 'package:dokudoku/model/library.dart';
+import 'package:dokudoku/services/book_service.dart';
 import 'package:flutter/material.dart';
 
 class BookProvider extends ChangeNotifier {
@@ -20,6 +22,12 @@ class BookProvider extends ChangeNotifier {
   final editCurrencyCodeController = TextEditingController();
   final editBookPriceController = TextEditingController();
   final editAuthorController = TextEditingController();
+
+  late Future<Library> library = _getLibrary();
+  Future<Library> _getLibrary() async {
+    List<Library> library = await BookService.getLibrary();
+    return library[0];
+  }
 
   void clearBookControllers() {
     titleController.clear();
