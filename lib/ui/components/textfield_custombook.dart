@@ -37,6 +37,8 @@ class _TextFieldCustomBookState extends State<TextFieldCustomBook> {
         validator: widget.validator,
         controller: widget.controller,
         decoration: InputDecoration(
+          filled: true,
+          fillColor: context.resources.color.colorWhite,
           labelText: widget.labelText,
           contentPadding: EdgeInsets.symmetric(
               vertical: MediaQuery.of(context).size.height * 0.01,
