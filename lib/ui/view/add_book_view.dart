@@ -1,8 +1,11 @@
+import 'package:currency_picker/currency_picker.dart';
 import 'package:dokudoku/model/library_books.dart';
 import 'package:dokudoku/provider/book_provider.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:dokudoku/services/book_service.dart';
+import 'package:dokudoku/services/storage_service.dart';
 import 'package:dokudoku/ui/components/button.dart';
+import 'package:dokudoku/ui/components/image_upload_widget.dart';
 import 'package:dokudoku/ui/components/snack_bar_utils.dart';
 import 'package:dokudoku/ui/components/textfield_custombook.dart';
 import 'package:flutter/material.dart';
@@ -24,22 +27,29 @@ class AddBookView extends StatefulWidget {
 class _AddBookViewState extends State<AddBookView> {
   List<String> authorList = [];
   final _formKey = GlobalKey<FormState>();
+  String imagePath = '';
+  bool isUploadFailed = false;
+  String _selectedCurrency = 'THB';
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<BookProvider>(context, listen: false);
+    final StorageService storage = StorageService();
     return Scaffold(
       backgroundColor: context.resources.color.colorLightest,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(34),
+        preferredSize: const Size.fromHeight(34),
         child: AppBar(
           foregroundColor: context.resources.color.colorDarkest,
           centerTitle: true,
           title: Text(
-            "Add Book",
+            "Add Custom Book",
             style: TextStyle(
-                fontFamily: 'primary',
-                color: context.resources.color.colorDarkest,
-                fontSize: 28),
+              fontFamily: 'primary',
+              fontWeight: FontWeight.bold,
+              color: context.resources.color.colorDarkest,
+              fontSize: 28,
+            ),
           ),
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -52,6 +62,19 @@ class _AddBookViewState extends State<AddBookView> {
             padding: const EdgeInsets.fromLTRB(50, 20, 50, 50),
             child: Column(
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: const [
+                    Text(
+                      'Book Information',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
                 Padding(
                   padding: const EdgeInsets.only(
                     top: 12,
@@ -146,8 +169,37 @@ class _AddBookViewState extends State<AddBookView> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      ElevatedButton(
+                        onPressed: () => showCurrencyPicker(
+                          context: context,
+                          showFlag: true,
+                          showSearchField: true,
+                          showCurrencyName: true,
+                          showCurrencyCode: true,
+                          onSelect: (Currency currency) {
+                            setState(() => _selectedCurrency = currency.code);
+                          },
+                          favorite: ['THB'],
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: context.resources.color.colorDarkest,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(_selectedCurrency),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            const Icon(Icons.arrow_drop_down)
+                          ],
+                        ),
+                      ),
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.36,
+                        width: MediaQuery.of(context).size.width * 0.50,
                         child: TextFormField(
                           controller: provider.bookPriceController,
                           keyboardType: const TextInputType.numberWithOptions(
@@ -162,56 +214,15 @@ class _AddBookViewState extends State<AddBookView> {
                             return null;
                           },
                           decoration: InputDecoration(
+                            labelText: "Price",
                             filled: true,
                             fillColor: context.resources.color.colorWhite,
-                            labelText: "Price",
                             contentPadding: EdgeInsets.symmetric(
                                 vertical:
                                     MediaQuery.of(context).size.height * 0.01,
                                 horizontal:
                                     MediaQuery.of(context).size.width * 0.04),
                             hintText: "Price",
-                            hintStyle: TextStyle(
-                                color: context.resources.color.greyDarker),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: BorderSide(
-                                  color: context.resources.color.colorDarkest),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: BorderSide(
-                                  color: context.resources.color.colorDarkest),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.36,
-                        child: TextFormField(
-                          controller: provider.currencyCodeController,
-                          keyboardType: TextInputType.text,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'[a-zA-Z]')),
-                          ],
-                          validator: (value) {
-                            //   if (value.toString().length != 3) {
-                            //     return 'Please enter a valid currency code';
-                            //   } else if (value.isEmpty) {
-                            //     return null;
-                            //   }
-                          },
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: context.resources.color.colorWhite,
-                            labelText: "Currency code",
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical:
-                                    MediaQuery.of(context).size.height * 0.01,
-                                horizontal:
-                                    MediaQuery.of(context).size.width * 0.04),
-                            hintText: "Currency code",
                             hintStyle: TextStyle(
                                 color: context.resources.color.greyDarker),
                             enabledBorder: OutlineInputBorder(
@@ -257,20 +268,76 @@ class _AddBookViewState extends State<AddBookView> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
-                    top: 12,
+                    top: 15,
                   ),
-                  child: TextFieldCustomBook(
-                    labelText: "Picture",
-                    maxLines: null,
-                    label: "Picture",
-                    controller: provider.thumbnailController,
-                    keyboardType: TextInputType.text,
-                    inputFormatter:
-                        FilteringTextInputFormatter.singleLineFormatter,
-                    validator: (value) {
-                      return null;
-                    },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Page Cover',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextFieldCustomBook(
+                  labelText: "Image URL",
+                  maxLines: null,
+                  label: "Image URL",
+                  controller: provider.thumbnailController,
+                  keyboardType: TextInputType.text,
+                  inputFormatter:
+                      FilteringTextInputFormatter.singleLineFormatter,
+                  validator: (value) {
+                    if (value.toString().isNotEmpty && imagePath.isNotEmpty) {
+                      return 'Only one field is available between url and upload.';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: const [
+                    Expanded(
+                      child: Divider(
+                        thickness: 1,
+                        color: Color(0xff92603D),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      'or upload from device',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                    ),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Divider(
+                        thickness: 1,
+                        color: Color(0xff92603D),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                ImageUploadWidget(
+                  imageCallback: (String path) {
+                    setState(() => imagePath = path);
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 12),
@@ -281,24 +348,50 @@ class _AddBookViewState extends State<AddBookView> {
                         child: Text('Upload'),
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            String error = '';
-                            LibraryBooks libraryBook =
-                                await BookService.addCustomBook(context)
-                                    .catchError((e) => error = e);
-                            if (!mounted) return;
-                            if (error.isEmpty) {
-                              Provider.of<BookProvider>(context, listen: false)
-                                  .clearBookControllers();
-                              Navigator.of(context).pop();
-                              SnackBarUtils.showSuccessSnackBar(
-                                  context: context,
-                                  content: 'Added book successfully');
-                              widget.libraryBookAddCallback(
-                                  error.isEmpty, libraryBook);
-                            } else {
-                              SnackBarUtils.showWarningSnackBar(
-                                  context: context,
-                                  content: 'Something went wrong.');
+                            String apiError = '';
+                            String storagePath = '';
+                            String imageError = '';
+
+                            provider.currencyCodeController.text =
+                                _selectedCurrency;
+                            if (imagePath.isNotEmpty) {
+                              await storage
+                                  .uploadFile(filePath: imagePath)
+                                  .then((ref) => storagePath = ref)
+                                  .catchError((e) => imageError = e.toString());
+                              if (imageError.isNotEmpty) {
+                                setState(() {
+                                  imagePath = '';
+                                });
+                                SnackBarUtils.showWarningSnackBar(
+                                    context: context,
+                                    content:
+                                        'Upload unsuccessfully, please try again.');
+                              }
+                            }
+                            if (imageError.isEmpty) {
+                              LibraryBooks libraryBook =
+                                  await BookService.addCustomBook(
+                                context: context,
+                                storagePath: storagePath,
+                              ).catchError((e) => apiError = e);
+
+                              if (!mounted) return;
+                              if (apiError.isEmpty) {
+                                Provider.of<BookProvider>(context,
+                                        listen: false)
+                                    .clearBookControllers();
+                                Navigator.of(context).pop();
+                                SnackBarUtils.showSuccessSnackBar(
+                                    context: context,
+                                    content: 'Added book successfully');
+                                widget.libraryBookAddCallback(
+                                    apiError.isEmpty, libraryBook);
+                              } else {
+                                SnackBarUtils.showWarningSnackBar(
+                                    context: context,
+                                    content: 'Something went wrong.');
+                              }
                             }
                           }
                         },

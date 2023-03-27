@@ -5,7 +5,6 @@ import 'package:dokudoku/ui/view/add_book_view.dart';
 import 'package:dokudoku/ui/view/search_google_book_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:dokudoku/ui/components/add_book_dialog.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';

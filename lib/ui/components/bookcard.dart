@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dokudoku/model/book.dart';
 import 'package:dokudoku/model/library_books.dart';
 import 'package:dokudoku/routes/router.gr.dart';
+import 'package:dokudoku/services/image_service.dart';
 import 'package:dokudoku/ui/components/bookcard_dropdown.dart';
 import 'package:dokudoku/ui/view/book_details_view.dart';
 import 'package:dokudoku/ui/view/bookshelves_view.dart';
@@ -70,13 +71,20 @@ class _BookCardState extends State<BookCard> {
                     spreadRadius: 1.0,
                   ),
                 ]),
-                child: Image.network(
-                  widget.libraryBook.book.thumbnail,
-                  fit: BoxFit.cover,
-                  errorBuilder: ((context, error, stackTrace) => Image.asset(
-                        'assets/images/book_cover.png',
-                        fit: BoxFit.cover,
-                      )),
+                child: FutureBuilder(
+                  future: ImageService.getImageUrl(
+                      imageRef: widget.libraryBook.book.thumbnail),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    return Image.network(
+                      snapshot.data.toString(),
+                      fit: BoxFit.cover,
+                      errorBuilder: ((context, error, stackTrace) =>
+                          Image.asset(
+                            'assets/images/book_cover.png',
+                            fit: BoxFit.cover,
+                          )),
+                    );
+                  },
                 ),
               ),
               SizedBox(
