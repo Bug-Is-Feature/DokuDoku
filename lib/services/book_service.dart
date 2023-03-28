@@ -29,13 +29,15 @@ class BookService {
           'category': gBook.volumeInfo.categories.isEmpty
               ? ''
               : gBook.volumeInfo.categories[0],
-          'thumbnail': gBook.volumeInfo.thumbnail,
+          'thumbnail': gBook.volumeInfo.thumbnail.isEmpty
+              ? null
+              : 'url::${gBook.volumeInfo.thumbnail}',
           'description': gBook.volumeInfo.description,
           'page_count':
               gBook.volumeInfo.pageCount == -1 ? 0 : gBook.volumeInfo.pageCount,
-          'currency_code': gBook.saleInfo.currencyCode.toUpperCase() == ''
+          'currency_code': gBook.saleInfo.currencyCode.isEmpty
               ? null
-              : gBook.saleInfo.currencyCode,
+              : gBook.saleInfo.currencyCode.toUpperCase(),
           'price': gBook.saleInfo.price == -1 ? 0 : gBook.saleInfo.price,
           'google_book_id': gBook.googleBookId,
           'authors': gBook.volumeInfo.authors
@@ -57,7 +59,10 @@ class BookService {
     }
   }
 
-  static Future<LibraryBooks> addCustomBook(BuildContext context) async {
+  static Future<LibraryBooks> addCustomBook({
+    required BuildContext context,
+    String? storagePath,
+  }) async {
     final provider = Provider.of<BookProvider>(context, listen: false);
     final currentUser = FirebaseAuth.instance.currentUser!;
     String idToken = await currentUser.getIdToken();
@@ -73,11 +78,17 @@ class BookService {
           'title': provider.titleController.text,
           'subtitle': provider.subtitleController.text,
           'category': provider.categoryController.text,
-          'thumbnail': provider.thumbnailController.text,
+          'thumbnail': storagePath != null && storagePath.isNotEmpty
+              ? 'gs::$storagePath'
+              : provider.thumbnailController.text.isEmpty
+                  ? null
+                  : 'url::${provider.thumbnailController.text}',
           'description': provider.descriptionController.text,
           'page_count': provider.pageCountController.text,
           'currency_code': provider.currencyCodeController.text.toUpperCase(),
-          'price': provider.bookPriceController.text,
+          'price': provider.bookPriceController.text.isEmpty
+              ? null
+              : provider.bookPriceController.text,
           'created_by': currentUser.uid,
           'authors': provider.authorController.text
               .trim()

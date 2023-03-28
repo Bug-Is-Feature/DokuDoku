@@ -5,6 +5,7 @@ import 'package:dokudoku/model/library_books.dart';
 import 'package:dokudoku/model/book.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:dokudoku/services/book_service.dart';
+import 'package:dokudoku/services/image_service.dart';
 import 'package:dokudoku/ui/components/button.dart';
 import 'package:dokudoku/ui/components/custom_dialog_box.dart';
 import 'package:dokudoku/ui/components/edit_book_dialog.dart';
@@ -34,303 +35,315 @@ class _BookDetailsViewState extends State<BookDetailsView> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.25,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: Image.network(
-                  widget.libraryBook.book.thumbnail,
-                  errorBuilder: ((context, error, stackTrace) =>
-                      Image.asset('assets/images/book_cover.png')),
-                ).image,
-                fit: BoxFit.cover,
-              ),
-            ),
-            // color: context.resources.color.colorDark,
-            child: Stack(
-              children: [
-                BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: 2,
-                    sigmaY: 1,
-                  ),
-                  child: Container(
-                    color:
-                        context.resources.color.colorDarkest.withOpacity(0.6),
+    return FutureBuilder(
+      future:
+          ImageService.getImageUrl(imageRef: widget.libraryBook.book.thumbnail),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height * 0.25,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: Image.network(
+                      snapshot.data.toString(),
+                      errorBuilder: ((context, error, stackTrace) =>
+                          Image.asset('assets/images/book_cover.png')),
+                    ).image,
+                    fit: BoxFit.cover,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.libraryBook.book.title,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            fontSize: 30,
-                            color: context.resources.color.colorWhite),
+                // color: context.resources.color.colorDark,
+                child: Stack(
+                  children: [
+                    BackdropFilter(
+                      filter: ImageFilter.blur(
+                        sigmaX: 2,
+                        sigmaY: 1,
                       ),
-                      const SizedBox(height: 2),
-                      if (widget.libraryBook.book.subtitle.isEmpty) ...[
-                        Text(
-                          'No subtitle',
-                          style: TextStyle(
-                            color: context.resources.color.colorWhite,
-                            fontSize: 14,
-                          ),
-                        )
-                      ] else ...[
-                        Text(
-                          widget.libraryBook.book.subtitle,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: context.resources.color.greyLight),
-                        )
-                      ],
-                      const SizedBox(height: 4),
-                      if (widget.libraryBook.book.authors.isEmpty) ...[
-                        Text(
-                          'No author',
-                          style: TextStyle(
-                            color: context.resources.color.colorWhite,
-                            fontSize: 14,
-                          ),
-                        )
-                      ] else ...[
-                        Text(
-                          'by ${widget.libraryBook.book.authors.map((author) => author.name).join(', ')}',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: context.resources.color.colorWhite,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                      const SizedBox(height: 4),
-                      Text(
-                        "${widget.libraryBook.book.pageCount} pages",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: context.resources.color.colorWhite),
+                      child: Container(
+                        color: context.resources.color.colorDarkest
+                            .withOpacity(0.6),
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        "${widget.libraryBook.book.price} ${widget.libraryBook.book.currencyCode}",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: context.resources.color.colorWhite),
-                      ),
-                      Row(
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const SizedBox(width: 3),
-                          if (widget.libraryBook.book.googleBookId.isEmpty) ...[
-                            IconButton(
-                              onPressed: () async {
-                                await showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return EditBookDialog(
-                                      libraryBook: widget.libraryBook,
-                                      bookUpdateCallback:
-                                          (bool isSuccess, Book editedBook) {
-                                        if (isSuccess) {
-                                          setState(() {
-                                            widget.libraryBook.book =
-                                                editedBook;
-                                          });
-                                          widget.bookUpdateCallback(
-                                              isSuccess, editedBook);
-                                        }
+                          Text(
+                            widget.libraryBook.book.title,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontSize: 30,
+                                color: context.resources.color.colorWhite),
+                          ),
+                          const SizedBox(height: 2),
+                          if (widget.libraryBook.book.subtitle.isEmpty) ...[
+                            Text(
+                              'No subtitle',
+                              style: TextStyle(
+                                color: context.resources.color.colorWhite,
+                                fontSize: 14,
+                              ),
+                            )
+                          ] else ...[
+                            Text(
+                              widget.libraryBook.book.subtitle,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: context.resources.color.greyLight),
+                            )
+                          ],
+                          const SizedBox(height: 4),
+                          if (widget.libraryBook.book.authors.isEmpty) ...[
+                            Text(
+                              'No author',
+                              style: TextStyle(
+                                color: context.resources.color.colorWhite,
+                                fontSize: 14,
+                              ),
+                            )
+                          ] else ...[
+                            Text(
+                              'by ${widget.libraryBook.book.authors.map((author) => author.name).join(', ')}',
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: context.resources.color.colorWhite,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                          const SizedBox(height: 4),
+                          Text(
+                            "${widget.libraryBook.book.pageCount} pages",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: context.resources.color.colorWhite),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            "${widget.libraryBook.book.price} ${widget.libraryBook.book.currencyCode}",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: context.resources.color.colorWhite),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              const SizedBox(width: 3),
+                              if (widget
+                                  .libraryBook.book.googleBookId.isEmpty) ...[
+                                IconButton(
+                                  onPressed: () async {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return EditBookDialog(
+                                          libraryBook: widget.libraryBook,
+                                          bookUpdateCallback: (bool isSuccess,
+                                              Book editedBook) {
+                                            if (isSuccess) {
+                                              setState(() {
+                                                widget.libraryBook.book =
+                                                    editedBook;
+                                              });
+                                              widget.bookUpdateCallback(
+                                                  isSuccess, editedBook);
+                                            }
+                                          },
+                                        );
                                       },
                                     );
                                   },
-                                );
-                              },
-                              icon: const Icon(Icons.edit),
-                              color: context.resources.color.colorWhite,
-                            ),
-                          ],
-                          IconButton(
-                            onPressed: () async {
-                              showDialog(
-                                context: context,
-                                builder: (context) => CustomDialog(
-                                    title: 'Are you sure?',
-                                    description: '',
-                                    buttonText: 'Delete',
-                                    buttonText2: 'Cancel',
-                                    onPressed: () async {
-                                      String error = '';
-                                      await BookService.removeBookById(
-                                              widget.libraryBook.libraryBookId)
-                                          .catchError((e) => error = e);
-                                      setState(() {
-                                        widget.libraryBook.libraryBookId;
-                                      });
-                                      if (!mounted) return;
-                                      //   Navigator.of(context).push(
-                                      //     MaterialPageRoute(
-                                      //       builder: (context) =>
-                                      //           const BookShelvesView(),
-                                      //     ),
-                                      //   );
-                                      if (error.isEmpty) {
-                                        // TODO: find a way to go back to bookshelves view
-                                        Navigator.of(context,
-                                                rootNavigator: true)
-                                            .pop();
-                                        context.router.navigateBack();
-
-                                        widget.libraryBookRemoveCallback(
-                                            error.isEmpty, widget.libraryBook);
-                                      }
-                                    },
-                                    onPressed2: () {
-                                      Navigator.pop(context);
-                                    }),
-                              );
-                            },
-                            icon: const Icon(Icons.delete),
-                            color: context.resources.color.colorWhite,
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 10),
-          Column(
-            children: [
-              Center(
-                child: Card(
-                  elevation: 2,
-                  color: context.resources.color.colorWhite,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.3,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.4),
-                                  spreadRadius: 3,
-                                  blurRadius: 6,
-                                  offset: const Offset(0, 1),
+                                  icon: const Icon(Icons.edit),
+                                  color: context.resources.color.colorWhite,
                                 ),
                               ],
-                            ),
-                            child: Image.network(
-                              widget.libraryBook.book.thumbnail,
-                              errorBuilder: ((context, error, stackTrace) =>
-                                  Image.asset('assets/images/book_cover.png',
-                                      width: 100,
-                                      height: 150,
-                                      fit: BoxFit.cover)),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Center(
-                child: Card(
-                  elevation: 2,
-                  color: context.resources.color.colorWhite,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: const [
-                              Text(
-                                "Description",
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.left,
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                            thickness: 1,
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width * 0.87,
-                                child: Text(
-                                  widget.libraryBook.book.description,
-                                  style: const TextStyle(fontSize: 16),
-                                  textAlign: TextAlign.left,
-                                  overflow: TextOverflow.clip,
-                                ),
+                              IconButton(
+                                onPressed: () async {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => CustomDialog(
+                                        title: 'Are you sure?',
+                                        description: '',
+                                        buttonText: 'Delete',
+                                        buttonText2: 'Cancel',
+                                        onPressed: () async {
+                                          String error = '';
+                                          await BookService.removeBookById(
+                                                  widget.libraryBook
+                                                      .libraryBookId)
+                                              .catchError((e) => error = e);
+                                          setState(() {
+                                            widget.libraryBook.libraryBookId;
+                                          });
+                                          if (!mounted) return;
+                                          //   Navigator.of(context).push(
+                                          //     MaterialPageRoute(
+                                          //       builder: (context) =>
+                                          //           const BookShelvesView(),
+                                          //     ),
+                                          //   );
+                                          if (error.isEmpty) {
+                                            // TODO: find a way to go back to bookshelves view
+                                            Navigator.of(context,
+                                                    rootNavigator: true)
+                                                .pop();
+                                            context.router.navigateBack();
+
+                                            widget.libraryBookRemoveCallback(
+                                                error.isEmpty,
+                                                widget.libraryBook);
+                                          }
+                                        },
+                                        onPressed2: () {
+                                          Navigator.pop(context);
+                                        }),
+                                  );
+                                },
+                                icon: const Icon(Icons.delete),
+                                color: context.resources.color.colorWhite,
                               ),
                             ],
                           )
                         ],
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 30,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              const SizedBox(height: 10),
+              Column(
                 children: [
-                  Button(
-                    onPressed: () {
-                      AutoRouter.of(context).navigateNamed(
-                          "timer/${widget.libraryBook.book.id}/${widget.libraryBook.book.title}");
-                    },
-                    backgroundColor: context.resources.color.colorDark,
-                    size: Size(MediaQuery.of(context).size.width * 0.4, 40),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.timer,
-                          color: context.resources.color.colorWhite,
+                  Center(
+                    child: Card(
+                      elevation: 2,
+                      color: context.resources.color.colorWhite,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.4),
+                                      spreadRadius: 3,
+                                      blurRadius: 6,
+                                      offset: const Offset(0, 1),
+                                    ),
+                                  ],
+                                ),
+                                child: Image.network(
+                                  snapshot.data.toString(),
+                                  errorBuilder: ((context, error, stackTrace) =>
+                                      Image.asset(
+                                          'assets/images/book_cover.png',
+                                          width: 100,
+                                          height: 150,
+                                          fit: BoxFit.cover)),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        SizedBox(width: 10),
-                        Text("Timer"),
-                      ],
+                      ),
                     ),
                   ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Center(
+                    child: Card(
+                      elevation: 2,
+                      color: context.resources.color.colorWhite,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: const [
+                                  Text(
+                                    "Description",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ],
+                              ),
+                              const Divider(
+                                thickness: 1,
+                              ),
+                              Row(
+                                children: [
+                                  Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.87,
+                                    child: Text(
+                                      widget.libraryBook.book.description,
+                                      style: const TextStyle(fontSize: 16),
+                                      textAlign: TextAlign.left,
+                                      overflow: TextOverflow.clip,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Button(
+                        onPressed: () {
+                          AutoRouter.of(context).navigateNamed(
+                              "timer/${widget.libraryBook.book.id}/${widget.libraryBook.book.title}");
+                        },
+                        backgroundColor: context.resources.color.colorDark,
+                        size: Size(MediaQuery.of(context).size.width * 0.4, 40),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.timer,
+                              color: context.resources.color.colorWhite,
+                            ),
+                            SizedBox(width: 10),
+                            Text("Timer"),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
                 ],
-              )
+              ),
             ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

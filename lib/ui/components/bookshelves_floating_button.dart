@@ -1,10 +1,10 @@
 import 'package:dokudoku/model/library.dart';
 import 'package:dokudoku/model/library_books.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
+import 'package:dokudoku/ui/view/add_book_view.dart';
 import 'package:dokudoku/ui/view/search_google_book_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:dokudoku/ui/components/add_book_dialog.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -59,13 +59,18 @@ class _BookshelvesFloatingButtonState extends State<BookshelvesFloatingButton> {
           ),
           label: 'Custom Book',
           onTap: () async {
-            await showDialog(
-                context: context,
-                builder: (context) {
-                  return AddBookDialog(
-                    libraryBookAddCallback: widget.libraryBookAddCallback,
-                  );
-                });
+            // await showDialog(
+            //     context: context,
+            //     builder: (context) {
+            //       return AddBookDialog(
+            //         libraryBookAddCallback: widget.libraryBookAddCallback,
+            //       );
+            //     });
+            await Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => AddBookView(
+                libraryBookAddCallback: widget.libraryBookAddCallback,
+              ),
+            ));
             setState(() {});
           },
         ),
