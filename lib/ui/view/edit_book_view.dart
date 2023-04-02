@@ -1,34 +1,39 @@
 import 'package:currency_picker/currency_picker.dart';
+import 'package:dokudoku/model/book.dart';
 import 'package:dokudoku/model/library_books.dart';
 import 'package:dokudoku/provider/book_provider.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:dokudoku/services/book_service.dart';
 import 'package:dokudoku/services/storage_service.dart';
 import 'package:dokudoku/ui/components/button.dart';
-import 'package:dokudoku/ui/components/image_upload_widget.dart';
+import 'package:dokudoku/ui/components/edit_image_upload_widget.dart';
 import 'package:dokudoku/ui/components/snack_bar_utils.dart';
 import 'package:dokudoku/ui/components/textfield_custombook.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-class AddBookView extends StatefulWidget {
-  final void Function(bool, LibraryBooks) libraryBookAddCallback;
-  const AddBookView({
-    super.key,
-    required this.libraryBookAddCallback,
-  });
+class EditBookView extends StatefulWidget {
+  final LibraryBooks libraryBook;
+  final void Function(bool, Book) bookUpdateCallback;
+  const EditBookView(
+      {super.key, required this.libraryBook, required this.bookUpdateCallback});
 
   @override
-  State<AddBookView> createState() => _AddBookViewState();
+  State<EditBookView> createState() => _EditBookViewState();
 }
 
-class _AddBookViewState extends State<AddBookView> {
-  List<String> authorList = [];
+class _EditBookViewState extends State<EditBookView> {
   final _formKey = GlobalKey<FormState>();
   String imagePath = '';
   bool isUploadFailed = false;
   String _selectedCurrency = 'THB';
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedCurrency = widget.libraryBook.book.currencyCode;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +44,10 @@ class _AddBookViewState extends State<AddBookView> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(34),
         child: AppBar(
-          foregroundColor: context.resources.color.colorDarkest,
+          foregroundColor: context.resources.color.colorDark,
           centerTitle: true,
           title: Text(
-            "Add Custom Book",
+            "Edit Book",
             style: TextStyle(
               fontFamily: 'primary',
               fontWeight: FontWeight.bold,
@@ -82,13 +87,14 @@ class _AddBookViewState extends State<AddBookView> {
                     labelText: "Title",
                     maxLines: null,
                     label: "Title",
-                    controller: provider.titleController,
+                    controller: provider.editTitleController
+                      ..text = widget.libraryBook.book.title,
                     keyboardType: TextInputType.text,
                     inputFormatter:
                         FilteringTextInputFormatter.singleLineFormatter,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter a title ';
+                        return 'Please enter a title';
                       } else {
                         return null;
                       }
@@ -103,7 +109,8 @@ class _AddBookViewState extends State<AddBookView> {
                     labelText: "Subtitle",
                     maxLines: null,
                     label: "Subtitle",
-                    controller: provider.subtitleController,
+                    controller: provider.editSubtitleController
+                      ..text = widget.libraryBook.book.subtitle,
                     keyboardType: TextInputType.text,
                     inputFormatter:
                         FilteringTextInputFormatter.singleLineFormatter,
@@ -120,7 +127,8 @@ class _AddBookViewState extends State<AddBookView> {
                     labelText: "Category",
                     maxLines: null,
                     label: "Category",
-                    controller: provider.categoryController,
+                    controller: provider.editCategoryController
+                      ..text = widget.libraryBook.book.category,
                     keyboardType: TextInputType.text,
                     inputFormatter:
                         FilteringTextInputFormatter.singleLineFormatter,
@@ -137,7 +145,7 @@ class _AddBookViewState extends State<AddBookView> {
                     labelText: "Author",
                     maxLines: null,
                     label: "Author",
-                    controller: provider.authorController,
+                    controller: provider.editAuthorController..text = 'Author',
                     keyboardType: TextInputType.text,
                     inputFormatter:
                         FilteringTextInputFormatter.singleLineFormatter,
@@ -154,7 +162,8 @@ class _AddBookViewState extends State<AddBookView> {
                     labelText: "Description",
                     maxLines: 4,
                     label: "Description",
-                    controller: provider.descriptionController,
+                    controller: provider.editDescriptionController
+                      ..text = widget.libraryBook.book.description,
                     keyboardType: TextInputType.multiline,
                     inputFormatter:
                         FilteringTextInputFormatter.singleLineFormatter,
@@ -200,7 +209,8 @@ class _AddBookViewState extends State<AddBookView> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.50,
                         child: TextFormField(
-                          controller: provider.bookPriceController,
+                          controller: provider.editBookPriceController
+                            ..text = widget.libraryBook.book.price.toString(),
                           keyboardType: const TextInputType.numberWithOptions(
                             signed: false,
                             decimal: true,
@@ -210,7 +220,11 @@ class _AddBookViewState extends State<AddBookView> {
                                 RegExp(r'[0-9.]')),
                           ],
                           validator: (value) {
-                            return null;
+                            if (double.parse(value!) < 0) {
+                              return 'Please enter a valid price';
+                            } else {
+                              return null;
+                            }
                           },
                           decoration: InputDecoration(
                             labelText: "Price",
@@ -248,7 +262,8 @@ class _AddBookViewState extends State<AddBookView> {
                     labelText: "Pages",
                     maxLines: null,
                     label: "Pages",
-                    controller: provider.pageCountController,
+                    controller: provider.editPageCountController
+                      ..text = widget.libraryBook.book.pageCount.toString(),
                     keyboardType: const TextInputType.numberWithOptions(
                       signed: false,
                       decimal: false,
@@ -290,7 +305,14 @@ class _AddBookViewState extends State<AddBookView> {
                   labelText: "Image URL",
                   maxLines: null,
                   label: "Image URL",
-                  controller: provider.thumbnailController,
+                  controller: provider.editThumbnailController
+                    ..text = widget.libraryBook.book.thumbnail == ''
+                        ? ''
+                        : widget.libraryBook.book.thumbnail.substring(0, 5) ==
+                                'url::'
+                            ? widget.libraryBook.book.thumbnail
+                                .replaceFirst('url::', '')
+                            : '',
                   keyboardType: TextInputType.text,
                   inputFormatter:
                       FilteringTextInputFormatter.singleLineFormatter,
@@ -330,7 +352,8 @@ class _AddBookViewState extends State<AddBookView> {
                 const SizedBox(
                   height: 10,
                 ),
-                ImageUploadWidget(
+                EditImageUploadWidget(
+                  libraryBook: widget.libraryBook,
                   imageCallback: (String path) {
                     setState(() => imagePath = path);
                   },
@@ -344,14 +367,14 @@ class _AddBookViewState extends State<AddBookView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Button(
-                        child: Text('Upload'),
+                        child: const Text('Edit'),
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             String apiError = '';
                             String storagePath = '';
                             String imageError = '';
 
-                            provider.currencyCodeController.text =
+                            provider.editCurrencyCodeController.text =
                                 _selectedCurrency;
                             if (imagePath.isNotEmpty) {
                               await storage
@@ -366,17 +389,16 @@ class _AddBookViewState extends State<AddBookView> {
                                 SnackBarUtils.showWarningSnackBar(
                                     context: context,
                                     content:
-                                        'Upload unsuccessfully, please try again.');
+                                        'Edit unsuccessfully, please try again.');
                               }
                             }
                             if (imageError.isEmpty) {
                               if (!mounted) return;
-                              LibraryBooks libraryBook =
-                                  await BookService.addCustomBook(
-                                context: context,
-                                storagePath: storagePath,
-                              ).catchError((e) => apiError = e);
-
+                              Book editedBook = await BookService.updateBook(
+                                      context,
+                                      widget.libraryBook.book.id,
+                                      storagePath)
+                                  .catchError((e) => apiError = e);
                               if (!mounted) return;
                               if (apiError.isEmpty) {
                                 Provider.of<BookProvider>(context,
@@ -385,9 +407,9 @@ class _AddBookViewState extends State<AddBookView> {
                                 Navigator.of(context).pop();
                                 SnackBarUtils.showSuccessSnackBar(
                                     context: context,
-                                    content: 'Added book successfully');
-                                widget.libraryBookAddCallback(
-                                    apiError.isEmpty, libraryBook);
+                                    content: 'Updated book successfully');
+                                widget.bookUpdateCallback(
+                                    apiError.isEmpty, editedBook);
                               } else {
                                 SnackBarUtils.showWarningSnackBar(
                                     context: context,
@@ -396,7 +418,7 @@ class _AddBookViewState extends State<AddBookView> {
                             }
                           }
                         },
-                        backgroundColor: context.resources.color.colorDark,
+                        backgroundColor: context.resources.color.colorDarkest,
                         size: const Size(84, 30),
                       ),
                       const SizedBox(
@@ -409,9 +431,9 @@ class _AddBookViewState extends State<AddBookView> {
                           Provider.of<BookProvider>(context, listen: false)
                               .clearBookControllers();
                         },
-                        backgroundColor: context.resources.color.colorDark,
-                        size: Size(82, 30),
-                      ),
+                        backgroundColor: context.resources.color.colorDarkest,
+                        size: const Size(82, 30),
+                      )
                     ],
                   ),
                 ),

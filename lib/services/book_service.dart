@@ -131,7 +131,8 @@ class BookService {
     }
   }
 
-  static Future<Book> updateBook(BuildContext context, int id) async {
+  static Future<Book> updateBook(
+      BuildContext context, int id, String? storagePath) async {
     final currentUser = FirebaseAuth.instance.currentUser!;
     String idToken = await currentUser.getIdToken();
     final provider = Provider.of<BookProvider>(context, listen: false);
@@ -146,7 +147,11 @@ class BookService {
         'title': provider.editTitleController.text,
         'subtitle': provider.editSubtitleController.text,
         'category': provider.editCategoryController.text,
-        'thumbnail': provider.editThumbnailController.text,
+        'thumbnail': storagePath != null && storagePath.isNotEmpty
+            ? 'gs::$storagePath'
+            : provider.editThumbnailController.text.isEmpty
+                ? null
+                : 'url::${provider.editThumbnailController.text}',
         'description': provider.editDescriptionController.text,
         'page_count': provider.editPageCountController.text,
         'currency_code': provider.editCurrencyCodeController.text.toUpperCase(),
