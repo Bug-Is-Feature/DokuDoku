@@ -63,6 +63,8 @@ class _StopwatchViewState extends State<StopwatchView> {
                     Provider.of<TimerProvider>(context, listen: false).stop();
                     if (provider.totalDuration >= 5) {
                       provider.totalExp += provider.totalDuration;
+                      provider.sumStopWatch += provider.totalDuration;
+                      print("SUMSTP ${provider.sumStopWatch}");
                       print(provider.totalExp);
                       await TimerService.saveTimer(
                         context,

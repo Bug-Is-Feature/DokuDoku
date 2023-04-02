@@ -16,116 +16,230 @@ class BadgesView extends StatefulWidget {
 }
 
 class BadgesViewState extends State<BadgesView> {
+  bool isUnlock = true;
+  bool isLoading = true;
+  List<int> userBadgesId = [];
+  @override
+  void initState() {
+    super.initState();
+    final badgeProvider = Provider.of<BadgeProvider>(context, listen: false);
+
+    unlockAchievement(context).whenComplete(() {
+      setState(() {
+        isUnlock = false;
+      });
+      badgeProvider.getAllUserBadges().then(
+            (value) => setState(
+              () {
+                for (var i = 0; i < value.length; i++) {
+                  userBadgesId.add(value[i].unlockedAchievementId);
+                  print(
+                      "badges : ----------- ---- ${value[i].unlockedAchievementId}");
+                }
+                isLoading = false;
+              },
+            ),
+          );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final badgeProvider = Provider.of<BadgeProvider>(context, listen: false);
 
-    unlockAchievement(context);
-    Future<List<UserBadges>> userBadges = getAllUserBadges(context);
-    print(userBadges);
-
-    return Scaffold(
-      body: FutureBuilder<List<Badge.Badge>>(
+    if (isUnlock || isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      return FutureBuilder<List<Badge.Badge>>(
         future: badgeProvider.badges,
-        builder:
-            (BuildContext context, AsyncSnapshot<List<Badge.Badge>> snapshot) {
-          return snapshot.connectionState == ConnectionState.waiting
-              ? const Center(child: CircularProgressIndicator())
+        builder: (BuildContext context,
+            AsyncSnapshot<List<Badge.Badge>> badgeSnapshot) {
+          return badgeSnapshot.connectionState == ConnectionState.waiting
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
               : ListView.builder(
-                  itemCount: snapshot.data!.length,
+                  itemCount: badgeSnapshot.data!.length,
                   itemBuilder: (context, index) {
-                    final badge = snapshot.data![index];
-                    return ListTile(
-                      title: Text(badge.name),
-                      subtitle: Text(badge.description),
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => BadgeDialog(badge: badge),
-                          ),
-                        );
-                      },
-                    );
+                    final badge = badgeSnapshot.data![index];
+                    //  print(index);
+
+                    if (userBadgesId.contains(index + 1)) {
+                      print("true ${badge.name}");
+                      return ListTile(
+                        title: Text(badge.name),
+                        subtitle: Text(
+                          "Unlock",
+                          style: TextStyle(color: Colors.green),
+                        ),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => BadgeDialog(badge: badge),
+                            ),
+                          );
+                        },
+                      );
+                    } else {
+                      print("false ${badge.name}");
+                      return ListTile(
+                        title: Text(badge.name),
+                        subtitle: const Text("Lock"),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => BadgeDialog(badge: badge),
+                            ),
+                          );
+                        },
+                      );
+                    }
                   },
                 );
         },
-      ),
-    );
+      );
+
+      // FutureBuilder<List<UserBadges>>(
+      //   future: badgeProvider.userBadges,
+      //   builder: (BuildContext context,
+      //       AsyncSnapshot<List<UserBadges>> userBadgesSnapshot) {
+      //     final userAllBadges = userBadgesSnapshot.data!;
+
+      //     // list of id badges of user
+      //     List<int> userBadgesId =
+      //         userAllBadges.map((e) => e.unlockedAchievementId).toList();
+      //     print("userBadgesId : $userBadgesId");
+
+      //     return userBadgesSnapshot.connectionState == ConnectionState.waiting
+      //         ? const Center(
+      //             child: CircularProgressIndicator(),
+      //           )
+      //         : FutureBuilder<List<Badge.Badge>>(
+      //             future: badgeProvider.badges,
+      //             builder: (BuildContext context,
+      //                 AsyncSnapshot<List<Badge.Badge>> badgeSnapshot) {
+      //               return ListView.builder(
+      //                 itemCount: badgeSnapshot.data!.length,
+      //                 itemBuilder: (context, index) {
+      //                   final badge = badgeSnapshot.data![index];
+      //                   //  print(index);
+
+      //                   if (userBadgesId.contains(index + 1)) {
+      //                     print("true ${badge.name}");
+      //                     return ListTile(
+      //                       title: Text(badge.name),
+      //                       subtitle: Text(
+      //                         "Unlock",
+      //                         style: TextStyle(color: Colors.green),
+      //                       ),
+      //                       onTap: () {
+      //                         Navigator.of(context).push(
+      //                           MaterialPageRoute(
+      //                             builder: (context) =>
+      //                                 BadgeDialog(badge: badge),
+      //                           ),
+      //                         );
+      //                       },
+      //                     );
+      //                   } else {
+      //                     print("false ${badge.name}");
+      //                     return ListTile(
+      //                       title: Text(badge.name),
+      //                       subtitle: const Text("Lock"),
+      //                       onTap: () {
+      //                         Navigator.of(context).push(
+      //                           MaterialPageRoute(
+      //                             builder: (context) =>
+      //                                 BadgeDialog(badge: badge),
+      //                           ),
+      //                         );
+      //                       },
+      //                     );
+      //                   }
+      //                 },
+      //               );
+      //             },
+      //           );
+      //   },
+      // );
+    }
   }
 }
 
-unlockAchievement(BuildContext context) {
+unlockAchievement(BuildContext context) async {
   final badgeProvider = Provider.of<BadgeProvider>(context, listen: false);
   final timerProvider = Provider.of<TimerProvider>(context, listen: false);
   final bookProvider = Provider.of<BookProvider>(context, listen: false);
 
-  badgeProvider.badges.then(
-    (list) {
-      print("sumSTP : ${timerProvider.sumStopWatch}");
-      print("sumH : ${timerProvider.sumHourglass}");
-      print("totalDuration : ${timerProvider.totalReadingDuration}");
-      list.forEach(
-        (element) async {
-          // -- Meow's training --
-          if (element.condition == "Stopwatch Reading Hours") {
-            int index = list.indexOf(element);
-            if (timerProvider.sumStopWatch >= list[index].threshold) {
-              print("achievement threshold : ${list[index].threshold}");
-              print("Unlock achievement : ${list[index].name}");
-              print("Unlock achievement id : ${list.indexOf(element) + 1}");
+  final list = await badgeProvider.badges;
+  print("sumSTP : ${timerProvider.sumStopWatch}");
+  print("sumH : ${timerProvider.sumHourglass}");
+  print("totalDuration : ${timerProvider.totalReadingDuration}");
+  list.forEach(
+    (element) async {
+      // -- Meow's training --
+      if (element.condition == "Stopwatch Reading Hours") {
+        int index = list.indexOf(element);
+        if (timerProvider.sumStopWatch >= list[index].threshold) {
+          print("achievement threshold : ${list[index].threshold}");
+          print(
+              "Unlock achievement : ${list[index].name}, id : ${list.indexOf(element) + 1}");
 
-              await BadgeService.unlockBadge(list.indexOf(element) + 1);
-            }
+          await BadgeService.unlockBadge(list.indexOf(element) + 1);
+        }
+      }
+
+      // -- Lord of Tsundoku --I
+      if (element.condition == "Incomplete Book Amount") {
+        int index = list.indexOf(element);
+        final value = await bookProvider.library;
+        print("incomplete books : ${value.incompleteCount}");
+        int incompleteBook = value.incompleteCount;
+        if (incompleteBook >= list[index].threshold) {
+          print("achievement threshold : ${list[index].threshold}");
+          print(
+              "Unlock achievement : ${list[index].name}, id : ${list.indexOf(element) + 1}");
+
+          await BadgeService.unlockBadge(list.indexOf(element) + 1);
+        }
+
+        // -- Determined Meow --
+        if (element.condition == "Hourglass Reading Hours") {
+          int index = list.indexOf(element);
+          if (timerProvider.sumHourglass >= list[index].threshold) {
+            print("achievement threshold : ${list[index].threshold}");
+            print(
+                "Unlock achievement : ${list[index].name} , id : ${list.indexOf(element) + 1}");
+
+            await BadgeService.unlockBadge(list.indexOf(element) + 1);
           }
+        }
 
-          // -- Lord of Tsundoku --I
-          if (element.condition == "Incomplete Book Amount") {
-            int index = list.indexOf(element);
-            bookProvider.library.then((value) {
-              print("incomplete books : ${value.incompleteCount}");
-              int incompleteBook = value.incompleteCount;
-              if (incompleteBook >= list[index].threshold) {
-                print("achievement threshold : ${list[index].threshold}");
-                print("Unlock achievement : ${list[index].name}");
-                print("Unlock achievement id : ${list.indexOf(element) + 1}");
+        // -- Skilled Cat --
+        if (element.condition == "Total Reading Hours") {
+          int index = list.indexOf(element);
+          if (timerProvider.totalReadingDuration >= list[index].threshold) {
+            print("achievement threshold : ${list[index].threshold}");
+            print(
+                "Unlock achievement : ${list[index].name}, id : ${list.indexOf(element) + 1}");
 
-                BadgeService.unlockBadge(list.indexOf(element) + 1);
-              }
-            });
+            await BadgeService.unlockBadge(list.indexOf(element) + 1);
           }
-
-          // -- Determined Meow --
-          if (element.condition == "Hourglass Reading Hours") {
-            int index = list.indexOf(element);
-            if (timerProvider.sumHourglass >= list[index].threshold) {
-              print("achievement threshold : ${list[index].threshold}");
-              print("Unlock achievement : ${list[index].name}");
-              print("Unlock achievement id : ${list.indexOf(element) + 1}");
-
-              await BadgeService.unlockBadge(list.indexOf(element) + 1);
-            }
-          }
-
-          // -- Skilled Cat --
-          if (element.condition == "Total Reading Hours") {
-            int index = list.indexOf(element);
-            if (timerProvider.totalReadingDuration >= list[index].threshold) {
-              print("achievement threshold : ${list[index].threshold}");
-              print("Unlock achievement : ${list[index].name}");
-              print("Unlock achievement id : ${list.indexOf(element) + 1}");
-
-              await BadgeService.unlockBadge(list.indexOf(element) + 1);
-            }
-          }
-        },
-      );
+        }
+      }
     },
   );
 }
 
-Future<List<UserBadges>> getAllUserBadges(BuildContext context) {
+Future<List<int>> getUserBadges(BuildContext context) async {
   final badgeProvider = Provider.of<BadgeProvider>(context, listen: false);
-  Future<List<UserBadges>> userBadgeList = badgeProvider.userBadges;
+  List<int> userBadgesID = [];
+  Future<List<UserBadges>> userBadges = badgeProvider.getAllUserBadges();
+  await userBadges.then((value) {
+    userBadgesID = value.map((e) => e.unlockedAchievementId).toList();
+  }).whenComplete(() => print("userBadgesID : $userBadgesID"));
 
-  return userBadgeList;
+  return userBadgesID;
 }
