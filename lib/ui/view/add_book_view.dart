@@ -11,7 +11,6 @@ import 'package:dokudoku/ui/components/textfield_custombook.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class AddBookView extends StatefulWidget {
   final void Function(bool, LibraryBooks) libraryBookAddCallback;
@@ -363,6 +362,7 @@ class _AddBookViewState extends State<AddBookView> {
                                 setState(() {
                                   imagePath = '';
                                 });
+                                if (!mounted) return;
                                 SnackBarUtils.showWarningSnackBar(
                                     context: context,
                                     content:
@@ -370,6 +370,7 @@ class _AddBookViewState extends State<AddBookView> {
                               }
                             }
                             if (imageError.isEmpty) {
+                              if (!mounted) return;
                               LibraryBooks libraryBook =
                                   await BookService.addCustomBook(
                                 context: context,
@@ -396,9 +397,9 @@ class _AddBookViewState extends State<AddBookView> {
                           }
                         },
                         backgroundColor: context.resources.color.colorDark,
-                        size: Size(84, 30),
+                        size: const Size(84, 30),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                       Button(
