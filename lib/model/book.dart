@@ -35,26 +35,6 @@ class Book {
   });
 
   factory Book.fromJson(json) {
-    // return Book(
-    //   id: json['id'],
-    //   title: utf8.decode(json['title'].toString().codeUnits),
-    //   subtitle: utf8.decode(json['subtitle'].toString().codeUnits),
-    //   category: utf8.decode(json['category'].toString().codeUnits),
-    //   thumbnail: json['thumbnail'] ?? '',
-    //   description: utf8.decode(json['description'].toString().codeUnits),
-    //   pageCount: json['page_count'] ?? -1,
-    //   currencyCode: json['currency_code'] ?? '',
-    //   price: json['price'] ?? -1,
-    //   createdBy: Users.fromJson(json['created_by'] ?? {}),
-    //   googleBookId: json['google_book_id'] ?? '',
-    //   authors: json['authors'] != null
-    //       ? List<Author>.from(json['authors']
-    //           .map((authorsData) => Author.fromJson(authorsData))
-    //           .toList())
-    //       : [],
-    //   createAt: json['create_at'],
-    // );
-
     return Book(
       id: json['id'],
       title: json['title'],
