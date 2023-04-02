@@ -3,6 +3,7 @@ import 'package:dokudoku/ui/components/button.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:provider/provider.dart';
+import 'package:rive/rive.dart';
 
 class HourglassView extends StatefulWidget {
   final int id;
@@ -149,6 +150,23 @@ class _HourglassViewState extends State<HourglassView> {
                     ),
                   ],
                 ),
+                child: provider.currentState == TimerState.focus
+                    ? Stack(
+                        children: const [
+                          Positioned(
+                            child: RiveAnimation.asset(
+                              'assets/images/ice_cream.riv',
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ],
+                      )
+                    : const Center(
+                        child: RiveAnimation.asset(
+                          'assets/images/drink_coffee.riv',
+                          fit: BoxFit.contain,
+                        ),
+                      ),
               ),
               const SizedBox(height: 20),
               Row(
