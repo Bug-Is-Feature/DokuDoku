@@ -190,7 +190,7 @@ class _EditImageUploadWidgetState extends State<EditImageUploadWidget> {
           ),
           if (imageTooLarge)
             const Text(
-              'The image is too large, please compress the image or chose other smaller image.',
+              'The image is too large, please compress the image or choose other smaller image.',
               style: TextStyle(
                 color: Colors.red,
               ),
