@@ -9,6 +9,7 @@ import 'package:dokudoku/services/image_service.dart';
 import 'package:dokudoku/ui/components/button.dart';
 import 'package:dokudoku/ui/components/custom_dialog_box.dart';
 import 'package:dokudoku/ui/components/edit_book_dialog.dart';
+import 'package:dokudoku/ui/view/edit_book_view.dart';
 import 'package:flutter/material.dart';
 
 class BookDetailsView extends StatefulWidget {
@@ -140,10 +141,28 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                                   .libraryBook.book.googleBookId.isEmpty) ...[
                                 IconButton(
                                   onPressed: () async {
-                                    await showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return EditBookDialog(
+                                    // await showDialog(
+                                    //   context: context,
+                                    //   builder: (context) {
+                                    //     return EditBookDialog(
+                                    //       libraryBook: widget.libraryBook,
+                                    //       bookUpdateCallback: (bool isSuccess,
+                                    //           Book editedBook) {
+                                    //         if (isSuccess) {
+                                    //           setState(() {
+                                    //             widget.libraryBook.book =
+                                    //                 editedBook;
+                                    //           });
+                                    //           widget.bookUpdateCallback(
+                                    //               isSuccess, editedBook);
+                                    //         }
+                                    //       },
+                                    //     );
+                                    //   },
+                                    // );
+                                    await Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (context) => EditBookView(
                                           libraryBook: widget.libraryBook,
                                           bookUpdateCallback: (bool isSuccess,
                                               Book editedBook) {
@@ -155,10 +174,8 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                                               widget.bookUpdateCallback(
                                                   isSuccess, editedBook);
                                             }
-                                          },
-                                        );
-                                      },
-                                    );
+                                          }),
+                                    ));
                                   },
                                   icon: const Icon(Icons.edit),
                                   color: context.resources.color.colorWhite,
