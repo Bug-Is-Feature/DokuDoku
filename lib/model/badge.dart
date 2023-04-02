@@ -1,19 +1,23 @@
-class Badges {
+class Badge {
   final String name, description, lockedThumbnail, unlockedThumbnail, condition;
   final int threshold;
+
+  //group
   final bool available;
-  Badges(
+  Badge(
       {required this.name,
       required this.description,
+      // required this.group,
       required this.lockedThumbnail,
       required this.unlockedThumbnail,
       required this.condition,
       required this.threshold,
       required this.available});
 
-  factory Badges.fromJson(json) => Badges(
+  factory Badge.fromJson(json) => Badge(
         name: json["name"],
         description: json["description"],
+        //group: json["group_id"],
         lockedThumbnail: json["locked_thumbnail"],
         unlockedThumbnail: json["unlocked_thumbnail"],
         condition: json["condition"],
