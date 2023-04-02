@@ -19,12 +19,12 @@ import '../model/book.dart' as _i13;
 import '../model/library_books.dart' as _i12;
 import '../ui/components/timer_mode_tabbar.dart' as _i8;
 import '../ui/view/auth_view.dart' as _i2;
+import '../ui/view/badges_view.dart' as _i6;
 import '../ui/view/book_details_view.dart' as _i5;
 import '../ui/view/bookshelves_view.dart' as _i4;
 import '../ui/view/home_view.dart' as _i3;
 import '../ui/view/hourglass_view.dart' as _i9;
 import '../ui/view/profile_view.dart' as _i7;
-import '../ui/view/quest_board_view.dart' as _i6;
 
 class AppRouter extends _i10.RootStackRouter {
   AppRouter([_i11.GlobalKey<_i11.NavigatorState>? navigatorKey])
@@ -68,10 +68,11 @@ class AppRouter extends _i10.RootStackRouter {
         child: const _i1.EmptyRouterPage(),
       );
     },
-    QuestBoardRoute.name: (routeData) {
+    BadgeRoute.name: (routeData) {
       return _i10.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i1.EmptyRouterPage(),
+        maintainState: false,
       );
     },
     ProfileRoute.name: (routeData) {
@@ -98,10 +99,10 @@ class AppRouter extends _i10.RootStackRouter {
         ),
       );
     },
-    QuestBoardViewRoute.name: (routeData) {
+    BadgesViewRoute.name: (routeData) {
       return _i10.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i6.QuestBoardView(),
+        child: const _i6.BadgesView(),
       );
     },
     ProfileViewRoute.name: (routeData) {
@@ -186,14 +187,14 @@ class AppRouter extends _i10.RootStackRouter {
                   ],
                 ),
                 _i10.RouteConfig(
-                  QuestBoardRoute.name,
-                  path: 'quest_board',
+                  BadgeRoute.name,
+                  path: 'badge',
                   parent: HomeViewRoute.name,
                   children: [
                     _i10.RouteConfig(
-                      QuestBoardViewRoute.name,
+                      BadgesViewRoute.name,
                       path: '',
-                      parent: QuestBoardRoute.name,
+                      parent: BadgeRoute.name,
                     )
                   ],
                 ),
@@ -319,15 +320,15 @@ class BookShelvesRoute extends _i10.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i1.EmptyRouterPage]
-class QuestBoardRoute extends _i10.PageRouteInfo<void> {
-  const QuestBoardRoute({List<_i10.PageRouteInfo>? children})
+class BadgeRoute extends _i10.PageRouteInfo<void> {
+  const BadgeRoute({List<_i10.PageRouteInfo>? children})
       : super(
-          QuestBoardRoute.name,
-          path: 'quest_board',
+          BadgeRoute.name,
+          path: 'badge',
           initialChildren: children,
         );
 
-  static const String name = 'QuestBoardRoute';
+  static const String name = 'BadgeRoute';
 }
 
 /// generated route for
@@ -414,15 +415,15 @@ class BookDetailsRouteArgs {
 }
 
 /// generated route for
-/// [_i6.QuestBoardView]
-class QuestBoardViewRoute extends _i10.PageRouteInfo<void> {
-  const QuestBoardViewRoute()
+/// [_i6.BadgesView]
+class BadgesViewRoute extends _i10.PageRouteInfo<void> {
+  const BadgesViewRoute()
       : super(
-          QuestBoardViewRoute.name,
+          BadgesViewRoute.name,
           path: '',
         );
 
-  static const String name = 'QuestBoardViewRoute';
+  static const String name = 'BadgesViewRoute';
 }
 
 /// generated route for

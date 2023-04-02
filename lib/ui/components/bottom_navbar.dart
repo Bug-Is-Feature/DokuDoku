@@ -35,12 +35,12 @@ class BottomNavBar {
       icon: Column(
         children: const [
           Icon(
-            Icons.assignment_outlined,
+            Icons.star_border,
             color: Colors.white,
             size: 24,
           ),
           Text(
-            'Quest Board',
+            'Badges',
             style: TextStyle(color: Colors.white),
           )
         ],
@@ -48,17 +48,17 @@ class BottomNavBar {
       activeIcon: Column(
         children: const [
           Icon(
-            Icons.assignment,
+            Icons.star,
             color: Colors.white,
             size: 24,
           ),
           Text(
-            'Quest Board',
+            'Badges',
             style: TextStyle(color: Colors.white),
           )
         ],
       ),
-      label: "Quest Board",
+      label: "Badges",
     ),
     BottomNavigationBarItem(
         icon: Column(
