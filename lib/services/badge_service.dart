@@ -53,7 +53,7 @@ class BadgeService {
   }
 
   //User unlock badge
-  static Future<void> unlockBadge(int badgeId) async {
+  static Future<UserBadges> unlockBadge(int badgeId) async {
     final currentUser = FirebaseAuth.instance.currentUser!;
     String idToken = await currentUser.getIdToken();
     final response = await http.post(
@@ -69,8 +69,12 @@ class BadgeService {
     );
     if (response.statusCode == 201) {
       print('Unlock badge successfully');
+      final utf8Response = utf8.decode(response.bodyBytes);
+      final data = jsonDecode(utf8Response);
+      return UserBadges.fromJson(data);
     } else {
       print('API_ERROR: ${response.statusCode}');
+      return Future.error('Failed to unlock badge');
     }
   }
 }
