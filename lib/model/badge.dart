@@ -29,7 +29,6 @@ class Badge {
         threshold: json["threshold"],
         available: json["available"],
       );
-
   Map<String, dynamic> toJson() => {
         "name": name,
         "description": description,
