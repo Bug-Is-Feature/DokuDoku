@@ -1,6 +1,8 @@
+import 'package:dokudoku/model/author.dart';
 import 'package:dokudoku/model/book.dart';
 import 'package:dokudoku/model/library.dart';
 import 'package:dokudoku/model/library_books.dart';
+import 'package:dokudoku/model/user.dart';
 import 'package:dokudoku/ui/components/bookcard.dart';
 import 'package:dokudoku/ui/components/bookshelves_floating_button.dart';
 import 'package:dokudoku/ui/components/search_sort_bookshelves.dart';
@@ -75,31 +77,17 @@ class _BookshelvesTabViewState extends State<BookshelvesTabView> {
                           itemBuilder: (context, index) {
                             final libraryBook =
                                 snapshot.data!.libraryBooks[index];
-                            return Column(
-                              children: [
-                                const SizedBox(height: 14),
-                                BookCard(
-                                  libraryBook: libraryBook,
-                                  libraryBookStatusUpdateCallback:
-                                      (bool libraryBookStatus) async {
-                                    Library library = await widget.library;
-                                    LibraryBooks target = library.libraryBooks
-                                        .where((element) =>
-                                            element.libraryBookId ==
-                                            snapshot.data?.libraryBooks[index]
-                                                .libraryBookId)
-                                        .first;
-                                    target.isCompleted = libraryBookStatus;
-
-                                    widget.libraryBookStatusUpdateCallback(
-                                        libraryBookStatus);
-                                  },
-                                  libraryBookRemoveCallback:
-                                      widget.libraryBookRemoveCallback,
-                                  bookUpdateCallback: widget.bookUpdateCallback,
-                                ),
-                              ],
-                            );
+                            if (index !=
+                                snapshot.data!.libraryBooks.length - 1) {
+                              return _bookCard(libraryBook);
+                            } else {
+                              return Column(
+                                children: [
+                                  _bookCard(libraryBook),
+                                  const SizedBox(height: 80),
+                                ],
+                              );
+                            }
                           },
                         );
             },
@@ -110,6 +98,29 @@ class _BookshelvesTabViewState extends State<BookshelvesTabView> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _bookCard(LibraryBooks libraryBook) {
+    return Column(
+      children: [
+        const SizedBox(height: 14),
+        BookCard(
+          libraryBook: libraryBook,
+          libraryBookStatusUpdateCallback: (bool libraryBookStatus) async {
+            Library library = await widget.library;
+            LibraryBooks target = library.libraryBooks
+                .where((element) =>
+                    element.libraryBookId == libraryBook.libraryBookId)
+                .first;
+            target.isCompleted = libraryBookStatus;
+
+            widget.libraryBookStatusUpdateCallback(libraryBookStatus);
+          },
+          libraryBookRemoveCallback: widget.libraryBookRemoveCallback,
+          bookUpdateCallback: widget.bookUpdateCallback,
+        ),
+      ],
     );
   }
 }

@@ -1,5 +1,8 @@
+import 'package:dokudoku/model/sessions.dart';
 import 'package:dokudoku/model/user.dart';
+import 'package:dokudoku/provider/session_provider.dart';
 import 'package:dokudoku/provider/user_provider.dart';
+import 'package:dokudoku/ui/components/time_distribution_chart.dart';
 import 'package:dokudoku/ui/view/statistic_view.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
@@ -7,6 +10,8 @@ import 'package:dokudoku/services/auth_service.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:dokudoku/routes/router.gr.dart';
 import 'package:provider/provider.dart';
+import 'package:rive/rive.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -16,162 +21,167 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
+  bool isSwitch = true;
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<UserProvider>(context);
+    final sessionProvider = Provider.of<SessionProvider>(context);
+
     setState(() {
       provider.user = provider.user;
     });
     return Scaffold(
       backgroundColor: context.resources.color.colorLightest,
-      body: Column(
-        children: [
-          Padding(
-              padding: const EdgeInsets.only(top: 25),
-              child: FutureBuilder<Users>(
-                  future: provider.user,
-                  builder:
-                      (BuildContext context, AsyncSnapshot<Users> snapshot) {
-                    return snapshot.connectionState == ConnectionState.waiting
-                        ? const Center(child: CircularProgressIndicator())
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.person,
-                                size: 100,
-                                color: context.resources.color.colorDarkest,
-                              ),
-                              const SizedBox(
-                                width: 35,
-                              ),
-                              Column(
-                                children: [
-                                  Text(
-                                    'Lvl ${snapshot.data!.currentLvl}',
-                                    style: const TextStyle(fontSize: 70),
-                                  ),
-                                  Text(
-                                    "${snapshot.data!.currentExp}/1000 EXP",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  SizedBox(
-                                    width: 100,
-                                    height: 5,
-                                    child: LinearProgressIndicator(
-                                      value: 0.5,
-                                      backgroundColor:
-                                          context.resources.color.colorWhite,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                          context.resources.color.colorDark),
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          );
-                  })),
-          const SizedBox(
-            height: 60,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      appBar: PreferredSize(
+        preferredSize:
+            Size.fromHeight(MediaQuery.of(context).size.height * 0.1),
+        child: AppBar(
+            centerTitle: true,
+            title: Text(
+              "Profile",
+              style: TextStyle(
+                  fontFamily: 'primary',
+                  color: context.resources.color.colorWhite,
+                  fontSize: 30),
+            ),
+            backgroundColor: context.resources.color.colorDark,
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.logout),
+                color: context.resources.color.colorWhite,
+                onPressed: () async {
+                  await AuthService.googleAuth.signOut();
+                  await AuthService.signOut();
+                  context.router.replace(const AuthRoute());
+                },
+              ),
+            ]),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 60,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: context.resources.color.colorLighter2,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(40),
+                  topRight: Radius.circular(40),
+                ),
+              ),
+              width: MediaQuery.of(context).size.width * 0.6,
+              height: MediaQuery.of(context).size.height * 0.18,
+              child: RiveAnimation.asset(
+                  'assets/images/profile_cat_primaryLight.riv'),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: context.resources.color.colorLighter2,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                ),
+              ),
+              child: Column(
                 children: [
-                  Row(
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.06,
+                  ),
+                  Column(
                     children: [
-                      Icon(
-                        Icons.bar_chart,
-                        color: context.resources.color.colorDarkest,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              //Notification
+                              Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.07,
+                                width: MediaQuery.of(context).size.width * 0.9,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: context.resources.color.colorWhite),
+                                //Notification Row
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.05,
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.all(4),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: context
+                                            .resources.color.colorLighter2,
+                                      ),
+                                      child: Icon(
+                                        Icons.notifications_none,
+                                        color:
+                                            context.resources.color.colorDark,
+                                        size: 32,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 20),
+                                    const Expanded(
+                                      child: Text(
+                                        'Notification',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Switch(
+                                      activeColor:
+                                          context.resources.color.colorDark,
+                                      value: isSwitch,
+                                      onChanged: ((bool newBool) {
+                                        setState(() {
+                                          isSwitch = newBool;
+                                        });
+                                      }),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 30),
-                      //   const Text(
-                      //     'Statistic',
-                      //     style: TextStyle(fontSize: 20),
-                      //   ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const StatisticView()));
-                        },
-                        child: const Text(
-                          'Statistic',
-                          style: TextStyle(fontSize: 20),
+                    ],
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
+                  ),
+                  Positioned(
+                    top: 300,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: context.resources.color.colorWhite,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      width: 360,
+                      height: 360,
+                      child: Positioned(
+                        top: 350,
+                        child: TimeDistributionChart(
+                          session: sessionProvider.session,
+                          sessionUpdateCallback: (Future<List<Session>>
+                                  session) =>
+                              setState(() => sessionProvider.session = session),
                         ),
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.calendar_month,
-                        color: context.resources.color.colorDarkest,
                       ),
-                      const SizedBox(width: 30),
-                      const Text(
-                        'Calendar Month',
-                        style: TextStyle(fontSize: 20),
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.history,
-                        color: context.resources.color.colorDarkest,
-                      ),
-                      const SizedBox(width: 30),
-                      const Text(
-                        'Note History',
-                        style: TextStyle(fontSize: 20),
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.settings,
-                        color: context.resources.color.colorDarkest,
-                      ),
-                      const SizedBox(width: 30),
-                      const Text(
-                        'Achievement',
-                        style: TextStyle(fontSize: 20),
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.notifications,
-                        color: context.resources.color.colorDarkest,
-                      ),
-                      const SizedBox(width: 30),
-                      const Text(
-                        'Notification',
-                        style: TextStyle(fontSize: 20),
-                      )
-                    ],
+                    ),
                   ),
                 ],
-              )
-            ],
-          ),
-          IconButton(
-            icon: const Icon(Icons.logout),
-            color: context.resources.color.colorDarkest,
-            onPressed: () async {
-              await AuthService.googleAuth.signOut();
-              await AuthService.signOut();
-              context.router.replace(const AuthRoute());
-            },
-          ),
-        ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

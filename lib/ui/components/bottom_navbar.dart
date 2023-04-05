@@ -35,12 +35,12 @@ class BottomNavBar {
       icon: Column(
         children: const [
           Icon(
-            Icons.star_border,
+            Icons.military_tech_outlined,
             color: Colors.white,
             size: 24,
           ),
           Text(
-            'Badges',
+            'Achievement',
             style: TextStyle(color: Colors.white),
           )
         ],
@@ -48,17 +48,17 @@ class BottomNavBar {
       activeIcon: Column(
         children: const [
           Icon(
-            Icons.star,
+            Icons.military_tech,
             color: Colors.white,
             size: 24,
           ),
           Text(
-            'Badges',
+            'Achievement',
             style: TextStyle(color: Colors.white),
           )
         ],
       ),
-      label: "Badges",
+      label: "Achievement",
     ),
     BottomNavigationBarItem(
         icon: Column(
