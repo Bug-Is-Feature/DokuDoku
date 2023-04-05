@@ -6,7 +6,7 @@ class FetchGoogleBook {
   static Future<List<GoogleBook>> getBookList(String query) async {
     query = query.replaceAll(' ', '+');
     String fetchUrl =
-        'https://www.googleapis.com/books/v1/volumes?q=$query&printType=books&maxResults=5';
+        'https://www.googleapis.com/books/v1/volumes?q=$query&printType=books&maxResults=40';
 
     final url = Uri.parse(fetchUrl);
     final response = await http.get(url);

@@ -7,7 +7,7 @@ import 'package:dokudoku/ui/view/bookshelves_view.dart';
 import 'package:dokudoku/ui/view/home_view.dart';
 import 'package:dokudoku/ui/view/hourglass_view.dart';
 import 'package:dokudoku/ui/view/profile_view.dart';
-import 'package:dokudoku/ui/view/quest_board_view.dart';
+import 'package:dokudoku/ui/view/badges_view.dart';
 import 'package:flutter/material.dart';
 
 @MaterialAutoRouter(
@@ -40,11 +40,12 @@ import 'package:flutter/material.dart';
               ],
             ),
             AutoRoute(
-              path: 'quest_board',
-              name: 'QuestBoardRoute',
+              path: 'badge',
+              name: 'BadgeRoute',
               page: EmptyRouterPage,
+              maintainState: false,
               children: [
-                AutoRoute(path: '', page: QuestBoardView),
+                AutoRoute(path: '', page: BadgesView),
               ],
             ),
             AutoRoute(

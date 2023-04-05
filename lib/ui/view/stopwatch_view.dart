@@ -35,23 +35,50 @@ class _StopwatchViewState extends State<StopwatchView> {
               ),
               const StopwatchTimer(),
               SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: context.resources.color.colorWhite.withOpacity(0.5),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(
-                    widget.title.replaceAll('%2520', ' '),
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  // Container(
+                  //   decoration: BoxDecoration(
+                  //     border: Border.all(
+                  //         color: context.resources.color.greyLight, width: 1),
+                  //     borderRadius: BorderRadius.circular(20),
+                  //     color:
+                  //         context.resources.color.colorWhite.withOpacity(0.5),
+                  //   ),
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.all(8.0),
+                  //     child: Text(
+                  //       'Selected Book',
+                  //       style: TextStyle(
+                  //           fontSize: 18, fontWeight: FontWeight.bold),
+                  //     ),
+                  //   ),
+                  // ),
+                  Flexible(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: context.resources.color.greyLight, width: 1),
+                        borderRadius: BorderRadius.circular(20),
+                        color:
+                            context.resources.color.colorWhite.withOpacity(0.5),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(
+                          widget.title.replaceAll('%2520', ' '),
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.05),
               Button(
@@ -63,6 +90,8 @@ class _StopwatchViewState extends State<StopwatchView> {
                     Provider.of<TimerProvider>(context, listen: false).stop();
                     if (provider.totalDuration >= 5) {
                       provider.totalExp += provider.totalDuration;
+                      provider.sumStopWatch += provider.totalDuration;
+                      print("SUMSTP ${provider.sumStopWatch}");
                       print(provider.totalExp);
                       await TimerService.saveTimer(
                         context,

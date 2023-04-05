@@ -32,6 +32,9 @@ class TimerProvider extends ChangeNotifier {
   String tempTitle = '';
 
   int totalExp = 0;
+  int sumStopWatch = 0;
+  int sumHourglass = 0;
+  int totalReadingDuration = 0;
 
   int currentDuration = 0;
   int seconds = 0;
@@ -145,6 +148,10 @@ class TimerProvider extends ChangeNotifier {
       } else if (iteration >= inputSessionNum) {
         sumTime += (inputSession - currentDuration);
         totalExp += sumTime;
+        sumHourglass += sumTime;
+        totalReadingDuration = sumHourglass + sumStopWatch;
+        print("totalReadingDuration : ${totalReadingDuration}");
+        print("sumHr : ${sumHourglass}");
         print(totalExp);
 
         await TimerService.saveTimer(
