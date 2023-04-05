@@ -40,7 +40,7 @@ class _BookCardState extends State<BookCard> {
         );
       },
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.15,
+        height: MediaQuery.of(context).size.height * 0.16,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           color: context.resources.color.colorWhite,
@@ -55,7 +55,7 @@ class _BookCardState extends State<BookCard> {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                 width: 60,
@@ -87,48 +87,54 @@ class _BookCardState extends State<BookCard> {
                   },
                 ),
               ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.05,
-              ),
+              // SizedBox(
+              //   width: MediaQuery.of(context).size.width * 0.05,
+              // ),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.5,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.01,
-                    ),
-                    Text(
-                      widget.libraryBook.book.title,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: context.resources.color.colorDarkest),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.005,
-                    ),
-                    if (widget.libraryBook.book.authors.isEmpty) ...[
-                      Text(
-                        'No author details',
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: context.resources.color.colorWhite,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.01,
                         ),
-                      )
-                    ] else ...[
-                      Text(
-                        widget.libraryBook.book.authors
-                            .map((author) => author.name)
-                            .join(', '),
-                        overflow: TextOverflow.ellipsis,
-                        style:
-                            TextStyle(color: context.resources.color.greyDark),
-                      )
-                    ],
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.0005,
+                        Text(
+                          widget.libraryBook.book.title,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: context.resources.color.colorDarkest),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.005,
+                        ),
+                        if (widget.libraryBook.book.authors.isEmpty) ...[
+                          Text(
+                            'No author details',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: context.resources.color.colorWhite,
+                            ),
+                          )
+                        ] else ...[
+                          Text(
+                            widget.libraryBook.book.authors
+                                .map((author) => author.name)
+                                .join(', '),
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                color: context.resources.color.greyDark),
+                          )
+                        ],
+                      ],
                     ),
+                    // SizedBox(
+                    //   height: MediaQuery.of(context).size.height * 0.0005,
+                    // ),
                     //Drop Down  show if in bookshelf
                     Row(
                       children: [
@@ -139,31 +145,43 @@ class _BookCardState extends State<BookCard> {
                               widget.libraryBookStatusUpdateCallback,
                         ),
                         SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.03,
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.timer_outlined,
-                            color: context.resources.color.colorDarkest,
-                            size: 30,
-                          ),
-                          onPressed: () {
-                            context.navigateTo(
-                              TimerRoute(
-                                children: [
-                                  TimerModeTabBarRoute(
-                                      id: widget.libraryBook.book.id,
-                                      title: widget.libraryBook.book.title)
-                                ],
-                              ),
-                            );
-                          },
+                          height: MediaQuery.of(context).size.height * 0.05,
                         ),
                       ],
                     )
                   ],
                 ),
               ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: context.resources.color.colorDark,
+                    child: Center(
+                      child: IconButton(
+                        iconSize: 30,
+                        icon: Icon(
+                          Icons.timer_outlined,
+                          color: context.resources.color.colorWhite,
+                        ),
+                        onPressed: () {
+                          context.navigateTo(
+                            TimerRoute(
+                              children: [
+                                TimerModeTabBarRoute(
+                                    id: widget.libraryBook.book.id,
+                                    title: widget.libraryBook.book.title)
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              )
 
               // show if in bookshelf
             ],
