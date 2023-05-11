@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dokudoku/provider/badge_provider.dart';
 import 'package:dokudoku/provider/bottomNavbar_provider.dart';
 import 'package:dokudoku/provider/navigation_provider.dart';
+import 'package:dokudoku/provider/recommend_books_provider.dart';
 import 'package:dokudoku/provider/session_provider.dart';
 import 'package:dokudoku/provider/user_provider.dart';
 import 'package:dokudoku/theme_app.dart';
@@ -27,6 +28,7 @@ void main(List<String> args) async {
         create: (context) => SessionProvider()),
     ChangeNotifierProvider<UserProvider>(create: (context) => UserProvider()),
     ChangeNotifierProvider<BadgeProvider>(create: (context) => BadgeProvider()),
+    ChangeNotifierProvider(create: (context) => RecommendBooksProvider()),
     ChangeNotifierProvider<BottomNavbarProvider>(
         create: (context) => BottomNavbarProvider()),
   ], child: MyApp()));

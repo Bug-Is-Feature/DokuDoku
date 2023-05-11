@@ -1,10 +1,13 @@
 import 'dart:math';
 
+import 'package:dokudoku/model/book.dart';
 import 'package:dokudoku/model/sessions.dart';
 import 'package:dokudoku/model/user.dart';
 import 'package:dokudoku/provider/session_provider.dart';
 import 'package:dokudoku/provider/user_provider.dart';
+import 'package:dokudoku/services/image_service.dart';
 import 'package:dokudoku/ui/components/time_distribution_chart.dart';
+import 'package:dokudoku/ui/view/recommend_books_view.dart';
 import 'package:dokudoku/ui/view/statistic_view.dart';
 import 'package:flutter/material.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
@@ -45,26 +48,27 @@ class _ProfileViewState extends State<ProfileView> {
         preferredSize:
             Size.fromHeight(MediaQuery.of(context).size.height * 0.1),
         child: AppBar(
-            centerTitle: true,
-            title: Text(
-              "Profile",
-              style: TextStyle(
-                  fontFamily: 'primary',
-                  color: context.resources.color.colorWhite,
-                  fontSize: 30),
-            ),
-            backgroundColor: context.resources.color.colorDark,
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.logout),
+          centerTitle: true,
+          title: Text(
+            "Profile",
+            style: TextStyle(
+                fontFamily: 'primary',
                 color: context.resources.color.colorWhite,
-                onPressed: () async {
-                  await AuthService.googleAuth.signOut();
-                  await AuthService.signOut();
-                  context.router.replace(const AuthRoute());
-                },
-              ),
-            ]),
+                fontSize: 30),
+          ),
+          backgroundColor: context.resources.color.colorDark,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.logout),
+              color: context.resources.color.colorWhite,
+              onPressed: () async {
+                await AuthService.googleAuth.signOut();
+                await AuthService.signOut();
+                context.router.replace(const AuthRoute());
+              },
+            ),
+          ],
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -85,6 +89,7 @@ class _ProfileViewState extends State<ProfileView> {
               child: const RiveAnimation.asset(
                   'assets/images/profile_cat_primaryLight.riv'),
             ),
+
             Container(
               decoration: BoxDecoration(
                 color: context.resources.color.colorLighter2,
@@ -153,59 +158,7 @@ class _ProfileViewState extends State<ProfileView> {
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              //Notification
-                              Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                width: MediaQuery.of(context).size.width * 0.9,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: context.resources.color.colorWhite),
-                                //Notification Row
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.05,
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: context
-                                            .resources.color.colorLighter2,
-                                      ),
-                                      child: Icon(
-                                        Icons.notifications_none,
-                                        color:
-                                            context.resources.color.colorDark,
-                                        size: 32,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 20),
-                                    const Expanded(
-                                      child: Text(
-                                        'Notification',
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    Switch(
-                                      activeColor:
-                                          context.resources.color.colorDark,
-                                      value: isSwitch,
-                                      onChanged: ((bool newBool) {
-                                        setState(() {
-                                          isSwitch = newBool;
-                                        });
-                                      }),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                            children: [],
                           ),
                         ],
                       ),
@@ -234,6 +187,26 @@ class _ProfileViewState extends State<ProfileView> {
                       ),
                     ),
                   ),
+                ],
+              ),
+            ),
+            //Show Recommended Books
+
+            Container(
+              color: context.resources.color.colorLighter2,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
+                  ),
+                  Text(
+                    "Maybe you read next",
+                    style: TextStyle(
+                        fontFamily: 'primary',
+                        color: context.resources.color.colorDark,
+                        fontSize: 30),
+                  ),
+                  RecommendBooksView(),
                 ],
               ),
             ),
