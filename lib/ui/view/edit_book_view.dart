@@ -357,6 +357,9 @@ class _EditBookViewState extends State<EditBookView> {
                   imageCallback: (String path) {
                     setState(() => imagePath = path);
                   },
+                  //   imageProviderCallback: (ImageProvider imageProvider) {
+                  //     setState(() => imageProvider = imageProvider);
+                  //   },
                 ),
                 const SizedBox(
                   height: 10,

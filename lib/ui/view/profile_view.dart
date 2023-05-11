@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dokudoku/model/sessions.dart';
 import 'package:dokudoku/model/user.dart';
 import 'package:dokudoku/provider/session_provider.dart';
@@ -14,7 +16,9 @@ import 'package:rive/rive.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ProfileView extends StatefulWidget {
-  const ProfileView({super.key});
+  const ProfileView({
+    super.key,
+  });
 
   @override
   State<ProfileView> createState() => _ProfileViewState();
@@ -22,14 +26,19 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   bool isSwitch = true;
+
+//   levelUp() async {
+//     final userProvider = Provider.of<UserProvider>(context, listen: false);
+//     final sessionProvider =
+//         Provider.of<SessionProvider>(context, listen: false);
+//     int level = await userProvider.user.then((value) => value.currentLvl);
+//   }
+
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<UserProvider>(context);
-    final sessionProvider = Provider.of<SessionProvider>(context);
-
-    setState(() {
-      provider.user = provider.user;
-    });
+    var userProvider = Provider.of<UserProvider>(context, listen: false);
+    final sessionProvider =
+        Provider.of<SessionProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: context.resources.color.colorLightest,
       appBar: PreferredSize(
@@ -60,26 +69,26 @@ class _ProfileViewState extends State<ProfileView> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 60,
             ),
             Container(
               decoration: BoxDecoration(
                 color: context.resources.color.colorLighter2,
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(40),
                   topRight: Radius.circular(40),
                 ),
               ),
               width: MediaQuery.of(context).size.width * 0.6,
               height: MediaQuery.of(context).size.height * 0.18,
-              child: RiveAnimation.asset(
+              child: const RiveAnimation.asset(
                   'assets/images/profile_cat_primaryLight.riv'),
             ),
             Container(
               decoration: BoxDecoration(
                 color: context.resources.color.colorLighter2,
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(30),
                   topRight: Radius.circular(30),
                 ),
@@ -88,6 +97,54 @@ class _ProfileViewState extends State<ProfileView> {
                 children: [
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.06,
+                  ),
+                  FutureBuilder<Users>(
+                      future: userProvider.user,
+                      builder: (BuildContext context,
+                          AsyncSnapshot<Users> userSnapshot) {
+                        // int levelUp() {
+                        //   if (userSnapshot.data!.currentExp == 20) {
+                        //     return userSnapshot.data!.currentLvl + 1;
+                        //   } else {
+                        //     return userSnapshot.data!.currentLvl;
+                        //   }
+                        // }
+
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "LV ${userSnapshot.data!.currentExp == 10 ? userSnapshot.data!.currentLvl + 1 : userSnapshot.data!.currentLvl}",
+                              style: const TextStyle(fontSize: 40),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.6,
+                                  child: LinearProgressIndicator(
+                                      value: (userSnapshot.data!.currentExp /
+                                              (pow(
+                                                          userSnapshot.data!
+                                                                  .currentLvl -
+                                                              1,
+                                                          2) ~/
+                                                      5 +
+                                                  100))
+                                          .toDouble()),
+                                ),
+                                Text(
+                                  "${userSnapshot.data!.currentExp}/${pow(userSnapshot.data!.currentLvl - 1, 2) ~/ 5 + 100}",
+                                  style: const TextStyle(fontSize: 18),
+                                )
+                              ],
+                            )
+                          ],
+                        );
+                      }),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
                   ),
                   Column(
                     children: [
@@ -113,7 +170,7 @@ class _ProfileViewState extends State<ProfileView> {
                                           0.05,
                                     ),
                                     Container(
-                                      padding: EdgeInsets.all(4),
+                                      padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         color: context

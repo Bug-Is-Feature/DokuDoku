@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:dokudoku/model/library_books.dart';
+import 'package:dokudoku/provider/book_provider.dart';
 import 'package:dokudoku/res/AppContextExtension.dart';
 import 'package:dokudoku/services/image_service.dart';
 import 'package:dokudoku/services/storage_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class EditImageUploadWidget extends StatefulWidget {
   final LibraryBooks libraryBook;
@@ -122,7 +124,10 @@ class _EditImageUploadWidgetState extends State<EditImageUploadWidget> {
                                   const BorderRadius.all(Radius.circular(10)),
                               color: Colors.transparent,
                               image: DecorationImage(
-                                image: NetworkImage(snapshot.data.toString()),
+                                image: fileImage != null
+                                    ? FileImage(fileImage!)
+                                    : Image.network(snapshot.data.toString())
+                                        .image,
                               ),
                             )
                           : BoxDecoration(
@@ -202,30 +207,33 @@ class _EditImageUploadWidgetState extends State<EditImageUploadWidget> {
                 color: Colors.red,
               ),
             ),
-          if (widget.libraryBook.book.thumbnail.substring(0, 4) == 'gs::') ...[
-            const SizedBox(
-              height: 10,
-            ),
-            ElevatedButton(
-              onPressed: () => setState(() {
-                fileImage = null;
-                widget.imageCallback('');
-              }),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: context.resources.color.colorDarkest,
-                minimumSize: const Size.fromHeight(50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: const Text(
-                'Clear Image',
-                style: TextStyle(
-                  fontSize: 16,
-                ),
-              ),
-            ),
-          ],
+          //   if (widget.libraryBook.book.thumbnail == '')
+          //     ...[]
+          //   else if (widget.libraryBook.book.thumbnail.substring(0, 4) ==
+          //       'gs::') ...[
+          //     const SizedBox(
+          //       height: 10,
+          //     ),
+          //     ElevatedButton(
+          //       onPressed: () => setState(() {
+          //         fileImage = null;
+          //         widget.imageCallback('');
+          //       }),
+          //       style: ElevatedButton.styleFrom(
+          //         backgroundColor: context.resources.color.colorDarkest,
+          //         minimumSize: const Size.fromHeight(50),
+          //         shape: RoundedRectangleBorder(
+          //           borderRadius: BorderRadius.circular(10),
+          //         ),
+          //       ),
+          //       child: const Text(
+          //         'Clear Image',
+          //         style: TextStyle(
+          //           fontSize: 16,
+          //         ),
+          //       ),
+          //     ),
+          //   ],
         ],
       ),
     );
