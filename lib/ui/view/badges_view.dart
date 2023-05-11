@@ -34,12 +34,18 @@ class BadgesViewState extends State<BadgesView> {
           .map((e) => e.duration)
           .reduce((value, element) => value + element),
     );
+    //print check total reading
+    print("total reading : $totalReadingDuration");
+    print("start hourglassTotalDuration");
     int hourglassTotalDuration = await sessionProvider.session.then(
       (value) => value
           .where((element) => element.timerType == "Hourglass")
           .map((e) => e.duration)
           .reduce((value, element) => value + element),
     );
+    //print check hourglassTotalDuration
+    print("done hourglassTotalDuration");
+    print("hourglassTotalDuration : $hourglassTotalDuration");
     int stopwatchTotalDuration = await sessionProvider.session.then(
       (value) => value
           .where((element) => element.timerType == "Stopwatch")
@@ -47,10 +53,13 @@ class BadgesViewState extends State<BadgesView> {
           .reduce((value, element) => value + element),
     );
 
+    //print check stopwatchTotalDuration
+    print("stopwatchTotalDuration : $stopwatchTotalDuration");
+    print("-----------------------------------------");
     // print("sumSTP : ${timerProvider.sumStopWatch}");
     // print("sumH : ${timerProvider.sumHourglass}");
     // print("totalDuration : ${timerProvider.totalReadingDuration}");
-    print('user unlock: $userBadgesId');
+    print('user unlock---------------------------: $userBadgesId');
     badgeList.forEach(
       (element) async {
         if (!userBadgesId.contains(element.id)) {
@@ -151,10 +160,12 @@ class BadgesViewState extends State<BadgesView> {
     //       ),
     //     );
     // });
+
     badgeProvider.userBadges.then((value) async {
       setState(() {
         value.map((e) => userBadgesId.add(e.unlockedAchievementId)).toList();
         isLoading = false;
+        print("llllllllllllllll $userBadgesId");
       });
       unlockAchievement(context)
           .whenComplete(() => setState(() => isUnlock = false));

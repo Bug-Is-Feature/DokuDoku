@@ -60,17 +60,19 @@ class _BookCardState extends State<BookCard> {
               Container(
                 width: 60,
                 height: 60 * 1.6,
-                decoration: BoxDecoration(boxShadow: [
-                  BoxShadow(
-                    color: context.resources.color.greyDarker,
-                    offset: const Offset(
-                      1.5,
-                      1.0,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: context.resources.color.greyDarker,
+                      offset: const Offset(
+                        1.5,
+                        1.0,
+                      ),
+                      blurRadius: 5.0,
+                      spreadRadius: 1.0,
                     ),
-                    blurRadius: 5.0,
-                    spreadRadius: 1.0,
-                  ),
-                ]),
+                  ],
+                ),
                 child: FutureBuilder(
                   future: ImageService.getImageUrl(
                       imageRef: widget.libraryBook.book.thumbnail),

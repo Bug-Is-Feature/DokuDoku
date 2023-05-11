@@ -52,7 +52,7 @@ class _TimeDistributionChartState extends State<TimeDistributionChart> {
                     title: ChartTitle(
                       text: 'Time Distribution $totalDuration',
                       textStyle: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.brown,
                           fontFamily: 'primary'),
